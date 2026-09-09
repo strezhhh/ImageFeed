@@ -7,7 +7,10 @@
 
 import UIKit
 
-final class ImagesListCell: UICollectionViewCell {
+final class ImagesListCell: UITableViewCell {
+        
+    @IBOutlet weak var imageCell: UIImageView!
     
+    static let reuseIdentifier: String = "ImagesListCell"
     
 }
