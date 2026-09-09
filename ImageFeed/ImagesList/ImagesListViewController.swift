@@ -13,6 +13,17 @@ final class ImagesListViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
     
+    // MARK: - Private Properties
+
+    private let photosName: [String] = Array(0...19).map{ "\($0)" }
+    
+    private lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        return formatter
+    }()
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -20,21 +31,30 @@ final class ImagesListViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.rowHeight = 200
-        
+        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
 }
 
 // MARK: - Extension Class
 
 extension ImagesListViewController {
-    func configCell(for cell: ImagesListCell) {
-        cell.imageCell.image = UIImage(named: "1")
+    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+        let index = indexPath.row
+        guard let image = UIImage(named: "\(index)") else { return }
+        cell.imageCell.image = image
+        cell.dateLabel.text = dateFormatter.string(from: Date())
+        if indexPath.row % 2 == 0 {
+            cell.likeButton.setImage(UIImage(named: "Active"), for: .normal)
+        } else {
+            cell.likeButton.setImage(UIImage(named: "NoActive"), for: .normal)
+
+        }
     }
 }
 
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return photosName.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -45,7 +65,7 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        configCell(for: imageListCell)
+        configCell(for: imageListCell, with: indexPath)
         return imageListCell
     }
 }
