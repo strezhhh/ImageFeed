@@ -37,8 +37,8 @@
                                                         <constraint firstAttribute="height" constant="30" id="lz6-bM-rCm"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6PC-2Q-6gz" userLabel="DateLabel">
-                                                    <rect key="frame" x="8" y="237" width="29" height="16"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="27 августа 2022" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6PC-2Q-6gz" userLabel="DateLabel">
+                                                    <rect key="frame" x="8" y="237" width="101.66666666666667" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" name="YP White"/>
                                                     <nil key="highlightedColor"/>
@@ -55,6 +55,7 @@
                                                     </buttonConfiguration>
                                                 </button>
                                             </subviews>
+                                            <color key="backgroundColor" name="YP Black"/>
                                             <constraints>
                                                 <constraint firstItem="x8F-ft-bRY" firstAttribute="leading" secondItem="JbW-2D-ou4" secondAttribute="leading" id="20N-Ed-2hS"/>
                                                 <constraint firstItem="6PC-2Q-6gz" firstAttribute="leading" secondItem="JbW-2D-ou4" secondAttribute="leading" constant="8" id="5o7-N6-nZb"/>
@@ -69,6 +70,7 @@
                                                 <constraint firstItem="Aet-e5-fB0" firstAttribute="top" secondItem="JbW-2D-ou4" secondAttribute="top" id="zI0-iT-fB7"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" name="YP Black"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.CornerRadius">
                                                 <integer key="value" value="16"/>
