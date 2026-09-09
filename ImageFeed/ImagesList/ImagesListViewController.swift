@@ -9,26 +9,28 @@ import UIKit
 
 final class ImagesListViewController: UIViewController {
     
+    // MARK: - IBOutlets
+    
     @IBOutlet private var tableView: UITableView!
     
-    //var imageListCell: ImagesListCell?
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
         tableView.rowHeight = 200
-
+        
     }
-    
-    func configCell(for cell: ImagesListCell) {
-        cell.imageCell.image = UIImage(named: "1")
-
-    }
-    
 }
 
+// MARK: - Extension Class
 
+extension ImagesListViewController {
+    func configCell(for cell: ImagesListCell) {
+        cell.imageCell.image = UIImage(named: "1")
+    }
+}
 
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -45,7 +47,6 @@ extension ImagesListViewController: UITableViewDataSource {
         
         configCell(for: imageListCell)
         return imageListCell
-       // UITableViewCell()
     }
 }
 
