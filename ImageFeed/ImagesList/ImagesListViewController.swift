@@ -14,7 +14,7 @@ final class ImagesListViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
     
     // MARK: - Private Properties
-
+    
     private let photosName: [String] = Array(0...19).map{ "\($0)" }
     
     private lazy var dateFormatter: DateFormatter = {
@@ -47,7 +47,7 @@ extension ImagesListViewController {
             cell.likeButton.setImage(UIImage(named: "Active"), for: .normal)
         } else {
             cell.likeButton.setImage(UIImage(named: "NoActive"), for: .normal)
-
+            
         }
     }
 }
@@ -58,13 +58,10 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
-        
         guard let imageListCell = cell as? ImagesListCell else {
             return UITableViewCell()
         }
-        
         configCell(for: imageListCell, with: indexPath)
         return imageListCell
     }
