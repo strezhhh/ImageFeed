@@ -43,9 +43,9 @@ extension ImagesListViewController {
         cell.imageCell.image = image
         cell.dateLabel.text = dateFormatter.string(from: Date())
         if indexPath.row % 2 == 0 {
-            cell.likeButton.setImage(UIImage(named: "Active"), for: .normal)
+            cell.likeButton.setImage(UIImage(resource: .active), for: .normal)
         } else {
-            cell.likeButton.setImage(UIImage(named: "NoActive"), for: .normal)
+            cell.likeButton.setImage(UIImage(resource: .noActive), for: .normal)
             
         }
     }
