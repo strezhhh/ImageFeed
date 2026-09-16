@@ -34,7 +34,7 @@ final class ImagesListViewController: UIViewController {
     }
 }
 
-// MARK: - Extension Class
+// MARK: - ImagesListViewController
 
 extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
@@ -51,6 +51,8 @@ extension ImagesListViewController {
     }
 }
 
+// MARK: - UITableViewDataSource
+
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return photosName.count
@@ -65,6 +67,8 @@ extension ImagesListViewController: UITableViewDataSource {
         return imageListCell
     }
 }
+
+// MARK: - UITableViewDelegate
 
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
