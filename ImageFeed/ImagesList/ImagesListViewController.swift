@@ -44,6 +44,7 @@ final class ImagesListViewController: UIViewController {
 // MARK: - ImagesListViewController
 
 extension ImagesListViewController {
+    
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let index = indexPath.row
         guard let image = UIImage(named: "\(index)") else { return }
@@ -53,14 +54,15 @@ extension ImagesListViewController {
             cell.likeButton.setImage(UIImage(resource: .active), for: .normal)
         } else {
             cell.likeButton.setImage(UIImage(resource: .noActive), for: .normal)
-            
         }
     }
+    
 }
 
 // MARK: - UITableViewDataSource
 
 extension ImagesListViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         photosName.count
     }
@@ -73,14 +75,17 @@ extension ImagesListViewController: UITableViewDataSource {
         configCell(for: imageListCell, with: indexPath)
         return imageListCell
     }
+    
 }
 
 // MARK: - UITableViewDelegate
 
 extension ImagesListViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
             return 0
@@ -94,10 +99,7 @@ extension ImagesListViewController: UITableViewDelegate {
         let scale = imageViewWidth / imageWidth
         let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
-        
     }
     
 }
 
-
-//
