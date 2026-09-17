@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="25098" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="gGH-5P-brN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="25098" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zXy-5t-9Q9">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="25073"/>
@@ -126,6 +126,35 @@
             </objects>
             <point key="canvasLocation" x="1064.885496183206" y="130.98591549295776"/>
         </scene>
+        <!--Single Image View Controller-->
+        <scene sceneID="ord-So-BZE">
+            <objects>
+                <viewController id="zXy-5t-9Q9" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1TJ-4Y-1cD">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="XKM-So-5B1">
+                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="AT0-p9-KHc"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="XKM-So-5B1" firstAttribute="top" secondItem="AT0-p9-KHc" secondAttribute="top" id="AyR-oa-NMZ"/>
+                            <constraint firstItem="AT0-p9-KHc" firstAttribute="trailing" secondItem="XKM-So-5B1" secondAttribute="trailing" id="EuY-kY-Y0X"/>
+                            <constraint firstItem="XKM-So-5B1" firstAttribute="leading" secondItem="AT0-p9-KHc" secondAttribute="leading" id="JY7-JF-0Pm"/>
+                            <constraint firstItem="AT0-p9-KHc" firstAttribute="bottom" secondItem="XKM-So-5B1" secondAttribute="bottom" id="rTs-42-TWq"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="singleImageView" destination="XKM-So-5B1" id="ciX-ov-U8e"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6sw-BN-BF1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1958" y="131"/>
+        </scene>
         <!--Profile-->
         <scene sceneID="YiI-zr-FkC">
             <objects>
@@ -237,6 +266,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="0" width="1600" height="1059"/>
         <image name="GradientForImageCell" width="288" height="30"/>
         <image name="No Active" width="44" height="44"/>
         <image name="UserPhoto" width="70" height="70"/>
