@@ -112,7 +112,7 @@
                             <constraint firstItem="fLU-At-qoU" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="tuN-km-cKA"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" id="K5W-LP-j8u"/>
+                    <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="K5W-LP-j8u"/>
                     <connections>
                         <outlet property="tableView" destination="fLU-At-qoU" id="ya1-4T-6ZX"/>
                     </connections>
@@ -208,6 +208,7 @@
         <image name="No Active" width="44" height="44"/>
         <image name="UserPhoto" width="70" height="70"/>
         <image name="iconExit" width="24" height="24"/>
+        <image name="tab_editorial_active" width="30" height="30"/>
         <namedColor name="YP Black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
