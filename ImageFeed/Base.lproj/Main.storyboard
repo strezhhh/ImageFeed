@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="25098" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="25098" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hxQ-bS-BNU">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="25073"/>
@@ -112,7 +112,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="left" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="HHO-jm-8e9" userLabel="mainStackView">
-                                <rect key="frame" x="16" y="76" width="353" height="155"/>
+                                <rect key="frame" x="16" y="150" width="353" height="155"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleAspectFill" distribution="equalCentering" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="2CM-Q5-O8q" userLabel="avatarIconStackView">
                                         <rect key="frame" x="0.0" y="0.0" width="353" height="70"/>
@@ -145,13 +145,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@ekaterina_nov" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u9p-16-VTM" userLabel="usernameLabel">
-                                        <rect key="frame" x="0.0" y="106.33333333333334" width="122.33333333333333" height="20.333333333333329"/>
+                                        <rect key="frame" x="0.0" y="106.33333333333331" width="122.33333333333333" height="20.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" name="YP White (Alpha 50)"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, world!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="14w-O0-dSL" userLabel="statusLabel">
-                                        <rect key="frame" x="0.0" y="134.66666666666666" width="94.666666666666671" height="20.333333333333343"/>
+                                        <rect key="frame" x="0.0" y="134.66666666666669" width="94.666666666666671" height="20.333333333333343"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" name="YP White"/>
                                         <nil key="highlightedColor"/>
@@ -167,7 +167,7 @@
                         <viewLayoutGuide key="safeArea" id="8mB-AN-EUu"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstItem="HHO-jm-8e9" firstAttribute="top" secondItem="p99-Ai-Uks" secondAttribute="top" constant="76" id="Te5-e3-mgJ"/>
+                            <constraint firstItem="HHO-jm-8e9" firstAttribute="top" secondItem="8mB-AN-EUu" secondAttribute="top" constant="32" id="Te5-e3-mgJ"/>
                             <constraint firstItem="HHO-jm-8e9" firstAttribute="leading" secondItem="p99-Ai-Uks" secondAttribute="leading" constant="16" id="dBr-pp-lkk"/>
                             <constraint firstAttribute="trailing" secondItem="HHO-jm-8e9" secondAttribute="trailing" constant="24" id="g7e-p7-yA3"/>
                         </constraints>
