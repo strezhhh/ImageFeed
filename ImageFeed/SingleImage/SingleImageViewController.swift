@@ -9,8 +9,19 @@ import UIKit
 
 final class SingleImageViewController: UIViewController {
     
+    // MARK: - Properties
+
+    var image: UIImage?
+    
+    // MARK: - Lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        singleImageView.image = image
+    }
+    
     // MARK: - IBOutlets
 
-    @IBOutlet weak var singleImageView: UIImageView!
+    @IBOutlet private var singleImageView: UIImageView!
 
 }
