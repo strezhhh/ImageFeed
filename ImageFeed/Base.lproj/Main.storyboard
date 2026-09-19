@@ -138,10 +138,10 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="XKM-So-5B1">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R2e-qO-ENs">
-                                <rect key="frame" x="8" y="59" width="48" height="38"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R2e-qO-ENs" userLabel="Back Button">
+                                <rect key="frame" x="8" y="56" width="48" height="38"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="iconExit"/>
+                                <buttonConfiguration key="configuration" style="plain" image="nav_back_button_white"/>
                                 <connections>
                                     <action selector="didTapBackButton:" destination="zXy-5t-9Q9" eventType="touchUpInside" id="3tQ-tW-eQm"/>
                                 </connections>
@@ -152,7 +152,7 @@
                         <constraints>
                             <constraint firstItem="XKM-So-5B1" firstAttribute="top" secondItem="1TJ-4Y-1cD" secondAttribute="top" id="Dxw-7r-lQh"/>
                             <constraint firstAttribute="bottom" secondItem="XKM-So-5B1" secondAttribute="bottom" id="P9Y-eE-Vwi"/>
-                            <constraint firstItem="R2e-qO-ENs" firstAttribute="top" secondItem="AT0-p9-KHc" secondAttribute="top" id="aX1-gG-1mH"/>
+                            <constraint firstItem="R2e-qO-ENs" firstAttribute="top" secondItem="1TJ-4Y-1cD" secondAttribute="top" constant="56" id="aX1-gG-1mH"/>
                             <constraint firstItem="XKM-So-5B1" firstAttribute="trailing" secondItem="1TJ-4Y-1cD" secondAttribute="trailing" id="dOv-4D-StV"/>
                             <constraint firstItem="R2e-qO-ENs" firstAttribute="leading" secondItem="AT0-p9-KHc" secondAttribute="leading" constant="8" id="dnH-gu-uOl"/>
                             <constraint firstItem="XKM-So-5B1" firstAttribute="leading" secondItem="1TJ-4Y-1cD" secondAttribute="leading" id="wj4-ZN-r7N"/>
@@ -283,6 +283,7 @@
         <image name="No Active" width="44" height="44"/>
         <image name="UserPhoto" width="70" height="70"/>
         <image name="iconExit" width="24" height="24"/>
+        <image name="nav_back_button_white" width="24" height="24"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Black">
