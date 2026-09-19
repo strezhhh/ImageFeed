@@ -9,9 +9,18 @@ import UIKit
 
 final class SingleImageViewController: UIViewController {
     
+    // MARK: - IBOutlets
+
+    @IBOutlet private var singleImageView: UIImageView!
+    
     // MARK: - Properties
 
-    var image: UIImage?
+    var image: UIImage? {
+        didSet {
+            guard isViewLoaded else { return }
+            singleImageView.image = image
+        }
+    }
     
     // MARK: - Lifecycle
 
@@ -20,8 +29,6 @@ final class SingleImageViewController: UIViewController {
         singleImageView.image = image
     }
     
-    // MARK: - IBOutlets
 
-    @IBOutlet private var singleImageView: UIImageView!
 
 }

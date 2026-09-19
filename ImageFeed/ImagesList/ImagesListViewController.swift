@@ -49,7 +49,7 @@ final class ImagesListViewController: UIViewController {
             guard
                 let viewController = segue.destination as? SingleImageViewController,
                 let indexPath = sender as? IndexPath
-                    else {
+            else {
                 assertionFailure("Invalid segue destination")
                 return
             }
