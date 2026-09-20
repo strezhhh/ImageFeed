@@ -135,13 +135,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="XKM-So-5B1">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R2e-qO-ENs" userLabel="Back Button">
-                                <rect key="frame" x="8" y="56" width="48" height="38"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DJ9-Wm-8QG">
+                                <rect key="frame" x="-20" y="-20" width="433" height="892"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="XKM-So-5B1">
+                                        <rect key="frame" x="20" y="20" width="393" height="852"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <viewLayoutGuide key="contentLayoutGuide" id="AUJ-3p-a4T"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="OKa-zm-apb"/>
+                                <connections>
+                                    <outlet property="delegate" destination="zXy-5t-9Q9" id="cKp-CK-P3t"/>
+                                </connections>
+                            </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R2e-qO-ENs" userLabel="BackButton">
+                                <rect key="frame" x="8" y="67" width="48" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48" id="7jj-UC-MyA"/>
+                                    <constraint firstAttribute="height" constant="48" id="zbs-6e-4QG"/>
+                                </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="nav_back_button_white"/>
+                                <buttonConfiguration key="configuration" style="plain" image="BackButton"/>
                                 <connections>
                                     <action selector="didTapBackButton:" destination="zXy-5t-9Q9" eventType="touchUpInside" id="3tQ-tW-eQm"/>
                                 </connections>
@@ -150,16 +165,17 @@
                         <viewLayoutGuide key="safeArea" id="AT0-p9-KHc"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstItem="XKM-So-5B1" firstAttribute="top" secondItem="1TJ-4Y-1cD" secondAttribute="top" id="Dxw-7r-lQh"/>
-                            <constraint firstAttribute="bottom" secondItem="XKM-So-5B1" secondAttribute="bottom" id="P9Y-eE-Vwi"/>
-                            <constraint firstItem="R2e-qO-ENs" firstAttribute="top" secondItem="1TJ-4Y-1cD" secondAttribute="top" constant="56" id="aX1-gG-1mH"/>
-                            <constraint firstItem="XKM-So-5B1" firstAttribute="trailing" secondItem="1TJ-4Y-1cD" secondAttribute="trailing" id="dOv-4D-StV"/>
+                            <constraint firstItem="DJ9-Wm-8QG" firstAttribute="top" secondItem="1TJ-4Y-1cD" secondAttribute="top" id="5vb-aI-uRJ"/>
+                            <constraint firstItem="DJ9-Wm-8QG" firstAttribute="leading" secondItem="1TJ-4Y-1cD" secondAttribute="leading" id="Gwe-E6-bNx"/>
+                            <constraint firstAttribute="bottom" secondItem="DJ9-Wm-8QG" secondAttribute="bottom" id="Vca-Bx-f9W"/>
+                            <constraint firstItem="R2e-qO-ENs" firstAttribute="top" secondItem="AT0-p9-KHc" secondAttribute="top" constant="8" id="aX1-gG-1mH"/>
                             <constraint firstItem="R2e-qO-ENs" firstAttribute="leading" secondItem="AT0-p9-KHc" secondAttribute="leading" constant="8" id="dnH-gu-uOl"/>
-                            <constraint firstItem="XKM-So-5B1" firstAttribute="leading" secondItem="1TJ-4Y-1cD" secondAttribute="leading" id="wj4-ZN-r7N"/>
+                            <constraint firstAttribute="trailing" secondItem="DJ9-Wm-8QG" secondAttribute="trailing" id="eQc-6Z-ZYb"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Bmu-ch-gfQ"/>
                     <connections>
+                        <outlet property="scrollView" destination="DJ9-Wm-8QG" id="e3n-6f-G0D"/>
                         <outlet property="singleImageView" destination="XKM-So-5B1" id="ciX-ov-U8e"/>
                     </connections>
                 </viewController>
@@ -279,11 +295,11 @@
     </scenes>
     <resources>
         <image name="0" width="1600" height="1059"/>
+        <image name="BackButton" width="24" height="24"/>
         <image name="GradientForImageCell" width="288" height="30"/>
         <image name="No Active" width="44" height="44"/>
         <image name="UserPhoto" width="70" height="70"/>
         <image name="iconExit" width="24" height="24"/>
-        <image name="nav_back_button_white" width="24" height="24"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Black">

@@ -12,6 +12,7 @@ final class SingleImageViewController: UIViewController {
     // MARK: - IBOutlets
 
     @IBOutlet private var singleImageView: UIImageView!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     // MARK: - Properties
 
@@ -27,6 +28,8 @@ final class SingleImageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         singleImageView.image = image
+        scrollView.minimumZoomScale = 0.1
+        scrollView.maximumZoomScale = 1.25
     }
     
     // MARK: - IBActions
