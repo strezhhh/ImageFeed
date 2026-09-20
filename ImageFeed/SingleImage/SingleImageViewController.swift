@@ -7,12 +7,12 @@
 
 import UIKit
 
-final class SingleImageViewController: UIViewController {
+/*final*/ class SingleImageViewController: UIViewController {
     
     // MARK: - IBOutlets
 
-    @IBOutlet private var singleImageView: UIImageView!
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet /*private*/ var singleImageView: UIImageView!
+    @IBOutlet /*private*/ var scrollView: UIScrollView!
     
     // MARK: - Properties
 
@@ -27,10 +27,23 @@ final class SingleImageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupSingleImageView()
+        setupScrollView()
+    }
+    
+    // MARK: - Private Methods
+    
+    /*private*/ func setupSingleImageView() {
+        guard let image else { return }
         singleImageView.image = image
+        singleImageView.frame.size = image.size
+    }
+    
+    /*private*/ func setupScrollView() {
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
     }
+    
     
     // MARK: - IBActions
 
@@ -38,4 +51,17 @@ final class SingleImageViewController: UIViewController {
     dismiss(animated: true, completion: nil)
     }
     
+}
+
+    // MARK: - Extension ingleImageViewController: UIScrollViewDelegate
+
+extension SingleImageViewController: UIScrollViewDelegate {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        print("Zoomable view")
+
+        return singleImageView
+    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print("Scroll happened")
+    }
 }
