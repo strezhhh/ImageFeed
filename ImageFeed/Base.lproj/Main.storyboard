@@ -135,19 +135,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" minimumZoomScale="1.1000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="DJ9-Wm-8QG">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" minimumZoomScale="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="DJ9-Wm-8QG">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="XKM-So-5B1">
-                                        <rect key="frame" x="0.0" y="0.0" width="1600" height="1059"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="XKM-So-5B1">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="XKM-So-5B1" firstAttribute="top" secondItem="AUJ-3p-a4T" secondAttribute="top" id="QtR-8s-zkb"/>
-                                    <constraint firstItem="AUJ-3p-a4T" firstAttribute="trailing" secondItem="XKM-So-5B1" secondAttribute="trailing" id="RuN-Vb-M2m"/>
-                                    <constraint firstItem="XKM-So-5B1" firstAttribute="leading" secondItem="AUJ-3p-a4T" secondAttribute="leading" id="bMd-D9-Vyb"/>
-                                    <constraint firstItem="AUJ-3p-a4T" firstAttribute="bottom" secondItem="XKM-So-5B1" secondAttribute="bottom" id="bPi-Qj-mJU"/>
-                                </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="AUJ-3p-a4T"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="OKa-zm-apb"/>
                                 <connections>
