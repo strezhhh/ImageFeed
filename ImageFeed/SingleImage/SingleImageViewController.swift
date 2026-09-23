@@ -29,8 +29,6 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLoad()
         setupSingleImageView()
         setupScrollView()
-        guard let image = image else { return }
-        rescaleAndCenterImageInScrollView(image: image)
     }
     
     // MARK: - Private Methods
@@ -39,6 +37,7 @@ final class SingleImageViewController: UIViewController {
         guard let image else { return }
         singleImageView.image = image
         singleImageView.frame.size = image.size
+        rescaleAndCenterImageInScrollView(image: image)
     }
     
     private func setupScrollView() {
