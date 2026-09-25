@@ -65,6 +65,20 @@ final class SingleImageViewController: UIViewController {
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
     
+    private func centerImageAfterZoom(image: UIImage) {
+        let visibleRectSize = scrollView.bounds.size
+        let newContentSize = scrollView.contentSize
+
+        let verticalInset = ( visibleRectSize.height - newContentSize.height ) / 2
+        let horizontalInset = ( visibleRectSize.width - newContentSize.width ) / 2
+        
+        scrollView.contentInset = UIEdgeInsets(
+            top: verticalInset,
+            left: horizontalInset,
+            bottom: verticalInset,
+            right: horizontalInset
+        )
+    }
     
     private func didTapShareButton() {
         guard let image = singleImageView.image else { return }
@@ -97,7 +111,8 @@ extension SingleImageViewController: UIScrollViewDelegate {
         return singleImageView
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print("Scroll happened")
+    func scrollViewDidZoom(_ : UIScrollView) {
+        guard let image = singleImageView.image else { return }
+        centerImageAfterZoom(image: image)
     }
 }
