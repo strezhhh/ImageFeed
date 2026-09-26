@@ -24,11 +24,12 @@ final class ProfileViewController: UIViewController {
     private var nameIdentifier = "Екатерина Новикова"
     private var usernameIdentifier = "@ekaterina_nov"
     private var statusIdentifier = "Hello, world!"
+    private let exitIconIdentifier = "iconExit"
+
     
     private var avatarImageView: UIImageView?
     private var nameLabel: UILabel?
     private var exitButton: UIButton?
-
 
     // MARK: - Lifecycle
     
@@ -80,8 +81,10 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setupExitButton() {
+        let exitIconImage = UIImage(named: exitIconIdentifier)
+        guard let exitIconImage else { return }
         exitButton = UIButton.systemButton(
-            with: UIImage(systemName: "ipad.and.arrow.forward")!,
+            with: exitIconImage,
             target: self,
             action: #selector(self.didTapButton)
         )
