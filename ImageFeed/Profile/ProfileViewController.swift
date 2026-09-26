@@ -27,6 +27,7 @@ final class ProfileViewController: UIViewController {
     
     private var avatarImageView: UIImageView?
     private var nameLabel: UILabel?
+    private var exitButton: UIButton?
 
 
     // MARK: - Lifecycle
@@ -35,6 +36,7 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setupProfileAvatar()
         setupNameLabel()
+        setupExitButton()
     }
 
     // MARK: - Private Methods
@@ -77,4 +79,23 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
+    private func setupExitButton() {
+        exitButton = UIButton.systemButton(
+            with: UIImage(systemName: "ipad.and.arrow.forward")!,
+            target: self,
+            action: #selector(self.didTapButton)
+        )
+        guard let exitButton else { return }
+        exitButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(exitButton)
+        exitButton.tintColor = .ypRed
+        exitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+        guard let avatarImageView else { return }
+        exitButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor).isActive = true
+    }
+    
+    @objc
+    private func didTapButton() {
+        tabBarController?.selectedIndex = 0
+    }
 }
