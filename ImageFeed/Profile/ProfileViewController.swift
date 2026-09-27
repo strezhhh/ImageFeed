@@ -9,24 +9,15 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
-//    @IBOutlet weak var nameLabel: UILabel!
-//    @IBOutlet weak var usernameLabel: UILabel!
-//    @IBOutlet weak var statusLabel: UILabel!
-//    @IBOutlet weak var exitButton: UIButton!
-    
-    // MARK: - Properties
-
-    //let name
-    
     // MARK: - Private Properties
-
+    
     private let avatarImageIdentifier = "UserPhoto"
     private let avatarDefaultImageIdentifier = "person.crop.circle.fill"
     private var nameIdentifier = "Екатерина Новикова"
     private var usernameIdentifier = "@ekaterina_nov"
     private var statusIdentifier: String?
     private let exitIconIdentifier = "iconExit"
-
+    
     
     private var avatarImageView: UIImageView?
     private var avatarImage: UIImage?
@@ -34,7 +25,7 @@ final class ProfileViewController: UIViewController {
     private var exitButton: UIButton?
     private var usernameLabel: UILabel?
     private var statusLabel: UILabel?
-
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -45,9 +36,9 @@ final class ProfileViewController: UIViewController {
         setupUsernameLabel()
         setupStatusLabel()
     }
-
+    
     // MARK: - Private Methods
-
+    
     // Метод установит аватарку
     private func setupProfileAvatar() {
         avatarImage = UIImage(named: avatarImageIdentifier)
@@ -62,7 +53,7 @@ final class ProfileViewController: UIViewController {
         avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
         avatarImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
     }
-
+    
     // Метод установит Имя пользователя
     private func setupNameLabel() {
         nameLabel = UILabel()

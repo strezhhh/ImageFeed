@@ -24,8 +24,9 @@ final class ImagesListViewController: UIViewController {
         return formatter
     }()
     
+    // переменная хранит название мокового ресурса
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-
+    
     
     // MARK: - Lifecycle
     

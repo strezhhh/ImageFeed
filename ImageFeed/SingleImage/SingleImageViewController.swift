@@ -21,8 +21,8 @@ final class SingleImageViewController: UIViewController {
             guard
                 isViewLoaded,
                 let image = image else { return }
-                singleImageView.image = image
-                rescaleAndCenterImageInScrollView(image: image)
+            singleImageView.image = image
+            rescaleAndCenterImageInScrollView(image: image)
         }
     }
     
@@ -43,11 +43,13 @@ final class SingleImageViewController: UIViewController {
         rescaleAndCenterImageInScrollView(image: image)
     }
     
+    // Метод установит минимальное и максимально значение для зума
     private func setupScrollView() {
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
     }
     
+    // Метод пропоруионально растянет/сожмет изображение до размеров экрана и выровнит изображение по центру
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
         let minZoomScale = scrollView.minimumZoomScale
         let maxZoomScale = scrollView.maximumZoomScale
@@ -65,10 +67,11 @@ final class SingleImageViewController: UIViewController {
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
     
+    // Метод будет центровать изображение сразу после зума
     private func centerImageAfterZoom(image: UIImage) {
         let visibleRectSize = scrollView.bounds.size
         let newContentSize = scrollView.contentSize
-
+        
         let verticalInset = ( visibleRectSize.height - newContentSize.height ) / 2
         let horizontalInset = ( visibleRectSize.width - newContentSize.width ) / 2
         
@@ -80,6 +83,7 @@ final class SingleImageViewController: UIViewController {
         )
     }
     
+    // Метод покажет стандартное меню "Поделиться"
     private func didTapShareButton() {
         guard let image = singleImageView.image else { return }
         let shareImage = UIActivityViewController (
@@ -92,11 +96,11 @@ final class SingleImageViewController: UIViewController {
     
     // MARK: - IBActions
     
-    @IBAction func didTapBackButton(_ sender: Any) {
+    @IBAction private func didTapBackButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func didTapShareButton(_ sender: Any) {
+    @IBAction private func didTapShareButton(_ sender: Any) {
         didTapShareButton()
     }
     
