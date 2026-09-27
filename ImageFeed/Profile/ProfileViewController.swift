@@ -29,9 +29,10 @@ final class ProfileViewController: UIViewController {
 
     
     private var avatarImageView: UIImageView?
-    var avatarImage: UIImage?
+    private var avatarImage: UIImage?
     private var nameLabel: UILabel?
     private var exitButton: UIButton?
+    private var usernameLabel: UILabel?
 
     // MARK: - Lifecycle
     
@@ -40,6 +41,7 @@ final class ProfileViewController: UIViewController {
         setupProfileAvatar()
         setupNameLabel()
         setupExitButton()
+        setupUsernameLabel()
     }
 
     // MARK: - Private Methods
@@ -97,6 +99,28 @@ final class ProfileViewController: UIViewController {
         exitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
         guard let avatarImageView else { return }
         exitButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor).isActive = true
+    }
+    
+    // Метод установит лейбл юзернейм
+    private func setupUsernameLabel() {
+        usernameLabel = UILabel()
+        guard let usernameLabel else { return }
+        usernameLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(usernameLabel)
+        let style = Fonts.usernameFontSF13RegularYPWhite50
+        usernameLabel.attributedText = NSAttributedString(
+            string: usernameIdentifier,
+            attributes: [
+                .font: style.font,
+                .foregroundColor: style.color,
+                .kern: style.kern
+            ]
+        )
+        guard let nameLabel else { return }
+        NSLayoutConstraint.activate([
+            usernameLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
+            usernameLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8)
+        ])
     }
     
     // Метод выхода из провиля пользователя

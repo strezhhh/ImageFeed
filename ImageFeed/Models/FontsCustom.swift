@@ -23,4 +23,9 @@ struct Fonts {
         kern: -0.08
     )
     
+    static let usernameFontSF13RegularYPWhite50 = labelFontStyle (
+        font: .systemFont(ofSize: 13),
+        color: .ypWhiteAlpha50,
+        kern: 0
+    )
 }
