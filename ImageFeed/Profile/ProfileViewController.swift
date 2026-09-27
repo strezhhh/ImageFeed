@@ -59,7 +59,7 @@ final class ProfileViewController: UIViewController {
         avatarImageView.tintColor = .white
         avatarImageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
         avatarImageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
+        avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
         avatarImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
     }
 
