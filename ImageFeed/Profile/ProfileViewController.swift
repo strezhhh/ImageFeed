@@ -21,6 +21,7 @@ final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
 
     private let avatarImageIdentifier = "UserPhoto"
+    private let avatarDefaultImageIdentifier = "person.crop.circle.fill"
     private var nameIdentifier = "Екатерина Новикова"
     private var usernameIdentifier = "@ekaterina_nov"
     private var statusIdentifier = "Hello, world!"
@@ -28,6 +29,7 @@ final class ProfileViewController: UIViewController {
 
     
     private var avatarImageView: UIImageView?
+    var avatarImage: UIImage?
     private var nameLabel: UILabel?
     private var exitButton: UIButton?
 
@@ -42,12 +44,11 @@ final class ProfileViewController: UIViewController {
 
     // MARK: - Private Methods
 
+    // Метод установит аватарку
     private func setupProfileAvatar() {
-        //avatarImageView? = avatarImage != nil ? UIImageView(image: avatarImage) : UIImage(systemName: "person.crop.circle.fill")
-        //avatarImageView? = UIImageView(image: avatarImage)
-        //guard let avatarImageView = avatarImageView else { return }
-        let avatarImage = UIImage(named: avatarImageIdentifier)
-        avatarImageView = UIImageView(image: avatarImage)
+        avatarImage = UIImage(named: avatarImageIdentifier)
+        // Если у пользователя не загружена аватарка, то ставим стандартную иконку
+        avatarImageView = avatarImage != nil ? UIImageView(image: avatarImage) : UIImageView(image: UIImage(systemName: avatarDefaultImageIdentifier))
         guard let avatarImageView else { return }
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(avatarImageView)
