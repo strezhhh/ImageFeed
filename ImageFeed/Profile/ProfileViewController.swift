@@ -24,7 +24,7 @@ final class ProfileViewController: UIViewController {
     private let avatarDefaultImageIdentifier = "person.crop.circle.fill"
     private var nameIdentifier = "Екатерина Новикова"
     private var usernameIdentifier = "@ekaterina_nov"
-    private var statusIdentifier = "Hello, world!"
+    private var statusIdentifier: String?
     private let exitIconIdentifier = "iconExit"
 
     
@@ -33,6 +33,7 @@ final class ProfileViewController: UIViewController {
     private var nameLabel: UILabel?
     private var exitButton: UIButton?
     private var usernameLabel: UILabel?
+    private var statusLabel: UILabel?
 
     // MARK: - Lifecycle
     
@@ -42,6 +43,7 @@ final class ProfileViewController: UIViewController {
         setupNameLabel()
         setupExitButton()
         setupUsernameLabel()
+        setupStatusLabel()
     }
 
     // MARK: - Private Methods
@@ -120,6 +122,31 @@ final class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate([
             usernameLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
             usernameLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8)
+        ])
+    }
+    
+    // Метод установит лейбл статуса
+    private func setupStatusLabel() {
+        // пока принудительно установим статус, но его может и не быть
+        statusIdentifier = "Hello, world!"
+        guard let statusIdentifier else { return }
+        statusLabel = UILabel()
+        guard let statusLabel else { return }
+        statusLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(statusLabel)
+        let style = Fonts.statusFontSF13RegularYPWhite
+        statusLabel.attributedText = NSAttributedString(
+            string: statusIdentifier,
+            attributes: [
+                .font: style.font,
+                .foregroundColor: style.color,
+                .kern: style.kern
+            ]
+        )
+        guard let usernameLabel else { return }
+        NSLayoutConstraint.activate([
+            statusLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            statusLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 8)
         ])
     }
     

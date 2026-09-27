@@ -28,4 +28,10 @@ struct Fonts {
         color: .ypWhiteAlpha50,
         kern: 0
     )
+    
+    static let statusFontSF13RegularYPWhite = labelFontStyle (
+        font: .systemFont(ofSize: 13),
+        color: .ypWhite,
+        kern: 0
+    )
 }
