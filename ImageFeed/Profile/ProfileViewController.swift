@@ -59,10 +59,10 @@ final class ProfileViewController: UIViewController {
         avatarImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
     }
 
+    // Метод установит Имя пользователя
     private func setupNameLabel() {
         nameLabel = UILabel()
         guard let nameLabel else { return }
-        
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
         let style = Fonts.nameFontSF23Regular
@@ -81,6 +81,7 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
+    // Метод установит кнопку выхода из профиля пользователя
     private func setupExitButton() {
         let exitIconImage = UIImage(named: exitIconIdentifier)
         guard let exitIconImage else { return }
@@ -98,6 +99,7 @@ final class ProfileViewController: UIViewController {
         exitButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor).isActive = true
     }
     
+    // Метод выхода из провиля пользователя
     @objc
     private func didTapButton() {
         tabBarController?.selectedIndex = 0
