@@ -176,7 +176,6 @@
                         <viewLayoutGuide key="safeArea" id="AT0-p9-KHc"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="u3Z-kr-AsP" secondAttribute="bottom" constant="64" id="57s-wZ-vJ8"/>
                             <constraint firstItem="DJ9-Wm-8QG" firstAttribute="top" secondItem="1TJ-4Y-1cD" secondAttribute="top" id="9im-8T-PTn"/>
                             <constraint firstItem="DJ9-Wm-8QG" firstAttribute="leading" secondItem="AT0-p9-KHc" secondAttribute="leading" id="Iqi-5M-TZb"/>
                             <constraint firstAttribute="bottom" secondItem="DJ9-Wm-8QG" secondAttribute="bottom" id="TEv-2X-KHw"/>
@@ -184,6 +183,7 @@
                             <constraint firstItem="R2e-qO-ENs" firstAttribute="top" secondItem="AT0-p9-KHc" secondAttribute="top" constant="8" id="aX1-gG-1mH"/>
                             <constraint firstItem="u3Z-kr-AsP" firstAttribute="centerX" secondItem="1TJ-4Y-1cD" secondAttribute="centerX" id="cji-zG-0yv"/>
                             <constraint firstItem="R2e-qO-ENs" firstAttribute="leading" secondItem="AT0-p9-KHc" secondAttribute="leading" constant="8" id="dnH-gu-uOl"/>
+                            <constraint firstItem="AT0-p9-KHc" firstAttribute="bottom" secondItem="u3Z-kr-AsP" secondAttribute="bottom" constant="30" id="xZ5-Qb-xbL"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Bmu-ch-gfQ"/>
