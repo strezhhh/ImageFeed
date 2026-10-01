@@ -12,7 +12,7 @@
         <!--AuthViewController-->
         <scene sceneID="lIy-EX-lLT">
             <objects>
-                <viewController title="AuthViewController" id="6jg-ME-XFY" sceneMemberID="viewController">
+                <viewController title="AuthViewController" id="6jg-ME-XFY" customClass="AuthViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="v6a-tx-rZk">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -40,7 +40,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="0DV-ew-BQM" kind="show" identifier="ShowWebView" id="jao-pV-WBJ"/>
+                                    <segue destination="0DV-ew-BQM" kind="show" identifier="ShowWebView" id="TS6-aU-aFi"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -67,14 +67,33 @@
                     <view key="view" contentMode="scaleToFill" id="1Ob-tq-YLN">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NJb-bg-3sP">
+                                <rect key="frame" x="0.0" y="172" width="393" height="680"/>
+                                <color key="backgroundColor" name="YP White"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="Yoe-1W-XDL"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="NJb-bg-3sP" firstAttribute="trailing" secondItem="1Ob-tq-YLN" secondAttribute="trailing" id="5qd-7N-8Y7"/>
+                            <constraint firstAttribute="bottom" secondItem="NJb-bg-3sP" secondAttribute="bottom" id="Hi6-bO-c55"/>
+                            <constraint firstItem="NJb-bg-3sP" firstAttribute="leading" secondItem="1Ob-tq-YLN" secondAttribute="leading" id="PBI-No-YQy"/>
+                            <constraint firstItem="NJb-bg-3sP" firstAttribute="top" secondItem="Yoe-1W-XDL" secondAttribute="top" id="bK9-as-MsF"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="L5a-S0-zMx"/>
+                    <connections>
+                        <outlet property="webView" destination="NJb-bg-3sP" id="nE3-Jl-OYS"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Fw-vF-6lf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1320" y="275"/>
+            <point key="canvasLocation" x="-1321.3740458015266" y="274.64788732394368"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="O4A-7T-dDV">

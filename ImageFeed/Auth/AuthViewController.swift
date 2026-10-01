@@ -9,5 +9,7 @@ import UIKit
 
 final class AuthViewController: UIViewController {
     
-    // segue - ShowWebView
+    // переменная хранит название ShowWebView
+    private let showWebViewSegueIdentifier = "ShowWebView"
+
 }
