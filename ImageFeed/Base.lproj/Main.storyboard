@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="25098" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="gGH-5P-brN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="25098" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="6jg-ME-XFY">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="25073"/>
@@ -8,6 +8,53 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--AuthViewController-->
+        <scene sceneID="lIy-EX-lLT">
+            <objects>
+                <viewController title="AuthViewController" id="6jg-ME-XFY" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="v6a-tx-rZk">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="authScreenLogo" translatesAutoresizingMaskIntoConstraints="NO" id="bsd-Fa-kXA">
+                                <rect key="frame" x="166.66666666666666" y="396" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="jqx-Wg-s4s"/>
+                                    <constraint firstAttribute="width" constant="60" id="t7Y-ZK-Htz"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IfT-o5-06k">
+                                <rect key="frame" x="16" y="646" width="361" height="48"/>
+                                <color key="backgroundColor" name="YP White"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="XzU-SD-9ah"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="tintColor" name="YP Black"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Войти"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="16"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="g7o-4r-tem"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="IfT-o5-06k" firstAttribute="leading" secondItem="g7o-4r-tem" secondAttribute="leading" constant="16" id="325-eL-TcQ"/>
+                            <constraint firstItem="bsd-Fa-kXA" firstAttribute="centerX" secondItem="v6a-tx-rZk" secondAttribute="centerX" id="6Kz-YD-rNo"/>
+                            <constraint firstItem="g7o-4r-tem" firstAttribute="trailing" secondItem="IfT-o5-06k" secondAttribute="trailing" constant="16" id="Y3E-Jf-aC3"/>
+                            <constraint firstItem="bsd-Fa-kXA" firstAttribute="centerY" secondItem="v6a-tx-rZk" secondAttribute="centerY" id="fB1-rq-oFh"/>
+                            <constraint firstItem="IfT-o5-06k" firstAttribute="bottom" secondItem="g7o-4r-tem" secondAttribute="bottom" constant="-90" id="r5T-lX-Gk3"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="llw-ua-I4N" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2021" y="496"/>
+        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="O4A-7T-dDV">
             <objects>
@@ -246,6 +293,7 @@
         <image name="GradientForImageCell" width="288" height="30"/>
         <image name="No Active" width="44" height="44"/>
         <image name="Sharing" width="50" height="50"/>
+        <image name="authScreenLogo" width="60" height="60"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Black">
