@@ -24,11 +24,12 @@ final class WebViewViewController: UIViewController {
         static let scope = "scope"
     }
     
+    weak var delegate: WebViewViewControllerDelegate?
+    
     // MARK: - Initialization
     
     private func setupNavigationDelegate() {
         webView.navigationDelegate = self
-        
     }
     
     // MARK: - Lifecycle
@@ -37,6 +38,11 @@ final class WebViewViewController: UIViewController {
         super.viewDidLoad()
         loadAuthView()
         setupNavigationDelegate()
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        delegate?.webViewViewControllerDidCancel(self)
     }
     
     // MARK: - Private Methods
@@ -61,6 +67,8 @@ final class WebViewViewController: UIViewController {
         let request = URLRequest(url: url)
         webView.load(request)
     }
+    
+    
     
 }
 
@@ -101,4 +109,14 @@ extension WebViewViewController: WKNavigationDelegate {
             return nil
         }
             }
+    
+}
+
+
+extension WebViewViewController: WebViewViewControllerProtocol {
+        
+    // MARK: - Delegate Properties
+    func didSetDelegate(_ delegate: WebViewViewControllerDelegate?) {
+        self.delegate = delegate
+    }
 }

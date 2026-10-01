@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import WebKit
 
 final class AuthViewController: UIViewController {
+    
+// MARK: - Properties
+    
+    private var webViewViewController: WebViewViewController?
     
     // MARK: - Private Properties
 
@@ -24,6 +29,20 @@ final class AuthViewController: UIViewController {
         configureBackButton()
     }
     
+    // MARK: - Override Methods
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard
+            segue.identifier == showWebViewSegueIdentifier,
+            let destination = segue.destination as? WebViewViewControllerProtocol
+        else {
+            assertionFailure("Ошибка перехода на страницу авторизации")
+            return
+        }
+        setYourselfAsDelegate(to: destination)
+    }
+    
+    
     // MARK: - Private Methods
 
     // Метод настраивает кнопку Назад на экране WebViewViewController
@@ -34,4 +53,30 @@ final class AuthViewController: UIViewController {
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: colorNavBackButton)
     }
     
+    // Метод назначения делегата
+    private func setYourselfAsDelegate(to destination: WebViewViewControllerProtocol?) {
+        guard let delegator = destination else {
+            return
+        }
+        delegator.didSetDelegate(self)
+    }
+
+}
+
+// MARK: - Extension AuthViewController: WebViewViewControllerDelegate
+
+extension AuthViewController: WebViewViewControllerDelegate {
+    
+    // MARK: - Methods
+
+    // метод сообщит, что WebViewViewController получил код
+    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+        
+    }
+
+    // Метод сообщит, что юзер отменил авторизацию, нажав кнопку назад
+    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
+        vc.dismiss(animated: true)
+    }
+        
 }
