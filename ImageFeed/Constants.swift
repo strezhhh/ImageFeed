@@ -14,4 +14,5 @@ enum Constants {
     static let redirectURI: String = "urn:ietf:wg:oauth:2.0:oob"
     static let accessScope: String = "public+read_user+write_likes"
     static let defaultBaseURLString: String = "https://api.unsplash.com"
+    static let code: String = "code"
 }
