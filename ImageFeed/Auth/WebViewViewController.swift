@@ -11,9 +11,9 @@ import WebKit
 final class WebViewViewController: UIViewController {
     
     // MARK: - IBOutlets
-
+    
     @IBOutlet weak var webView: WKWebView!
-
+    
     // MARK: - Private Properties
     
     enum WebViewConstants {
@@ -24,16 +24,23 @@ final class WebViewViewController: UIViewController {
         static let scope = "scope"
     }
     
+    // MARK: - Initialization
+    
+    private func setupNavigationDelegate() {
+        webView.navigationDelegate = self
+        
+    }
     
     // MARK: - Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadAuthView()
+        setupNavigationDelegate()
     }
     
     // MARK: - Private Methods
-
+    
     // Формирует URL в соответствии с документацией Unsplash
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
@@ -55,4 +62,43 @@ final class WebViewViewController: UIViewController {
         webView.load(request)
     }
     
+}
+
+// MARK: - Extension WebViewViewController: WKNavigationDelegate
+
+extension WebViewViewController: WKNavigationDelegate {
+    
+    // MARK: - Methods
+    
+    // Метод вызывается когда после действий пользователя WKWebView пытается загрузить новую страницу,
+    // например, пользователь успешно авторизовался
+    func webView(
+        _ webView: WKWebView,
+        decidePolicyFor navigationAction: WKNavigationAction,
+        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+    ) {
+        if let code = code(from: navigationAction) {
+            //TODO: process code
+            decisionHandler(.cancel)
+        } else {
+            decisionHandler(.allow)
+        }
+    }
+    
+    // MARK: - Private Methods
+    
+    // Метод возвращает код авторизации, если он получен
+    private func code(from navigationAction: WKNavigationAction) -> String? {
+        if
+            let url = navigationAction.request.url,
+            let urlComponents = URLComponents(string: url.absoluteString),
+            urlComponents.path == Constants.oauthAuthorizeNative,
+            let items = urlComponents.queryItems,
+            let codeItem = items.first(where: {$0.name == Constants.code} )
+        {
+            return codeItem.value
+        } else {
+            return nil
+        }
+            }
 }
