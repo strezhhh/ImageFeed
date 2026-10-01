@@ -13,6 +13,7 @@ final class WebViewViewController: UIViewController {
     // MARK: - IBOutlets
     
     @IBOutlet weak var webView: WKWebView!
+    @IBOutlet private var progressView: UIProgressView!
     
     // MARK: - Private Properties
     
