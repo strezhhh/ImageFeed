@@ -16,7 +16,7 @@ struct LabelFontStyle {
 
 
 // Кастомные шрифты
-struct Fonts {
+enum Fonts {
     static let nameFontSF23Regular = LabelFontStyle (
         font: .systemFont(ofSize: 23),
         color: .ypWhite,
