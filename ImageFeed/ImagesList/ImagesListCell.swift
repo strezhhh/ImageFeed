@@ -11,9 +11,9 @@ final class ImagesListCell: UITableViewCell {
     
     // MARK: - IBOutlets
     
-    @IBOutlet private var imageCell: UIImageView!
-    @IBOutlet private var likeButton: UIButton!
-    @IBOutlet private var dateLabel: UILabel!
+    @IBOutlet var imageCell: UIImageView!
+    @IBOutlet var likeButton: UIButton!
+    @IBOutlet var dateLabel: UILabel!
     
     // MARK: - Properties
     

@@ -25,6 +25,7 @@ final class WebViewViewController: UIViewController {
         static let scope = "scope"
     }
     
+    private let authViewControllerIdentifier = "AuthViewController"
     weak var delegate: WebViewViewControllerDelegate?
     
     // MARK: - Initialization
@@ -41,11 +42,18 @@ final class WebViewViewController: UIViewController {
         setupNavigationDelegate()
     }
     
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        delegate?.webViewViewControllerDidCancel(self)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addObserver()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        guard let delegate = delegate else { return }
+        delegate.webViewViewControllerDidCancel(self)
+        removeObserver()
+    }
+        
     // MARK: - Private Methods
     
     // Формирует URL в соответствии с документацией Unsplash
@@ -69,8 +77,40 @@ final class WebViewViewController: UIViewController {
         webView.load(request)
     }
     
+    // MARK: - KVO
     
+    // Метод подпишет webView на estimatedProgress
+    private func addObserver() {
+        webView.addObserver(
+            self,
+            forKeyPath: #keyPath(WKWebView.estimatedProgress),
+            options: .new,
+            context: nil)
+    }
     
+    // Обработчик обновлений
+    override func observeValue(
+        forKeyPath keyPath: String?,
+        of object: Any?,
+        change: [NSKeyValueChangeKey : Any]?,
+        context: UnsafeMutableRawPointer?
+    ) {
+        if keyPath == #keyPath(WKWebView.estimatedProgress) {
+            updateProgress()
+        } else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        }
+    }
+    
+    private func updateProgress() {
+        progressView.progress = Float(webView.estimatedProgress)
+        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
+    }
+    
+    // Метод удалит подписку webView на estimatedProgress
+    private func removeObserver() {
+        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
+    }
 }
 
 // MARK: - Extension WebViewViewController: WKNavigationDelegate
