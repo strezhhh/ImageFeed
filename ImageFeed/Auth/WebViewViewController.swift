@@ -15,15 +15,22 @@ final class WebViewViewController: UIViewController {
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var progressView: UIProgressView!
     
-    // MARK: - Private Properties
-    
+    // MARK: - Enumeration
+
     enum WebViewConstants {
         static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
+        static let postRequestOAuthTokenURLString = "https://unsplash.com/oauth/token"
         static let clientID = "client_id"
         static let redirectURI = "redirect_uri"
         static let responseType = "response_type"
         static let scope = "scope"
+        static let clientSecret = "client_secret"
+        static let grantType = "grant_type"
+        static let code = "code"
+        static let requestMethod = "POST"
     }
+    
+    // MARK: - Private Properties
     
     private let authViewControllerIdentifier = "AuthViewController"
     weak var delegate: WebViewViewControllerDelegate?
@@ -75,6 +82,27 @@ final class WebViewViewController: UIViewController {
         }
         let request = URLRequest(url: url)
         webView.load(request)
+    }
+    
+    // Метод создаст POST URLRequest 
+    private func makeRequestOAuthToken(code: String) -> URLRequest? {
+        guard var urlComponents = URLComponents(string: WebViewConstants.postRequestOAuthTokenURLString) else {
+            return nil
+        }
+        urlComponents.queryItems = [
+            URLQueryItem(name: WebViewConstants.clientID, value: Constants.accessKey),
+            URLQueryItem(name: WebViewConstants.clientSecret, value: Constants.secretKey),
+            URLQueryItem(name: WebViewConstants.redirectURI, value: Constants.redirectURI),
+            URLQueryItem(name: WebViewConstants.code, value: Constants.code),
+            URLQueryItem(name: WebViewConstants.grantType, value: Constants.grant_type)
+        ]
+        guard let urlOAuthToken = urlComponents.url else {
+            return nil
+        }
+        var request = URLRequest(url: urlOAuthToken)
+        request.httpMethod = WebViewConstants.requestMethod
+        return request
+        
     }
     
     // MARK: - KVO

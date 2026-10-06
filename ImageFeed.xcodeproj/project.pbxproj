@@ -59,8 +59,8 @@
 		A9B01511304CB08100764947 = {
 			isa = PBXGroup;
 			children = (
-				A9B0151C304CB08100764947 /* ImageFeed */,
 				A914ED1A306EC8D4003E4816 /* Frameworks */,
+				A9B0151C304CB08100764947 /* ImageFeed */,
 				A9B0151B304CB08100764947 /* Products */,
 			);
 			sourceTree = "<group>";
