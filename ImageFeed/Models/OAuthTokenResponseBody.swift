@@ -8,7 +8,7 @@
 import Foundation
 
 // Структура JSON с bearer токеном
-struct OAuthTokenResponseBody: Codable {
+struct OAuthTokenResponseBody: Decodable {
     let bearerToken: String
     let tokenType: String
     let scopeAccess: String

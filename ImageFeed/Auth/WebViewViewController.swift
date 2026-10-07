@@ -67,7 +67,7 @@ final class WebViewViewController: UIViewController {
         ]
         
         guard let url = urlComponents.url else {
-            print("url не сформирован")
+            print("error: url не сформирован")
             return
         }
         let request = URLRequest(url: url)
@@ -126,8 +126,8 @@ extension WebViewViewController: WKNavigationDelegate {
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
         if let code = code(from: navigationAction) {
-            OAuth2Service.shared.fetchOAuthToken(code: code)
-            //TODO: process code
+            // сообщаем делегату, что код для формирования POST запроса успешно получен
+            delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
         } else {
             decisionHandler(.allow)

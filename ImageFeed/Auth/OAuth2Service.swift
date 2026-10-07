@@ -30,7 +30,8 @@ final class OAuth2Service {
     // MARK: - Methods
     
     // Make a POST URLrequest to https://unsplash.com/oauth/token
-    func fetchOAuthToken(code: String) {
+    // а результаты передаст в 
+    func fetchOAuthToken(code: String, competition: @escaping (Result<String, Error>) -> Void) {
         guard let request = makeRequestOAuthToken(code: code) else {
             return
         }
@@ -41,17 +42,15 @@ final class OAuth2Service {
             switch result {
             case .success(let data):
                 do {
-//                    let oAuthTokenResponseBody = OAuthTokenResponseBody()
                     let response = try self.decoder.decode(OAuthTokenResponseBody.self, from: data)
-                    print(String(data: data, encoding: .utf8))
-                   // handler(.success(mostPopularMovies))
+                    competition(.success(response.bearerToken))
                 } catch {
-                    print(error)
-
-                    //handler(.failure(error))
+                    print("error: \(error)")
+                    competition(.failure(error))
                 }
             case .failure(let error):
-                print(error)
+                print("error: \(error)")
+                competition(.failure(error))
             }
         }
         

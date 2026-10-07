@@ -11,17 +11,15 @@ import WebKit
 final class AuthViewController: UIViewController {
     
     // MARK: - Private Properties
-
-    private var webViewViewController: WebViewViewController?
-
+    
     // переменная хранит название ShowWebView
     private let showWebViewSegueIdentifier = "ShowWebView"
     
     private let nameNavBackButton = "nav_back_button"
     private let colorNavBackButton = "ypBlack"
-
+    
     // MARK: - Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBackButton()
@@ -33,7 +31,7 @@ final class AuthViewController: UIViewController {
         guard
             segue.identifier == showWebViewSegueIdentifier,
             let destination = segue.destination as? WebViewViewControllerProtocol
-        else {
+                else {
             assertionFailure("Ошибка перехода на страницу авторизации")
             return
         }
@@ -42,7 +40,7 @@ final class AuthViewController: UIViewController {
     
     
     // MARK: - Private Methods
-
+    
     // Метод настраивает кнопку Назад на экране WebViewViewController
     private func configureBackButton() {
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: nameNavBackButton)
@@ -58,7 +56,7 @@ final class AuthViewController: UIViewController {
         }
         delegator.didSetDelegate(self)
     }
-
+    
 }
 
 // MARK: - Extension AuthViewController: WebViewViewControllerDelegate
@@ -66,15 +64,25 @@ final class AuthViewController: UIViewController {
 extension AuthViewController: WebViewViewControllerDelegate {
     
     // MARK: - Methods
-
+    
     // метод сообщит, что WebViewViewController получил код
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        
+        OAuth2Service.shared.fetchOAuthToken(code: code) { result in
+            switch result {
+            case .success(let token):
+                OAuth2TokenStorage.shared.store(bearerToken: token)
+                vc.navigationController?.popViewController(animated: true)
+                print("popview завершён")
+            case .failure(let error):
+                print("error : \(error)")
+            }
+            
+        }
     }
-
+    
     // Метод сообщит, что юзер отменил авторизацию, нажав кнопку назад
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         vc.dismiss(animated: true)
     }
-        
+    
 }
