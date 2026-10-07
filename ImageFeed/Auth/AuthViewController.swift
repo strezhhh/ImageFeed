@@ -10,11 +10,9 @@ import WebKit
 
 final class AuthViewController: UIViewController {
     
-// MARK: - Properties
-    
-    private var webViewViewController: WebViewViewController?
-    
     // MARK: - Private Properties
+
+    private var webViewViewController: WebViewViewController?
 
     // переменная хранит название ShowWebView
     private let showWebViewSegueIdentifier = "ShowWebView"
