@@ -15,25 +15,15 @@ final class WebViewViewController: UIViewController {
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var progressView: UIProgressView!
     
-    // MARK: - Enumeration
+    // MARK: - Properties
+    
+    weak var delegate: WebViewViewControllerDelegate?
 
-    enum WebViewConstants {
-        static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
-        static let postRequestOAuthTokenURLString = "https://unsplash.com/oauth/token"
-        static let clientID = "client_id"
-        static let redirectURI = "redirect_uri"
-        static let responseType = "response_type"
-        static let scope = "scope"
-        static let clientSecret = "client_secret"
-        static let grantType = "grant_type"
-        static let code = "code"
-        static let requestMethod = "POST"
-    }
     
     // MARK: - Private Properties
     
     private let authViewControllerIdentifier = "AuthViewController"
-    weak var delegate: WebViewViewControllerDelegate?
+    private var oauth2Service: OAuth2Service?
     
     // MARK: - Initialization
     
@@ -63,17 +53,17 @@ final class WebViewViewController: UIViewController {
         
     // MARK: - Private Methods
     
-    // Формирует URL в соответствии с документацией Unsplash
+    // Direct the user to https://unsplash.com/oauth/authorize
     private func loadAuthView() {
-        guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
+        guard var urlComponents = URLComponents(string: ConstantsValue.unsplashAuthorizeURLString) else {
             return
         }
         
         urlComponents.queryItems = [
-            URLQueryItem(name: WebViewConstants.clientID, value: Constants.accessKey),
-            URLQueryItem(name: WebViewConstants.redirectURI, value: Constants.redirectURI),
-            URLQueryItem(name: WebViewConstants.responseType, value: Constants.code),
-            URLQueryItem(name: WebViewConstants.scope, value: Constants.accessScope)
+            URLQueryItem(name: ConstantsName.clientID, value: ConstantsValue.accessKey),
+            URLQueryItem(name: ConstantsName.redirectURI, value: ConstantsValue.redirectURI),
+            URLQueryItem(name: ConstantsName.responseType, value: ConstantsName.codeString),
+            URLQueryItem(name: ConstantsName.scope, value: ConstantsValue.accessScope)
         ]
         
         guard let url = urlComponents.url else {
@@ -84,26 +74,7 @@ final class WebViewViewController: UIViewController {
         webView.load(request)
     }
     
-    // Метод создаст POST URLRequest 
-    private func makeRequestOAuthToken(code: String) -> URLRequest? {
-        guard var urlComponents = URLComponents(string: WebViewConstants.postRequestOAuthTokenURLString) else {
-            return nil
-        }
-        urlComponents.queryItems = [
-            URLQueryItem(name: WebViewConstants.clientID, value: Constants.accessKey),
-            URLQueryItem(name: WebViewConstants.clientSecret, value: Constants.secretKey),
-            URLQueryItem(name: WebViewConstants.redirectURI, value: Constants.redirectURI),
-            URLQueryItem(name: WebViewConstants.code, value: Constants.code),
-            URLQueryItem(name: WebViewConstants.grantType, value: Constants.grant_type)
-        ]
-        guard let urlOAuthToken = urlComponents.url else {
-            return nil
-        }
-        var request = URLRequest(url: urlOAuthToken)
-        request.httpMethod = WebViewConstants.requestMethod
-        return request
-        
-    }
+
     
     // MARK: - KVO
     
@@ -155,6 +126,7 @@ extension WebViewViewController: WKNavigationDelegate {
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
         if let code = code(from: navigationAction) {
+            OAuth2Service.shared.fetchOAuthToken(code: code)
             //TODO: process code
             decisionHandler(.cancel)
         } else {
@@ -169,9 +141,9 @@ extension WebViewViewController: WKNavigationDelegate {
         if
             let url = navigationAction.request.url,
             let urlComponents = URLComponents(string: url.absoluteString),
-            urlComponents.path == Constants.oauthAuthorizeNative,
+            urlComponents.path == ConstantsValue.oauthAuthorizeNative,
             let items = urlComponents.queryItems,
-            let codeItem = items.first(where: {$0.name == Constants.code} )
+            let codeItem = items.first(where: {$0.name == ConstantsName.codeString} )
         {
             return codeItem.value
         } else {
