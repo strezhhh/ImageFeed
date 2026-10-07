@@ -13,7 +13,7 @@ final class AuthViewController: UIViewController {
     // MARK: - Private Properties
     
     // переменная хранит название ShowWebView
-    private let showWebViewSegueIdentifier = "ShowWebView"
+    let showWebViewSegueIdentifier = "ShowWebView"
     
     private let nameNavBackButton = "nav_back_button"
     private let colorNavBackButton = "ypBlack"
