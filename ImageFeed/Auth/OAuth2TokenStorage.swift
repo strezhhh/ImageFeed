@@ -35,6 +35,8 @@ final class OAuth2TokenStorage {
     
     func store(bearerToken: String) {
         token = bearerToken
+        guard let token else {return}
+        print(token)
     }
 
     // MARK: - Private Initialization

@@ -21,12 +21,5 @@ struct OAuthTokenResponseBody: Decodable {
         case createdAt = "created_at"
     }
     
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        bearerToken = try container.decode(String.self, forKey: .bearerToken)
-        tokenType = try container.decode(String.self, forKey: .tokenType)
-        scopeAccess = try container.decode(String.self, forKey: .scopeAccess)
-        createdAt = try container.decode(Int.self, forKey: .createdAt)
-    }
 }
 
