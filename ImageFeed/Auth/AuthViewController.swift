@@ -70,11 +70,13 @@ extension AuthViewController: WebViewViewControllerDelegate {
     
     // MARK: - Methods
     
-    // метод сообщит, что WebViewViewController получил код
+    // метод сообщит, что WebViewViewController получил код, необходимый для получения bearer token
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        vc.dismiss(animated: true)
-        OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
-            guard let self else { return }
+        
+        // Метод подготовит POST запрос на bearer token и в случае успеха токен будет записан в storage
+        // а управление будет передано SplashViewController
+        OAuth2Service.shared.fetchOAuthToken(code: code) { /*[weak self]*/ result in
+            //guard let self else { return }
             switch result {
             case .success(let token):
                 OAuth2TokenStorage.shared.store(bearerToken: token)
@@ -82,7 +84,6 @@ extension AuthViewController: WebViewViewControllerDelegate {
             case .failure(let error):
                 print("error : \(error)")
             }
-            
         }
     }
     
