@@ -10,10 +10,15 @@ import WebKit
 
 final class AuthViewController: UIViewController {
     
+    // MARK: - Properties
+    
+    var delegate: AuthViewControllerDelegate?
+
+    
     // MARK: - Private Properties
     
     // переменная хранит название ShowWebView
-    let showWebViewSegueIdentifier = "ShowWebView"
+    private let showWebViewSegueIdentifier = "ShowWebView"
     
     private let nameNavBackButton = "nav_back_button"
     private let colorNavBackButton = "ypBlack"
@@ -67,12 +72,13 @@ extension AuthViewController: WebViewViewControllerDelegate {
     
     // метод сообщит, что WebViewViewController получил код
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        OAuth2Service.shared.fetchOAuthToken(code: code) { result in
+        vc.dismiss(animated: true)
+        OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let token):
                 OAuth2TokenStorage.shared.store(bearerToken: token)
-                vc.navigationController?.popViewController(animated: true)
-                print("popview завершён")
+                self.delegate?.didAuthenticate(self)
             case .failure(let error):
                 print("error : \(error)")
             }
@@ -82,7 +88,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
     
     // Метод сообщит, что юзер отменил авторизацию, нажав кнопку назад
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
-        vc.dismiss(animated: true)
+        dismiss(animated: true)
     }
     
 }

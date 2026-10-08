@@ -30,7 +30,6 @@ final class OAuth2Service {
     // MARK: - Methods
     
     // Make a POST URLrequest to https://unsplash.com/oauth/token
-    // а результаты передаст в 
     func fetchOAuthToken(code: String, competition: @escaping (Result<String, Error>) -> Void) {
         guard let request = makeRequestOAuthToken(code: code) else {
             return
