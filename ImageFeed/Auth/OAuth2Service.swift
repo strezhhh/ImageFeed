@@ -16,10 +16,15 @@ final class OAuth2Service {
     // MARK: - Private Properties
 
     private let decoder = JSONDecoder()
+    private let session: URLSession
 
     
     // MARK: - Initialization
-    private init() {}
+    private init() {
+        let conf = URLSessionConfiguration.default
+        conf.timeoutIntervalForRequest = 10
+        self.session = URLSession(configuration: conf)
+    }
 
     
     // MARK: - Private Enumeration
@@ -35,9 +40,7 @@ final class OAuth2Service {
             return
         }
         
-        let conf = URLSessionConfiguration.default
-        conf.timeoutIntervalForRequest = 10
-        let task = URLSession(configuration: conf).data(for: request) { result in
+        let task = session.data(for: request) { result in
             switch result {
             case .success(let data):
                 do {
