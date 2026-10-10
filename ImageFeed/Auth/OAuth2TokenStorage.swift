@@ -20,7 +20,7 @@ final class OAuth2TokenStorage {
     // MARK: - Private Properties
     
     private let storage: UserDefaults = .standard
-
+    
     var token: String? {
         get {
             (storage.string(forKey: "\(Keys.bearerToken.rawValue)")) ?? nil
@@ -32,11 +32,11 @@ final class OAuth2TokenStorage {
     
     
     // MARK: - Methods
-        
+    
     func store(bearerToken: String) {
         token = bearerToken
     }
-
+    
     // MARK: - Private Initialization
     
     private init() {}

@@ -13,7 +13,7 @@ final class AuthViewController: UIViewController {
     // MARK: - Properties
     
     weak var delegate: AuthViewControllerDelegate?
-
+    
     
     // MARK: - Private Properties
     
@@ -35,7 +35,7 @@ final class AuthViewController: UIViewController {
     
     
     // MARK: - Private Methods
-        
+    
     // Метод назначения делегата
     private func setYourselfAsDelegate(to destination: WebViewViewControllerProtocol?) {
         guard let delegator = destination else {
@@ -49,25 +49,25 @@ final class AuthViewController: UIViewController {
 // MARK: - Extension AuthViewController: WebViewViewControllerDelegate
 
 extension AuthViewController: WebViewViewControllerDelegate {
-
+    
     
     // метод сообщит, что WebViewViewController получил код, необходимый для получения bearer token
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         navigationController?.popViewController(animated: true)
-
+        
         // Метод подготовит POST запрос на bearer token и в случае успеха токен будет записан в storage
         // а управление будет передано SplashViewController
         OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
             switch result {
             case .success(let token):
                 OAuth2TokenStorage.shared.store(bearerToken: token)
-                print("strezh - AuthViewController.webViewViewController: bearer token авторизации успешно создан и сохранен")
+                print("AuthViewController.webViewViewController: bearer token авторизации успешно создан и сохранен")
                 guard let self else {
                     return
                 }
                 self.delegate?.didAuthenticate(self)
             case .failure(let error):
-                print("strezh - AuthViewController.webViewViewController: ошибка создания bearer token: \(error.localizedDescription)")
+                print("AuthViewController.webViewViewController: ошибка создания bearer token: \(error.localizedDescription)")
             }
         }
     }

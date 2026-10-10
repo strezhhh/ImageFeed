@@ -21,8 +21,8 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if storage.token != nil {
-           switchToTabBarController()
-        
+            switchToTabBarController()
+            
         } else {
             performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
         }
@@ -32,13 +32,13 @@ final class SplashViewController: UIViewController {
     
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {
-                assertionFailure("Invalid window configuration")
-            print("strezh - SplashViewController.switchToTabBarController: Invalid window configuration")
-                return
-            }
+            assertionFailure("Invalid window configuration")
+            print("SplashViewController.switchToTabBarController: Invalid window configuration")
+            return
+        }
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-                .instantiateViewController(withIdentifier: tabBarViewController)
-            window.rootViewController = tabBarController
+            .instantiateViewController(withIdentifier: tabBarViewController)
+        window.rootViewController = tabBarController
     }
     
 }
@@ -57,13 +57,13 @@ extension SplashViewController: AuthViewControllerDelegate {
 
 extension SplashViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
+        
         if segue.identifier == showAuthenticationScreenSegueIdentifier {
-
+            
             guard
                 let navigationController = segue.destination as? UINavigationController,
                 let viewController = navigationController.viewControllers.first as? AuthViewController
-            else {
+                    else {
                 assertionFailure("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)")
                 return
             }

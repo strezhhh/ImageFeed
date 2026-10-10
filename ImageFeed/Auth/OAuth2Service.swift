@@ -12,9 +12,9 @@ final class OAuth2Service {
     // MARK: - Properties
     
     static let shared = OAuth2Service()
-        
+    
     // MARK: - Private Properties
-
+    
     private let decoder = JSONDecoder()
     private var session: URLSession
     
@@ -30,7 +30,7 @@ final class OAuth2Service {
     // Make a POST URLrequest to https://unsplash.com/oauth/token
     func fetchOAuthToken(code: String, competition: @escaping (Result<String, Error>) -> Void) {
         guard let request = makeRequestOAuthToken(code: code) else {
-            print("strezh - OAuth2Service.fetchOAuthToken: ошибка создания экземпляра реквеста из метода makeRequestOAuthToken(...)")
+            print("OAuth2Service.fetchOAuthToken: ошибка создания экземпляра реквеста из метода makeRequestOAuthToken(...)")
             return
         }
         
@@ -41,22 +41,21 @@ final class OAuth2Service {
                     let response = try self.decoder.decode(OAuthTokenResponseBody.self, from: data)
                     competition(.success(response.bearerToken))
                 } catch {
-                    print("strezh - OAuth2Service.fetchOAuthToken: ошибка декодирования JSON c bearer token: \(error.localizedDescription). Передана в замыкание")
+                    print("OAuth2Service.fetchOAuthToken: ошибка декодирования JSON c bearer token: \(error.localizedDescription). Передана в замыкание")
                     competition(.failure(error))
                 }
             case .failure(let error):
-                if let networkError = error as? NetworkError,
-                   case .httpStatusCode(let statusCode) = networkError {
-                    print("strezh - OAuth2Service.fetchOAuthToken: HTTP ошибка: \(statusCode)")
-
-                    switch statusCode {
-                    case 300..<600:
-                        print("strezh - OAuth2Service.fetchOAuthToken: Cервис Unsplash вернул код ошибки HTTP: \(statusCode)")
-                    default:
-                        break
-                    }
+                switch error {
+                case NetworkError.httpStatusCode(let statusCode):
+                    print("OAuth2Service: HTTP ошибка: \(statusCode)")
+                case NetworkError.urlRequestError(let requestError):
+                    print("OAuth2Service: HTTP ошибка: \(requestError)")
+                case NetworkError.urlSessionError:
+                    print("OAuth2Service: запрос не удалось выполнить")
+                default:
+                    print("OAuth2Service: HTTP ошибка")
                 }
-                print("strezh - OAuth2Service.fetchOAuthToken: Cервис Unsplash вернул ошибку: \(error): \(error.localizedDescription)")
+                
                 competition(.failure(error))
             }
         }
@@ -69,7 +68,7 @@ final class OAuth2Service {
     // prepare a POST URLrequest to https://unsplash.com/oauth/token
     private func makeRequestOAuthToken(code: String) -> URLRequest? {
         guard var urlComponents = URLComponents(string: ConstantsValue.postRequestOAuthTokenURLString) else {
-            print("strezh - OAuth2Service.makeRequestOAuthToken: ошибка создания URLComponents из строки:  \(ConstantsValue.postRequestOAuthTokenURLString)")
+            print("OAuth2Service.makeRequestOAuthToken: ошибка создания URLComponents из строки:  \(ConstantsValue.postRequestOAuthTokenURLString)")
             return nil
         }
         urlComponents.queryItems = [
@@ -80,14 +79,12 @@ final class OAuth2Service {
             URLQueryItem(name: ConstantsName.grantType, value: ConstantsValue.grantType)
         ]
         guard let urlOAuthToken = urlComponents.url else {
-            print("strezh - OAuth2Service.makeRequestOAuthToken: ошибка создания URL из URLComponents")
+            print("OAuth2Service.makeRequestOAuthToken: ошибка создания URL из URLComponents")
             return nil
         }
         var request = URLRequest(url: urlOAuthToken)
         request.httpMethod = ConstantsValue.requestMethod
         return request
     }
-
-
     
 }

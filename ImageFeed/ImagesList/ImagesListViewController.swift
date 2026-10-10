@@ -50,7 +50,7 @@ final class ImagesListViewController: UIViewController {
             guard
                 let viewController = segue.destination as? SingleImageViewController,
                 let indexPath = sender as? IndexPath
-            else {
+                    else {
                 assertionFailure("str.ImagesListViewController.prepare: Ошибка перехода по segue: showSingleImageSegueIdentifier")
                 return
             }

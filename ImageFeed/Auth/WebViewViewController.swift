@@ -18,7 +18,7 @@ final class WebViewViewController: UIViewController {
     // MARK: - Properties
     
     var delegate: WebViewViewControllerDelegate?
-
+    
     
     // MARK: - Private Properties
     
@@ -51,13 +51,13 @@ final class WebViewViewController: UIViewController {
         super.viewWillDisappear(animated)
         removeObserver()
     }
-        
+    
     // MARK: - Private Methods
     
     // Direct the user to https://unsplash.com/oauth/authorize
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: ConstantsValue.unsplashAuthorizeURLString) else {
-            print("strezh - WebViewViewController.loadAuthView: ошибка создания URLComponents из строки: \(ConstantsValue.unsplashAuthorizeURLString)")
+            print("WebViewViewController.loadAuthView: ошибка создания URLComponents из строки: \(ConstantsValue.unsplashAuthorizeURLString)")
             return
         }
         
@@ -69,14 +69,14 @@ final class WebViewViewController: UIViewController {
         ]
         
         guard let url = urlComponents.url else {
-            print("strezh - WebViewViewController.loadAuthView: ошибка создания url из urlComponents")
+            print("WebViewViewController.loadAuthView: ошибка создания url из urlComponents")
             return
         }
         let request = URLRequest(url: url)
         webView.load(request)
     }
     
-
+    
     
     // MARK: - KVO
     
@@ -125,9 +125,9 @@ final class WebViewViewController: UIViewController {
         backButton.tintColor = UIColor(named: colorNavBackButton)
         navigationItem.leftBarButtonItem = backButton
     }
-        
+    
     @objc private func backButtonTapped() {
-            delegate?.webViewViewControllerDidCancel(self)
+        delegate?.webViewViewControllerDidCancel(self)
     }
     
 }
@@ -169,14 +169,14 @@ extension WebViewViewController: WKNavigationDelegate {
         } else {
             return nil
         }
-            }
+    }
     
 }
 
 // MARK: - Extension WebViewViewController: WebViewViewControllerProtocol
 
 extension WebViewViewController: WebViewViewControllerProtocol {
-        
+    
     // MARK: - Delegate Properties
     func didSetDelegate(_ delegate: WebViewViewControllerDelegate?) {
         self.delegate = delegate
