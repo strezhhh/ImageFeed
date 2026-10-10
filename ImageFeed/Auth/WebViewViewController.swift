@@ -56,6 +56,7 @@ final class WebViewViewController: UIViewController {
     // Direct the user to https://unsplash.com/oauth/authorize
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: ConstantsValue.unsplashAuthorizeURLString) else {
+            print("str.WebViewViewController.loadAuthView: ошибка создания URLComponents из строки: \(ConstantsValue.unsplashAuthorizeURLString)")
             return
         }
         
@@ -67,7 +68,7 @@ final class WebViewViewController: UIViewController {
         ]
         
         guard let url = urlComponents.url else {
-            print("error: url не сформирован")
+            print("str.WebViewViewController.loadAuthView: ошибка создания url из urlComponents")
             return
         }
         let request = URLRequest(url: url)
@@ -110,6 +111,8 @@ final class WebViewViewController: UIViewController {
     private func removeObserver() {
         webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
     }
+    
+    
 }
 
 // MARK: - Extension WebViewViewController: WKNavigationDelegate

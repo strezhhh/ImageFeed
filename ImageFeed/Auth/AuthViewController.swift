@@ -19,7 +19,6 @@ final class AuthViewController: UIViewController {
     
     // переменная хранит название ShowWebView
     private let showWebViewSegueIdentifier = "ShowWebView"
-    
     private let nameNavBackButton = "nav_back_button"
     private let colorNavBackButton = "ypBlack"
     
@@ -37,7 +36,7 @@ final class AuthViewController: UIViewController {
             segue.identifier == showWebViewSegueIdentifier,
             let destination = segue.destination as? WebViewViewControllerProtocol
                 else {
-            assertionFailure("Ошибка перехода на страницу авторизации")
+            assertionFailure("AuthViewController.prepare: Ошибка перехода по seque: showWebViewSegueIdentifier")
             return
         }
         setYourselfAsDelegate(to: destination)
@@ -72,24 +71,27 @@ extension AuthViewController: WebViewViewControllerDelegate {
     
     // метод сообщит, что WebViewViewController получил код, необходимый для получения bearer token
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        
+        vc.dismiss(animated: true)
         // Метод подготовит POST запрос на bearer token и в случае успеха токен будет записан в storage
         // а управление будет передано SplashViewController
-        OAuth2Service.shared.fetchOAuthToken(code: code) { /*[weak self]*/ result in
-            //guard let self else { return }
+        OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let token):
                 OAuth2TokenStorage.shared.store(bearerToken: token)
+                print("str.AuthViewController.webViewViewController: bearer token авторизации успешно создан и сохранен")
                 self.delegate?.didAuthenticate(self)
             case .failure(let error):
-                print("error : \(error)")
+                print("str.AuthViewController.webViewViewController: ошибка создания bearer token: \(error.localizedDescription)")
             }
         }
     }
     
     // Метод сообщит, что юзер отменил авторизацию, нажав кнопку назад
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
-        dismiss(animated: true)
+        vc.dismiss(animated: true)
+        print("str.AuthViewController.webViewViewControllerDidCancel: пользователь отменил аутентификацию")
+
     }
     
 }
