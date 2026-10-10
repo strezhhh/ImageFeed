@@ -74,7 +74,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
     
     // Метод сообщит, что юзер отменил авторизацию, нажав кнопку назад
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
-        vc.dismiss(animated: true)
+        navigationController?.popViewController(animated: true)
     }
     
 }

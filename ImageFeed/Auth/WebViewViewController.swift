@@ -127,7 +127,6 @@ final class WebViewViewController: UIViewController {
     }
         
     @objc private func backButtonTapped() {
-            navigationController?.popViewController(animated: true)
             delegate?.webViewViewControllerDidCancel(self)
     }
     
