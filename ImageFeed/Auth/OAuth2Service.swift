@@ -41,8 +41,8 @@ final class OAuth2Service {
                     let response = try self.decoder.decode(OAuthTokenResponseBody.self, from: data)
                     competition(.success(response.bearerToken))
                 } catch {
-                    print("OAuth2Service.fetchOAuthToken: ошибка декодирования JSON c bearer token: \(error.localizedDescription). Передана в замыкание")
-                    competition(.failure(error))
+                    print("OAuth2Service: ошибка декодирования JSON c bearer token: \(error.localizedDescription)")
+                    competition(.failure(NetworkError.decodingError(error)))
                 }
             case .failure(let error):
                 switch error {
