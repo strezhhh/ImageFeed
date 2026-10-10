@@ -17,13 +17,15 @@ final class WebViewViewController: UIViewController {
     
     // MARK: - Properties
     
-    weak var delegate: WebViewViewControllerDelegate?
+    var delegate: WebViewViewControllerDelegate?
 
     
     // MARK: - Private Properties
     
     private let authViewControllerIdentifier = "AuthViewController"
     private var oauth2Service: OAuth2Service?
+    private let nameNavBackButton = "nav_back_button"
+    private let colorNavBackButton = "ypBlack"
     
     // MARK: - Initialization
     
@@ -37,6 +39,7 @@ final class WebViewViewController: UIViewController {
         super.viewDidLoad()
         loadAuthView()
         setupNavigationDelegate()
+        configureBackButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,8 +49,6 @@ final class WebViewViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        guard let delegate = delegate else { return }
-        delegate.webViewViewControllerDidCancel(self)
         removeObserver()
     }
         
@@ -56,7 +57,7 @@ final class WebViewViewController: UIViewController {
     // Direct the user to https://unsplash.com/oauth/authorize
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: ConstantsValue.unsplashAuthorizeURLString) else {
-            print("str.WebViewViewController.loadAuthView: ошибка создания URLComponents из строки: \(ConstantsValue.unsplashAuthorizeURLString)")
+            print("strezh - WebViewViewController.loadAuthView: ошибка создания URLComponents из строки: \(ConstantsValue.unsplashAuthorizeURLString)")
             return
         }
         
@@ -68,7 +69,7 @@ final class WebViewViewController: UIViewController {
         ]
         
         guard let url = urlComponents.url else {
-            print("str.WebViewViewController.loadAuthView: ошибка создания url из urlComponents")
+            print("strezh - WebViewViewController.loadAuthView: ошибка создания url из urlComponents")
             return
         }
         let request = URLRequest(url: url)
@@ -112,6 +113,23 @@ final class WebViewViewController: UIViewController {
         webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
     }
     
+    // Метод кастомизации кнопки UIBarButtonItem
+    private func configureBackButton() {
+        let backButton = UIBarButtonItem(
+            image: UIImage(named: nameNavBackButton),
+            style: .plain,
+            target: self,
+            action: #selector(backButtonTapped)
+        )
+        
+        backButton.tintColor = UIColor(named: colorNavBackButton)
+        navigationItem.leftBarButtonItem = backButton
+    }
+        
+    @objc private func backButtonTapped() {
+            navigationController?.popViewController(animated: true)
+            delegate?.webViewViewControllerDidCancel(self)
+    }
     
 }
 

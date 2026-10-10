@@ -14,7 +14,7 @@ final class OAuth2TokenStorage {
     // MARK: - Private enumeration
     
     private enum Keys: String {
-        case bearerToken          // Для записи bearer токена
+        case bearerToken
     }
     
     // MARK: - Private Properties
@@ -32,7 +32,7 @@ final class OAuth2TokenStorage {
     
     
     // MARK: - Methods
-    
+        
     func store(bearerToken: String) {
         token = bearerToken
     }
