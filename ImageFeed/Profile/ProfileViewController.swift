@@ -141,7 +141,7 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
-    // Метод выхода из провиля пользователя
+    // Метод выхода из профиля пользователя
     @objc
     private func didTapButton() {
         tabBarController?.selectedIndex = 0
