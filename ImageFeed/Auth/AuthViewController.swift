@@ -7,6 +7,7 @@
 
 import UIKit
 import WebKit
+import ProgressHUD
 
 final class AuthViewController: UIViewController {
     
@@ -54,10 +55,11 @@ extension AuthViewController: WebViewViewControllerDelegate {
     // метод сообщит, что WebViewViewController получил код, необходимый для получения bearer token
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         navigationController?.popViewController(animated: true)
-        
+        ProgressHUD.animate()
         // Метод подготовит POST запрос на bearer token и в случае успеха токен будет записан в storage
         // а управление будет передано SplashViewController
         OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
+            ProgressHUD.dismiss()
             switch result {
             case .success(let token):
                 OAuth2TokenStorage.shared.store(bearerToken: token)

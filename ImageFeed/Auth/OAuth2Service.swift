@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum AuthServiceError: Error {
+    case invalidRequest
+}
+
 final class OAuth2Service {
     
     // MARK: - Properties
@@ -17,6 +21,8 @@ final class OAuth2Service {
     
     private let decoder = JSONDecoder()
     private var session: URLSession
+    private var task: URLSessionTask?
+    private var lastCode: String?
     
     // MARK: - Initialization
     private init() {
@@ -29,8 +35,24 @@ final class OAuth2Service {
     
     // Make a POST URLrequest to https://unsplash.com/oauth/token
     func fetchOAuthToken(code: String, competition: @escaping (Result<String, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        if task != nil {
+            if lastCode != code {
+                task?.cancel()
+            } else {
+                competition(.failure(AuthServiceError.invalidRequest))
+                return
+            }
+        } else {
+            if lastCode == code {
+                competition(.failure(AuthServiceError.invalidRequest))
+                return
+            }
+        }
+        lastCode = code
         guard let request = makeRequestOAuthToken(code: code) else {
             print("OAuth2Service.fetchOAuthToken: ошибка создания экземпляра реквеста из метода makeRequestOAuthToken(...)")
+            competition(.failure(AuthServiceError.invalidRequest))
             return
         }
         
@@ -55,11 +77,12 @@ final class OAuth2Service {
                 default:
                     print("OAuth2Service: HTTP ошибка")
                 }
-                
                 competition(.failure(error))
             }
+        self.task = nil
+        self.lastCode = nil
         }
-        
+        self.task = task
         task.resume()
     }
     
@@ -67,8 +90,11 @@ final class OAuth2Service {
     
     // prepare a POST URLrequest to https://unsplash.com/oauth/token
     private func makeRequestOAuthToken(code: String) -> URLRequest? {
-        guard var urlComponents = URLComponents(string: ConstantsValue.postRequestOAuthTokenURLString) else {
+        guard
+            var urlComponents = URLComponents(string: ConstantsValue.postRequestOAuthTokenURLString)
+        else {
             print("OAuth2Service.makeRequestOAuthToken: ошибка создания URLComponents из строки:  \(ConstantsValue.postRequestOAuthTokenURLString)")
+            assertionFailure("OAuth2Service.makeRequestOAuthToken: ошибка создания URLComponents из строки:  \(ConstantsValue.postRequestOAuthTokenURLString)")
             return nil
         }
         urlComponents.queryItems = [
@@ -78,12 +104,14 @@ final class OAuth2Service {
             URLQueryItem(name: ConstantsName.codeString, value: code),
             URLQueryItem(name: ConstantsName.grantType, value: ConstantsValue.grantType)
         ]
-        guard let urlOAuthToken = urlComponents.url else {
+        guard
+            let urlOAuthToken = urlComponents.url
+        else {
             print("OAuth2Service.makeRequestOAuthToken: ошибка создания URL из URLComponents")
             return nil
         }
         var request = URLRequest(url: urlOAuthToken)
-        request.httpMethod = ConstantsValue.requestMethod
+        request.httpMethod = ConstantsValue.requestMethodPost
         return request
     }
     

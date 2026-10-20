@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A90DBCA4308396E10013091E /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = A90DBCA3308396E10013091E /* ProgressHUD */; };
 		A914ED1C306EC8D4003E4816 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A914ED1B306EC8D4003E4816 /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +43,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A914ED1C306EC8D4003E4816 /* WebKit.framework in Frameworks */,
+				A90DBCA4308396E10013091E /* ProgressHUD in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +95,7 @@
 			);
 			name = ImageFeed;
 			packageProductDependencies = (
+				A90DBCA3308396E10013091E /* ProgressHUD */,
 			);
 			productName = ImageFeed;
 			productReference = A9B0151A304CB08100764947 /* ImageFeed.app */;
@@ -122,6 +125,9 @@
 			);
 			mainGroup = A9B01511304CB08100764947;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A90DBCA2308396E10013091E /* XCRemoteSwiftPackageReference "ProgressHUD" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A9B0151B304CB08100764947 /* Products */;
 			projectDirPath = "";
@@ -368,6 +374,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A90DBCA2308396E10013091E /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/relatedcode/ProgressHUD.git";
+			requirement = {
+				kind = exactVersion;
+				version = 15.0.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A90DBCA3308396E10013091E /* ProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A90DBCA2308396E10013091E /* XCRemoteSwiftPackageReference "ProgressHUD" */;
+			productName = ProgressHUD;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A9B01512304CB08100764947 /* Project object */;
 }
