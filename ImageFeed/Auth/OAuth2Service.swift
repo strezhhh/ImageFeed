@@ -36,19 +36,11 @@ final class OAuth2Service {
     // Make a POST URLrequest to https://unsplash.com/oauth/token
     func fetchOAuthToken(code: String, competition: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
-        if task != nil {
-            if lastCode != code {
-                task?.cancel()
-            } else {
-                competition(.failure(AuthServiceError.invalidRequest))
-                return
-            }
-        } else {
-            if lastCode == code {
-                competition(.failure(AuthServiceError.invalidRequest))
-                return
-            }
+        guard lastCode != code else {
+            competition(.failure(AuthServiceError.invalidRequest))
+            return
         }
+        task?.cancel()
         lastCode = code
         guard let request = makeRequestOAuthToken(code: code) else {
             print("OAuth2Service.fetchOAuthToken: ошибка создания экземпляра реквеста из метода makeRequestOAuthToken(...)")
@@ -79,8 +71,10 @@ final class OAuth2Service {
                 }
                 competition(.failure(error))
             }
-        self.task = nil
-        self.lastCode = nil
+            DispatchQueue.main.async {
+                self.task = nil
+                self.lastCode = nil
+            }
         }
         self.task = task
         task.resume()
