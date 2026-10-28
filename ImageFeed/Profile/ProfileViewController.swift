@@ -13,9 +13,9 @@ final class ProfileViewController: UIViewController {
     
     private let avatarImageIdentifier = "UserPhoto"
     private let avatarDefaultImageIdentifier = "person.crop.circle.fill"
-    private var nameIdentifier = "Екатерина Новикова"
-    private var usernameIdentifier = "@ekaterina_nov"
-    private var statusIdentifier: String?
+    //private var nameIdentifier = "Екатерина Новикова"
+    //private var usernameIdentifier = "@ekaterina_nov"
+    //private var statusIdentifier: String?
     private let exitIconIdentifier = "iconExit"
     
     
@@ -24,20 +24,38 @@ final class ProfileViewController: UIViewController {
     private var nameLabel: UILabel?
     private var exitButton: UIButton?
     private var usernameLabel: UILabel?
-    private var statusLabel: UILabel?
+    private var bioLabel: UILabel?
+    
+    private let profileService = ProfileService()
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupProfileAvatar()
-        setupNameLabel()
         setupExitButton()
-        setupUsernameLabel()
-        setupStatusLabel()
+        guard let token = OAuth2TokenStorage.shared.token else {
+            print("ProfileViewController.viewDidLoad: bearer token отсутствует!")
+            return
+        }
+        profileService.fetchProfile(token) { [weak self] result in
+            switch result {
+            case .success(let profile):
+                self?.setupProfileDetails(with: profile)
+            case .failure(let error):
+                print("ProfileViewController.ProfileService.fetchProfile: во время запроса информации профиля получена ошибка: \(error)")
+            }
+        }
     }
     
     // MARK: - Private Methods
+    
+    private func setupProfileDetails(with profile: Profile) {
+        setupNameLabel(profile.name)
+        setupUsernameLabel(profile.loginName)
+        setupBioLabel(profile.bio ?? "")
+    }
+    
     
     // Метод установит аватарку
     private func setupProfileAvatar() {
@@ -55,14 +73,14 @@ final class ProfileViewController: UIViewController {
     }
     
     // Метод установит Имя пользователя
-    private func setupNameLabel() {
+    private func setupNameLabel(_ name: String) {
         nameLabel = UILabel()
         guard let nameLabel else { return }
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
         let style = Fonts.nameFontSF23Regular
         nameLabel.attributedText = NSAttributedString(
-            string: nameIdentifier,
+            string: name,
             attributes: [
                 .font: style.font,
                 .foregroundColor: style.color,
@@ -95,14 +113,14 @@ final class ProfileViewController: UIViewController {
     }
     
     // Метод установит лейбл юзернейм
-    private func setupUsernameLabel() {
+    private func setupUsernameLabel(_ username: String) {
         usernameLabel = UILabel()
         guard let usernameLabel else { return }
         usernameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(usernameLabel)
         let style = Fonts.usernameFontSF13RegularYPWhite50
         usernameLabel.attributedText = NSAttributedString(
-            string: usernameIdentifier,
+            string: username,
             attributes: [
                 .font: style.font,
                 .foregroundColor: style.color,
@@ -117,17 +135,14 @@ final class ProfileViewController: UIViewController {
     }
     
     // Метод установит лейбл статуса
-    private func setupStatusLabel() {
-        // пока принудительно установим статус, но его может и не быть
-        statusIdentifier = "Hello, world!"
-        guard let statusIdentifier else { return }
-        statusLabel = UILabel()
-        guard let statusLabel else { return }
-        statusLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(statusLabel)
-        let style = Fonts.statusFontSF13RegularYPWhite
-        statusLabel.attributedText = NSAttributedString(
-            string: statusIdentifier,
+    private func setupBioLabel(_ bio: String) {
+        bioLabel = UILabel()
+        guard let bioLabel else { return }
+        bioLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bioLabel)
+        let style = Fonts.bioFontSF13RegularYPWhite
+        bioLabel.attributedText = NSAttributedString(
+            string: bio,
             attributes: [
                 .font: style.font,
                 .foregroundColor: style.color,
@@ -136,8 +151,8 @@ final class ProfileViewController: UIViewController {
         )
         guard let usernameLabel else { return }
         NSLayoutConstraint.activate([
-            statusLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
-            statusLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 8)
+            bioLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            bioLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 8)
         ])
     }
     
