@@ -26,7 +26,6 @@ final class ProfileViewController: UIViewController {
     private var usernameLabel: UILabel?
     private var bioLabel: UILabel?
     
-    private let profileService = ProfileService()
     
     // MARK: - Lifecycle
     
@@ -34,23 +33,15 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setupProfileAvatar()
         setupExitButton()
-        guard let token = OAuth2TokenStorage.shared.token else {
-            print("ProfileViewController.viewDidLoad: bearer token отсутствует!")
-            return
-        }
-        profileService.fetchProfile(token) { [weak self] result in
-            switch result {
-            case .success(let profile):
-                self?.setupProfileDetails(with: profile)
-            case .failure(let error):
-                print("ProfileViewController.ProfileService.fetchProfile: во время запроса информации профиля получена ошибка: \(error)")
-            }
-        }
+        setupProfileDetails()
     }
     
     // MARK: - Private Methods
     
-    private func setupProfileDetails(with profile: Profile) {
+    private func setupProfileDetails() {
+        guard let profile = ProfileService.shared.profile else {
+            return
+        }
         setupNameLabel(profile.name)
         setupUsernameLabel(profile.loginName)
         setupBioLabel(profile.bio ?? "")

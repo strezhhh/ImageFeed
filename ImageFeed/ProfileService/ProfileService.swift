@@ -29,15 +29,20 @@ struct Profile {
 
 final class ProfileService {
     
+    // MARK: - Shared Properties
+    
+    static let shared = ProfileService()
+    
     // MARK: - Private Properties
     
     private var session: URLSession
     private var task: URLSessionTask?
     private let decoder = JSONDecoder()
+    private(set) var profile: Profile?
     
     // MARK: - Initialization
     
-    init () {
+    private init () {
         let conf = URLSessionConfiguration.default
         conf.timeoutIntervalForRequest = 10
         self.session = URLSession(configuration: conf)
@@ -63,11 +68,12 @@ final class ProfileService {
                 do {
                     let profileResult = try self?.decoder.decode(ProfileResult.self, from: data)
                     let profile = Profile (
-                        username: profileResult?.username ?? "username отсутствует",
+                        username: profileResult?.username ?? "",
                         name: "\(profileResult?.firstName ?? "") \(profileResult?.lastName ?? "")",
                         loginName: "@\(profileResult?.username ?? "")",
                         bio: profileResult?.bio
                     )
+                    ProfileService.shared.profile = profile
                     completion(.success(profile))
                 } catch {
                     print("ProfileService.fetchProfile: ошибка декодирования JSON: \(error.localizedDescription)")

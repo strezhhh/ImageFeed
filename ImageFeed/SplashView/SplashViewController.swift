@@ -15,6 +15,7 @@ final class SplashViewController: UIViewController {
     private let showAuthenticationScreenSegueIdentifier = "showAuthenticationScreenSegueIdentifier"
     private let tabBarViewController = "TabBarViewController"
     private var authViewController: AuthViewController?
+
     
     // MARK: - Lifecycle
     
@@ -49,7 +50,26 @@ extension SplashViewController: AuthViewControllerDelegate {
     
     func didAuthenticate(_ vc: AuthViewController) {
         navigationController?.popViewController(animated: true)
-        switchToTabBarController()
+        guard let token = OAuth2TokenStorage.shared.token else {
+            print("SplashViewController.didAuthenticate: bearer token отсутствует!")
+            return
+        }
+        fetchProfile(token)
+    }
+    
+    private func fetchProfile(_ token: String) {
+        UIBlockingProgressHUD.show()
+        ProfileService.shared.fetchProfile(token) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            guard let self = self else { return }
+            switch result {
+            case .success:
+                self.switchToTabBarController()
+            case .failure:
+                // TODO [Sprint 11] Покажите ошибку получения профиля
+                break
+            }
+        }
     }
 }
 
