@@ -13,11 +13,7 @@ final class ProfileViewController: UIViewController {
     
     private let avatarImageIdentifier = "UserPhoto"
     private let avatarDefaultImageIdentifier = "person.crop.circle.fill"
-    //private var nameIdentifier = "Екатерина Новикова"
-    //private var usernameIdentifier = "@ekaterina_nov"
-    //private var statusIdentifier: String?
     private let exitIconIdentifier = "iconExit"
-    
     
     private var avatarImageView: UIImageView?
     private var avatarImage: UIImage?
@@ -28,26 +24,6 @@ final class ProfileViewController: UIViewController {
     
     // обсервер "нового" API на блоках
     private var profileImageServiceObserver: NSObjectProtocol?
-    
-//    // MARK: - Initialization
-//    
-//    // Вызывается, когда контроллер создаётся программно
-//    override init(nibName: String?, bundle: Bundle?) {
-//         super.init(nibName: nibName, bundle: bundle)
-//         addObserver()
-//     }
-//    // Вызывается, когда контроллер создаётся из Storyboard или XIB
-//    required init?(coder: NSCoder) {
-//        super.init(coder: coder)
-//        addObserver()
-//    }
-    
-    // MARK: - Deinitialization
-    
-//    deinit {
-//        removeObserver()
-//    }
-
     
     // MARK: - Lifecycle
     
@@ -60,36 +36,6 @@ final class ProfileViewController: UIViewController {
     }
     
     // MARK: - Private Methods
-    
-//    // Метод назначит наблюдателя
-//    private func addObserver() {
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(updateAvatar(notification:)),
-//            name: ProfileImageService.didChangeNotification,
-//            object: nil)
-//    }
-//    
-//    // Метод удалит наблюдателя
-//    private func removeObserver() {
-//         NotificationCenter.default.removeObserver(
-//             self,
-//             name: ProfileImageService.didChangeNotification,
-//             object: nil)
-//     }
-//    
-//    // Метод обновит аватар
-//    @objc
-//    private func updateAvatar(notification: Notification) {
-//        guard
-//            isViewLoaded,
-//            let userInfo = notification.userInfo,
-//            let profileImageURL = userInfo["URL"] as? String,
-//            let url = URL(string: profileImageURL)
-//        else { return }
-//        
-//        // TODO написать код обновления аватара используя Kingfisher
-//    }
     
     // Присваиваем обсервер, возвращаемый функцией addObserver
     private func setupObserver {
@@ -122,12 +68,6 @@ final class ProfileViewController: UIViewController {
         setupNameLabel(profile.name)
         setupUsernameLabel(profile.loginName)
         setupBioLabel(profile.bio ?? "")
-//        guard let avatarURL = ProfileImageService.shared.avatarURL else {
-//            print("ProfileViewController.setupProfileDetails: переменная ProfileImageService.shared.avatarURL пустая")
-//            return
-//        }
-//        setupProfileAvatar(avatarURL)
-        
     }
     
     
