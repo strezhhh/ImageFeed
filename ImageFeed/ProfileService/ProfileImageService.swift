@@ -34,6 +34,7 @@ final class ProfileImageService {
     // MARK: - Shared Properties
     
     static let shared = ProfileImageService()
+    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     
     // MARK: - Private Properties
     
@@ -77,11 +78,18 @@ final class ProfileImageService {
                 do {
                     let userResult = try self?.decoder.decode(UserResult.self, from: data)
                     ProfileImageService.shared.avatarURL = userResult?.profileImage.small
-                    guard let imageURL = userResult?.profileImage.small else {
+                    guard let profileImageURL = userResult?.profileImage.small else {
                         print("ProfileImageService.fetchProfileImageURL: ошибка создания строки с url изображения")
                         return
                     }
-                    completion(.success(imageURL))
+                    completion(.success(profileImageURL))
+                    
+                    NotificationCenter.default
+                        .post(
+                            name: ProfileImageService.didChangeNotification,
+                            object: self,
+                            userInfo: ["URL": profileImageURL])
+                    
                 } catch {
                     print("ProfileImageService.fetchProfileImageURL: ошибка декодирования JSON: \(error.localizedDescription)")
                     completion(.failure(NetworkError.decodingError(error)))
