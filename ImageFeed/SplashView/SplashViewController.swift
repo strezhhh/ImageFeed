@@ -63,14 +63,18 @@ extension SplashViewController: AuthViewControllerDelegate {
             UIBlockingProgressHUD.dismiss()
             guard let self = self else { return }
             switch result {
-            case .success:
+            case .success(let profile):
+                ProfileImageService.shared.fetchProfileImageURL(username: profile.username) {
+                    // todo: сюда нужно что-то добавить вообще нет?
+                }
                 self.switchToTabBarController()
             case .failure:
-                // TODO [Sprint 11] Покажите ошибку получения профиля
+                print("SplashViewController.fetchProfile: ошибка получения профиля!")
                 break
             }
         }
     }
+
 }
 
 // MARK: - extension SplashViewController

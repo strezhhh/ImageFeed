@@ -40,16 +40,23 @@ final class ProfileViewController: UIViewController {
     
     private func setupProfileDetails() {
         guard let profile = ProfileService.shared.profile else {
+            print("ProfileViewController.setupProfileDetails: переменная ProfileService.shared.profile пустая")
             return
         }
         setupNameLabel(profile.name)
         setupUsernameLabel(profile.loginName)
         setupBioLabel(profile.bio ?? "")
+//        guard let avatarURL = ProfileImageService.shared.avatarURL else {
+//            print("ProfileViewController.setupProfileDetails: переменная ProfileImageService.shared.avatarURL пустая")
+//            return
+//        }
+//        setupProfileAvatar(avatarURL)
+        
     }
     
     
     // Метод установит аватарку
-    private func setupProfileAvatar() {
+    private func setupProfileAvatar(/*_ avatarURL: String*/) {
         avatarImage = UIImage(named: avatarImageIdentifier)
         // Если у пользователя не загружена аватарка, то ставим стандартную иконку
         avatarImageView = avatarImage != nil ? UIImageView(image: avatarImage) : UIImageView(image: UIImage(systemName: avatarDefaultImageIdentifier))
