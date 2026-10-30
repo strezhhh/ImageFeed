@@ -65,7 +65,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             switch result {
             case .success(let profile):
                 ProfileImageService.shared.fetchProfileImageURL(username: profile.username) {
-                    // todo: сюда нужно что-то добавить вообще нет?
+                    // TODO: сюда нужно что-то добавить вообще нет?
                 }
                 self.switchToTabBarController()
             case .failure:
