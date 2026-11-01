@@ -38,7 +38,7 @@ final class ProfileViewController: UIViewController {
     // MARK: - Private Methods
     
     // Присваиваем обсервер, возвращаемый функцией addObserver
-    private func setupObserver {
+    private func setupObserver () {
         profileImageServiceObserver = NotificationCenter.default
                     .addObserver(
                         forName: ProfileImageService.didChangeNotification,
