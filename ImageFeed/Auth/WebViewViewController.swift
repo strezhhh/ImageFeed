@@ -27,6 +27,9 @@ final class WebViewViewController: UIViewController {
     private let nameNavBackButton = "nav_back_button"
     private let colorNavBackButton = "ypBlack"
     
+    private var estimatedProgressObservation: NSKeyValueObservation?
+
+    
     // MARK: - Initialization
     
     private func setupNavigationDelegate() {
@@ -40,16 +43,7 @@ final class WebViewViewController: UIViewController {
         loadAuthView()
         setupNavigationDelegate()
         configureBackButton()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         addObserver()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        removeObserver()
     }
     
     // MARK: - Private Methods
@@ -82,35 +76,17 @@ final class WebViewViewController: UIViewController {
     
     // Метод подпишет webView на estimatedProgress
     private func addObserver() {
-        webView.addObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            options: .new,
-            context: nil)
-    }
-    
-    // Обработчик обновлений
-    override func observeValue(
-        forKeyPath keyPath: String?,
-        of object: Any?,
-        change: [NSKeyValueChangeKey : Any]?,
-        context: UnsafeMutableRawPointer?
-    ) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgress()
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
-    }
-    
+        estimatedProgressObservation = webView.observe(
+            \.estimatedProgress,
+             options: [],
+             changeHandler: { [weak self] _, _ in
+                 guard let self = self else { return }
+                 self.updateProgress()
+             })
+
     private func updateProgress() {
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
-    }
-    
-    // Метод удалит подписку webView на estimatedProgress
-    private func removeObserver() {
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
     }
     
     // Метод кастомизации кнопки UIBarButtonItem
