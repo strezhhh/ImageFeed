@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
@@ -30,7 +31,6 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupObserver()
-        setupProfileAvatar()
         setupExitButton()
         setupProfileDetails()
     }
@@ -53,12 +53,27 @@ final class ProfileViewController: UIViewController {
     
     // Метод обновляет аватарку
     private func updateAvatar() {
-            guard
-                let profileImageURL = ProfileImageService.shared.avatarURL,
-                let url = URL(string: profileImageURL)
-            else { return }
-            // TODO написать код обновления аватара, используя Kingfisher
-        }
+        avatarImageView = UIImageView(image: UIImage(systemName: avatarDefaultImageIdentifier))
+        guard let avatarImageView else {
+            print("мы тут")
+            return }
+        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(avatarImageView)
+        avatarImageView.tintColor = .white
+        avatarImageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        avatarImageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
+        avatarImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        let avatarImageUrl = URL(string: profileImageURL)
+        avatarImageView.kf.indicatorType = .activity
+        avatarImageView.kf.setImage(with: avatarImageUrl,
+                                    placeholder: UIImage(systemName: avatarDefaultImageIdentifier)
+        )
+    }
     
     private func setupProfileDetails() {
         guard let profile = ProfileService.shared.profile else {
@@ -68,22 +83,6 @@ final class ProfileViewController: UIViewController {
         setupNameLabel(profile.name)
         setupUsernameLabel(profile.loginName)
         setupBioLabel(profile.bio ?? "")
-    }
-    
-    
-    // Метод установит аватарку
-    private func setupProfileAvatar(/*_ avatarURL: String*/) {
-        avatarImage = UIImage(named: avatarImageIdentifier)
-        // Если у пользователя не загружена аватарка, то ставим стандартную иконку
-        avatarImageView = avatarImage != nil ? UIImageView(image: avatarImage) : UIImageView(image: UIImage(systemName: avatarDefaultImageIdentifier))
-        guard let avatarImageView else { return }
-        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(avatarImageView)
-        avatarImageView.tintColor = .white
-        avatarImageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        avatarImageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
-        avatarImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
     }
     
     // Метод установит Имя пользователя
