@@ -35,10 +35,11 @@ final class ProfileService {
     
     // MARK: - Private Properties
     
-    private var session: URLSession
+    private var session = URLSession.shared
     private var task: URLSessionTask?
     private let decoder = JSONDecoder()
     private(set) var profile: Profile?
+
     
     // MARK: - Initialization
     
@@ -62,40 +63,25 @@ final class ProfileService {
             return
         }
         
-        let task = session.data(for: request) { [weak self] result in
-            switch result {
-            case .success(let data):
-                do {
-                    let profileResult = try self?.decoder.decode(ProfileResult.self, from: data)
+        task = session.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let result):
                     let profile = Profile (
-                        username: profileResult?.username ?? "",
-                        name: "\(profileResult?.firstName ?? "") \(profileResult?.lastName ?? "")",
-                        loginName: "@\(profileResult?.username ?? "")",
-                        bio: profileResult?.bio
+                        username: result.username,
+                        name: "\(result.firstName) \(result.lastName)",
+                        loginName: "@\(result.username)",
+                        bio: result.bio
                     )
                     ProfileService.shared.profile = profile
                     completion(.success(profile))
-                } catch {
-                    print("ProfileService.fetchProfile: ошибка декодирования JSON: \(error.localizedDescription)")
-                    completion(.failure(NetworkError.decodingError(error)))
+                case .failure(let error):
+                    completion(.failure(error))
                 }
-            case .failure(let error):
-                switch error {
-                case NetworkError.httpStatusCode(let statusCode):
-                    print("ProfileService.fetchProfile: HTTP ошибка: \(statusCode)")
-                case NetworkError.urlRequestError(let requestError):
-                    print("ProfileService.fetchProfile: HTTP ошибка: \(requestError)")
-                case NetworkError.urlSessionError:
-                    print("ProfileService.fetchProfile: запрос не удалось выполнить")
-                default:
-                    print("ProfileService.fetchProfile: HTTP ошибка")
-                }
-                completion(.failure(error))
+                self?.task = nil
             }
-            self?.task = nil
         }
-        self.task = task
-        task.resume()
+        task?.resume()
     }
     
     // MARK: - Private Methods
