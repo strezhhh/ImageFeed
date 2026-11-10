@@ -21,6 +21,8 @@ final class AuthViewController: UIViewController {
     // переменная хранит название ShowWebView
     private let showWebViewSegueIdentifier = "ShowWebView"
     
+    private let alertPresenter = AlertPresenter.shared
+    
     // MARK: - Override Methods
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -70,6 +72,10 @@ extension AuthViewController: WebViewViewControllerDelegate {
                 self.delegate?.didAuthenticate(self)
             case .failure(let error):
                 print("AuthViewController.webViewViewController: ошибка создания bearer token: \(error.localizedDescription)")
+                guard let self else { return }
+                alertPresenter.showAlertWithMessage(viewController: self, title: "Что-то пошло не так", message: "Не удалось войти в систему", buttonText: "Ok") {
+                    self.navigationController?.popViewController(animated: true)
+                }
             }
         }
     }
