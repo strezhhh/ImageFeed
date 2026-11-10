@@ -55,7 +55,6 @@ final class ProfileViewController: UIViewController {
     private func updateAvatar() {
         avatarImageView = UIImageView(image: UIImage(systemName: avatarDefaultImageIdentifier))
         guard let avatarImageView else {
-            print("мы тут")
             return }
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(avatarImageView)
@@ -64,15 +63,18 @@ final class ProfileViewController: UIViewController {
         avatarImageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
         avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
         avatarImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+        avatarImageView.layer.cornerRadius = 35
         guard
             let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
+            let avatarUrl = URL(string: profileImageURL)
         else { return }
-        let avatarImageUrl = URL(string: profileImageURL)
+        let processor = RoundCornerImageProcessor(cornerRadius: avatarImageView.layer.cornerRadius)
         avatarImageView.kf.indicatorType = .activity
-        avatarImageView.kf.setImage(with: avatarImageUrl,
-                                    placeholder: UIImage(systemName: avatarDefaultImageIdentifier)
-        )
+        avatarImageView.kf.setImage(with: avatarUrl,
+                                    placeholder: UIImage(systemName: avatarDefaultImageIdentifier),
+                                    options: [
+                                        .processor(processor)
+                                                    ])
     }
     
     private func setupProfileDetails() {
