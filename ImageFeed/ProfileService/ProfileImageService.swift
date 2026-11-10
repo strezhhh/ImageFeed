@@ -88,6 +88,7 @@ final class ProfileImageService {
                             object: self,
                             userInfo: ["URL": profileImageURL])
                 case .failure(let error):
+                    print("ProfileService.fetchProfile: ошибка получения URL аватара профиля: \(error)")
                     completion(.failure(error))
                 }
                 self?.task = nil

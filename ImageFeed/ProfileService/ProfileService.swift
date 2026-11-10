@@ -76,6 +76,7 @@ final class ProfileService {
                     ProfileService.shared.profile = profile
                     completion(.success(profile))
                 case .failure(let error):
+                    print("ProfileService.fetchProfile: ошибка получения данных профиля: \(error)")
                     completion(.failure(error))
                 }
                 self?.task = nil

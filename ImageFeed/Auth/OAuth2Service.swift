@@ -53,8 +53,8 @@ final class OAuth2Service {
                 switch result {
                 case .success(let response):
                     completion(.success(response.bearerToken))
-                    
                 case .failure(let error):
+                    print("OAuth2Service.fetchOAuthToken: ошибка получения получения Bearer-токена: \(error)")
                     completion(.failure(error))
                 }
                 self?.task = nil
