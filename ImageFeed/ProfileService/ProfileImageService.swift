@@ -72,45 +72,28 @@ final class ProfileImageService {
             return
         }
         
-        let task = session.data(for: request) { [weak self] result in
-            switch result {
-            case .success(let data):
-                do {
-                    let userResult = try self?.decoder.decode(UserResult.self, from: data)
-                    ProfileImageService.shared.avatarURL = userResult?.profileImage.small
-                    guard let profileImageURL = userResult?.profileImage.small else {
-                        print("ProfileImageService.fetchProfileImageURL: ошибка создания строки с url изображения")
+        task = session.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let result):
+                    ProfileImageService.shared.avatarURL = result.profileImage.small
+                    guard let profileImageURL = ProfileImageService.shared.avatarURL else {
+                        print("ProfileImageService.fetchProfileImageURL: ошибка создания URL аватарки")
                         return
                     }
                     completion(.success(profileImageURL))
-                    
                     NotificationCenter.default
                         .post(
                             name: ProfileImageService.didChangeNotification,
                             object: self,
                             userInfo: ["URL": profileImageURL])
-                    
-                } catch {
-                    print("ProfileImageService.fetchProfileImageURL: ошибка декодирования JSON: \(error.localizedDescription)")
-                    completion(.failure(NetworkError.decodingError(error)))
+                case .failure(let error):
+                    completion(.failure(error))
                 }
-            case .failure(let error):
-                switch error {
-                case NetworkError.httpStatusCode(let statusCode):
-                    print("ProfileImageService.fetchProfileImageURL: HTTP ошибка: \(statusCode)")
-                case NetworkError.urlRequestError(let requestError):
-                    print("ProfileImageService.fetchProfileImageURL: HTTP ошибка: \(requestError)")
-                case NetworkError.urlSessionError:
-                    print("ProfileImageService.fetchProfileImageURL: запрос не удалось выполнить")
-                default:
-                    print("ProfileImageService.fetchProfileImageURL: HTTP ошибка")
-                }
-                completion(.failure(error))
+                self?.task = nil
             }
-            self?.task = nil
         }
-        self.task = task
-        task.resume()
+        task?.resume()
     }
     
     
