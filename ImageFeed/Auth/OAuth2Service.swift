@@ -20,7 +20,7 @@ final class OAuth2Service {
     // MARK: - Private Properties
     
     private let decoder = JSONDecoder()
-    private var session: URLSession
+    private var session = URLSession.shared
     private var task: URLSessionTask?
     private var lastCode: String?
     
@@ -34,50 +34,35 @@ final class OAuth2Service {
     // MARK: - Methods
     
     // Make a POST URLrequest to https://unsplash.com/oauth/token
-    func fetchOAuthToken(code: String, competition: @escaping (Result<String, Error>) -> Void) {
+    func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         guard lastCode != code else {
-            competition(.failure(AuthServiceError.invalidRequest))
+            completion(.failure(AuthServiceError.invalidRequest))
             return
         }
         task?.cancel()
         lastCode = code
         guard let request = makeRequestOAuthToken(code: code) else {
             print("OAuth2Service.fetchOAuthToken: ошибка создания экземпляра реквеста из метода makeRequestOAuthToken(...)")
-            competition(.failure(AuthServiceError.invalidRequest))
+            completion(.failure(AuthServiceError.invalidRequest))
             return
         }
         
-        let task = session.data(for: request) { result in
-            switch result {
-            case .success(let data):
-                do {
-                    let response = try self.decoder.decode(OAuthTokenResponseBody.self, from: data)
-                    competition(.success(response.bearerToken))
-                } catch {
-                    print("OAuth2Service: ошибка декодирования JSON c bearer token: \(error.localizedDescription)")
-                    competition(.failure(NetworkError.decodingError(error)))
-                }
-            case .failure(let error):
-                switch error {
-                case NetworkError.httpStatusCode(let statusCode):
-                    print("OAuth2Service: HTTP ошибка: \(statusCode)")
-                case NetworkError.urlRequestError(let requestError):
-                    print("OAuth2Service: HTTP ошибка: \(requestError)")
-                case NetworkError.urlSessionError:
-                    print("OAuth2Service: запрос не удалось выполнить")
-                default:
-                    print("OAuth2Service: HTTP ошибка")
-                }
-                competition(.failure(error))
-            }
+        task = session.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             DispatchQueue.main.async {
-                self.task = nil
-                self.lastCode = nil
+                switch result {
+                case .success(let response):
+                    completion(.success(response.bearerToken))
+                    
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+                self?.task = nil
+                self?.lastCode = nil
             }
         }
-        self.task = task
-        task.resume()
+        task?.resume()
+        
     }
     
     // MARK: - Private Methods
@@ -86,7 +71,7 @@ final class OAuth2Service {
     private func makeRequestOAuthToken(code: String) -> URLRequest? {
         guard
             var urlComponents = URLComponents(string: ConstantsValue.postRequestOAuthTokenURLString)
-        else {
+                else {
             print("OAuth2Service.makeRequestOAuthToken: ошибка создания URLComponents из строки:  \(ConstantsValue.postRequestOAuthTokenURLString)")
             assertionFailure("OAuth2Service.makeRequestOAuthToken: ошибка создания URLComponents из строки:  \(ConstantsValue.postRequestOAuthTokenURLString)")
             return nil
@@ -100,7 +85,7 @@ final class OAuth2Service {
         ]
         guard
             let urlOAuthToken = urlComponents.url
-        else {
+                else {
             print("OAuth2Service.makeRequestOAuthToken: ошибка создания URL из URLComponents")
             return nil
         }

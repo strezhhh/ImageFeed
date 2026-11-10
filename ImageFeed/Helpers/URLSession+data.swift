@@ -45,3 +45,37 @@ extension URLSession {
         return task
     }
 }
+
+// Теперь функция, создающая URLSessionTask, может декодировать успешный ответ сервера в Decodable-объект
+extension URLSession {
+    func objectTask<T: Decodable>(
+        for request: URLRequest,
+        completion: @escaping (Result<T, Error>) -> Void
+    ) -> URLSessionTask {
+        let decoder = JSONDecoder()
+        let task = data(for: request) { (result: Result<Data, Error>) in
+            switch result {
+            case .success(let data):
+                do {
+                    let response = try decoder.decode(T.self, from: data)
+                    completion(.success(response))
+                } catch {
+                    completion(.failure(NetworkError.decodingError(error)))
+                }
+            case .failure(let error):
+                switch error {
+                case NetworkError.httpStatusCode(let statusCode):
+                    print("URLSession.objectTask: HTTP ошибка: \(statusCode)")
+                case NetworkError.urlRequestError(let requestError):
+                    print("URLSession.objectTask: HTTP ошибка: \(requestError)")
+                case NetworkError.urlSessionError:
+                    print("URLSession.objectTask: запрос не удалось выполнить")
+                default:
+                    print("URLSession.objectTask: HTTP ошибка")
+                }
+                completion(.failure(error))
+            }
+        }
+        return task
+    }
+}

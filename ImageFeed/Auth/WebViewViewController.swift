@@ -28,7 +28,7 @@ final class WebViewViewController: UIViewController {
     private let colorNavBackButton = "ypBlack"
     
     private var estimatedProgressObservation: NSKeyValueObservation?
-
+    
     
     // MARK: - Initialization
     
@@ -83,7 +83,8 @@ final class WebViewViewController: UIViewController {
                  guard let self = self else { return }
                  self.updateProgress()
              })
-
+    }
+    
     private func updateProgress() {
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
