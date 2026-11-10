@@ -62,6 +62,7 @@ extension URLSession {
                     let response = try decoder.decode(T.self, from: data)
                     completion(.success(response))
                 } catch {
+                    print("URLSession.objectTask: Ошибка декодирования: \(error.localizedDescription), Данные: \(String(data: data, encoding: .utf8) ?? "")")
                     completion(.failure(NetworkError.decodingError(error)))
                 }
             case .failure(let error):
