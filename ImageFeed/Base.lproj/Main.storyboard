@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="25098" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="RYx-AA-WMu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="25408" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="RYx-AA-WMu">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="25073"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="25407"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -134,10 +134,10 @@
             </objects>
             <point key="canvasLocation" x="-1674" y="-96"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tab Bar View Controller-->
         <scene sceneID="O4A-7T-dDV">
             <objects>
-                <tabBarController storyboardIdentifier="TabBarViewController" id="gGH-5P-brN" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="gGH-5P-brN" customClass="TabBarViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="yuZ-1y-Vvc"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="t1I-YK-248">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
@@ -148,10 +148,6 @@
                             <color key="backgroundColor" name="YP Black"/>
                         </tabBarAppearance>
                     </tabBar>
-                    <connections>
-                        <segue destination="fWS-YD-Xkg" kind="relationship" relationship="viewControllers" id="tKK-Eo-UpO"/>
-                        <segue destination="hxQ-bS-BNU" kind="relationship" relationship="viewControllers" id="HMU-sy-3Xy"/>
-                    </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KHi-gW-8iV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -160,7 +156,7 @@
         <!--ImageList-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" userLabel="ImageList" customClass="ImagesListViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ImagesListViewController" id="BYZ-38-t0r" userLabel="ImageList" customClass="ImagesListViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -326,7 +322,7 @@
         <!--Profile-->
         <scene sceneID="YiI-zr-FkC">
             <objects>
-                <viewController id="hxQ-bS-BNU" userLabel="Profile" customClass="ProfileViewController" customModule="ImageFeed" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProfileViewController" id="hxQ-bS-BNU" userLabel="Profile" customClass="ProfileViewController" customModule="ImageFeed" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="p99-Ai-Uks">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -342,11 +338,11 @@
         <!--Navigation Controller-->
         <scene sceneID="RbH-od-fVr">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fWS-YD-Xkg" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationViewController" automaticallyAdjustsScrollViewInsets="NO" id="fWS-YD-Xkg" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="K5W-LP-j8u"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Tyb-MW-rsh">
-                        <rect key="frame" x="0.0" y="118" width="393" height="54"/>
+                        <rect key="frame" x="0.0" y="59" width="393" height="54"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" name="YP White"/>
                         <color key="barTintColor" name="YP White"/>
