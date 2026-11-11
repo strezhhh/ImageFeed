@@ -25,7 +25,7 @@ final class WebViewViewController: UIViewController {
     private let authViewControllerIdentifier = "AuthViewController"
     private var oauth2Service: OAuth2Service?
     private let nameNavBackButton = "nav_back_button"
-    private let colorNavBackButton = "ypBlack"
+    private let colorNavBackButton = "YP Black"
     
     private var estimatedProgressObservation: NSKeyValueObservation?
     

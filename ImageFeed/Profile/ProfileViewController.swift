@@ -15,6 +15,7 @@ final class ProfileViewController: UIViewController {
     private let avatarImageIdentifier = "UserPhoto"
     private let avatarDefaultImageIdentifier = "person.crop.circle.fill"
     private let exitIconIdentifier = "iconExit"
+    private let backgroungColor = "YP Black"
     
     private var avatarImageView: UIImageView?
     private var avatarImage: UIImage?
@@ -31,11 +32,20 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupObserver()
+        view.backgroundColor = UIColor(named: backgroungColor)
+
+        setupBackgroungColor()
         setupExitButton()
         setupProfileDetails()
     }
     
     // MARK: - Private Methods
+    
+    // Метод присвоит нужный цвет экрану профиля
+    private func setupBackgroungColor() {
+        view.backgroundColor = UIColor(named: backgroungColor)
+    }
+    
     
     // Присваиваем обсервер, возвращаемый функцией addObserver
     private func setupObserver () {

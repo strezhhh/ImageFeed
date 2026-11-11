@@ -19,6 +19,9 @@ final class TabBarViewController: UITabBarController {
     
     // переменная хранит StoriboarID для NavigationController
     let navigationViewController = "NavigationViewController"
+    
+    // переменная хранир название иконки TapBar'a для profileViewController
+    let profileIconName = "tab_profile_active"
 
     // MARK: - Lifecyclz
     
@@ -33,9 +36,16 @@ final class TabBarViewController: UITabBarController {
             withIdentifier: navigationViewController
         )
         
-        let profileViewController = storyboard.instantiateViewController(
-            withIdentifier: profileViewController
-        )
+        let profileViewController = ProfileViewController()
+        profileViewController.tabBarItem = UITabBarItem(
+                       title: "",
+                       image: UIImage(named: profileIconName),
+                       selectedImage: nil
+                   )
+        
+//        let profileViewController = storyboard.instantiateViewController(
+//            withIdentifier: profileViewController
+//        )
         
         self.viewControllers = [navigationViewController, profileViewController]
     }
