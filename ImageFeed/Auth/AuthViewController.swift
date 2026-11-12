@@ -31,7 +31,8 @@ final class AuthViewController: UIViewController {
             segue.identifier == showWebViewSegueIdentifier,
             let destination = segue.destination as? WebViewViewControllerProtocol
                 else {
-            assertionFailure("str.AuthViewController.prepare: Ошибка перехода по seque: showWebViewSegueIdentifier")
+            Apploger.error("Ошибка перехода по seque: showWebViewSegueIdentifier")
+            assertionFailure("AuthViewController.prepare: Ошибка перехода по seque: showWebViewSegueIdentifier")
             return
         }
         setYourselfAsDelegate(to: destination)
