@@ -30,7 +30,7 @@ final class ProfileImageService {
     // MARK: - Shared Properties
     
     static let shared = ProfileImageService()
-    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+    static let didChangeNotification = Notification.Name("ProfileImageProviderDidChange")
     
     // MARK: - Private Properties
     
