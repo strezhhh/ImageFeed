@@ -84,7 +84,11 @@ final class SplashViewController: UIViewController {
     
     // Метод передаст управление TabBarViewController'у
     private func switchToTabBarController() {
-        guard let window = UIApplication.shared.windows.first else {
+        guard
+            let windowScene = UIApplication.shared.connectedScenes
+                .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+            let window = windowScene.windows.first
+        else {
             assertionFailure("SplashViewController.switchToTabBarController: Invalid window configuration")
             Apploger.error("Invalid window configuration")
             return
@@ -116,7 +120,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             switch result {
             case .success(let profile):
                 Apploger.info("Получены данные профиля")
-                ProfileImageService.shared.fetchProfileImageURL(username: profile.username) {_ in 
+                ProfileImageService.shared.fetchProfileImageURL(username: profile.username) {_ in
                     switch result {
                     case .success:
                         Apploger.info("Получена URL аватарки")
