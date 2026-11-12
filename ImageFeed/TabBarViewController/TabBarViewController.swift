@@ -43,10 +43,6 @@ final class TabBarViewController: UITabBarController {
                        selectedImage: nil
                    )
         
-//        let profileViewController = storyboard.instantiateViewController(
-//            withIdentifier: profileViewController
-//        )
-        
         self.viewControllers = [navigationViewController, profileViewController]
     }
 
