@@ -14,7 +14,7 @@ final class TabBarViewController: UITabBarController {
     
     // переменная хранит StoriboarID для ImagesListViewController
     let imagesListViewController = "ImagesListViewController"
-
+    
     // переменная хранит StoriboarID для ProfileViewController
     let profileViewController = "ProfileViewController"
     
@@ -23,28 +23,23 @@ final class TabBarViewController: UITabBarController {
     
     // переменная хранир название иконки TapBar'a для profileViewController
     let profileIconName = "tab_profile_active"
-
+    
     // MARK: - Lifecyclz
     
     override func awakeFromNib() {
-        
-        Apploger.info("awakeFromNib сработал")
-
         super.awakeFromNib()
+        Apploger.info("awakeFromNib сработал")
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
-        
         let navigationViewController = storyboard.instantiateViewController(
             withIdentifier: navigationViewController
         )
-        
         let profileViewController = ProfileViewController()
         profileViewController.tabBarItem = UITabBarItem(
-                       title: "",
-                       image: UIImage(named: profileIconName),
-                       selectedImage: nil
-                   )
-        
+            title: "",
+            image: UIImage(named: profileIconName),
+            selectedImage: nil
+        )
         self.viewControllers = [navigationViewController, profileViewController]
     }
-
+    
 }
