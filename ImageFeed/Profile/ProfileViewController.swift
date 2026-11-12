@@ -18,7 +18,6 @@ final class ProfileViewController: UIViewController {
     private let backgroungColor = "YP Black"
     
     private var avatarImageView: UIImageView?
-    private var avatarImage: UIImage?
     private var nameLabel: UILabel?
     private var exitButton: UIButton?
     private var usernameLabel: UILabel?
@@ -32,9 +31,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupObserver()
-        view.backgroundColor = UIColor(named: backgroungColor)
-
-        setupBackgroungColor()
+        setupBackgroundColor()
         setupExitButton()
         setupProfileDetails()
     }
@@ -42,7 +39,7 @@ final class ProfileViewController: UIViewController {
     // MARK: - Private Methods
     
     // Метод присвоит нужный цвет экрану профиля
-    private func setupBackgroungColor() {
+    private func setupBackgroundColor() {
         view.backgroundColor = UIColor(named: backgroungColor)
     }
     

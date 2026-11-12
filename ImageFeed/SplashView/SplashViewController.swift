@@ -14,26 +14,73 @@ final class SplashViewController: UIViewController {
     private let storage = OAuth2TokenStorage.shared
     private let showAuthenticationScreenSegueIdentifier = "showAuthenticationScreenSegueIdentifier"
     private let tabBarViewController = "TabBarViewController"
+    private let naviAuthViewController = "NaviAuthViewController"
+    private let authViewControllerID = "AuthViewController"
     private var authViewController: AuthViewController?
+    private let backgroungColor = "YP Black"
+    private var splashIconImageView: UIImageView?
+    private let splashIconImageIdentifier = "splash_screen_logo"
 
     
     // MARK: - Lifecycle
+    deinit {
+        print("SplashViewController уничтожен")
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if storage.token != nil {
             switchToTabBarController()
-            
         } else {
-            performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
+            switchToNaviAuthController()
         }
+    }
+    
+    override func awakeFromNib() {
+        print("SplashViewController.awakeFromNib сработал")
+        super.awakeFromNib()
+        setupBackgroundColor()
+        setupSplashIcon()
     }
     
     // MARK: - Private Methods
     
+    // Метод присвоит нужный цвет экрану
+    private func setupBackgroundColor() {
+        view.backgroundColor = UIColor(named: backgroungColor)
+    }
+    
+    // Метод добавит иконку по центру
+    private func setupSplashIcon() {
+        splashIconImageView = UIImageView(image: UIImage(systemName: splashIconImageIdentifier))
+        guard let splashIconImageView else {
+            return }
+        splashIconImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(splashIconImageView)
+        splashIconImageView.tintColor = .white
+        splashIconImageView.widthAnchor.constraint(equalToConstant: 74).isActive = true
+        splashIconImageView.heightAnchor.constraint(equalToConstant: 76.64).isActive = true
+        splashIconImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        splashIconImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    }
+    
+    // Метод передаст управление AuthViewController'у
+    private func switchToNaviAuthController() {
+        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        guard let viewController = storyboard.instantiateViewController(withIdentifier: authViewControllerID) as? AuthViewController else {
+            assertionFailure("SplashViewController.switchToNaviAuthController: ошибка создания AuthViewController")
+            print("SplashViewController.switchToNaviAuthController: ошибка создания AuthViewController")
+            return
+        }
+        viewController.delegate = self
+        viewController.modalPresentationStyle = .fullScreen
+        present(viewController, animated: true)
+    }
+    
+    // Метод передаст управление TabBarViewController'у
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Invalid window configuration")
+            assertionFailure("SplashViewController.switchToTabBarController: Invalid window configuration")
             print("SplashViewController.switchToTabBarController: Invalid window configuration")
             return
         }
@@ -75,25 +122,4 @@ extension SplashViewController: AuthViewControllerDelegate {
         }
     }
 
-}
-
-// MARK: - extension SplashViewController
-
-extension SplashViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == showAuthenticationScreenSegueIdentifier {
-            
-            guard
-                let navigationController = segue.destination as? UINavigationController,
-                let viewController = navigationController.viewControllers.first as? AuthViewController
-                    else {
-                assertionFailure("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)")
-                return
-            }
-            viewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
-    }
 }
