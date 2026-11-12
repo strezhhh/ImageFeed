@@ -17,7 +17,7 @@ final class SplashViewController: UIViewController {
     private let naviAuthViewController = "NaviAuthViewController"
     private let authViewControllerID = "AuthViewController"
     private var authViewController: AuthViewController?
-    private let backgroungColor = "YP Black"
+    private let backgroundColor = "YP Black"
     private var splashIconImageView: UIImageView?
     private let splashIconImageIdentifier = "splash_screen_logo"
 
@@ -47,7 +47,7 @@ final class SplashViewController: UIViewController {
     
     // Метод присвоит нужный цвет экрану
     private func setupBackgroundColor() {
-        view.backgroundColor = UIColor(named: backgroungColor)
+        view.backgroundColor = UIColor(named: backgroundColor)
     }
     
     // Метод добавит иконку по центру
@@ -57,7 +57,7 @@ final class SplashViewController: UIViewController {
             return }
         splashIconImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(splashIconImageView)
-        splashIconImageView.tintColor = .white
+        splashIconImageView.tintColor = .ypWhite
         splashIconImageView.widthAnchor.constraint(equalToConstant: 74).isActive = true
         splashIconImageView.heightAnchor.constraint(equalToConstant: 76.64).isActive = true
         splashIconImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
