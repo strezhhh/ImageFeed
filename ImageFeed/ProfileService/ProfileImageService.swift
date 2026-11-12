@@ -69,7 +69,6 @@ final class ProfileImageService {
         }
         
         task = session.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in
-            DispatchQueue.main.async {
                 switch result {
                 case .success(let result):
                     ProfileImageService.shared.avatarURL = result.profileImage.small
@@ -89,7 +88,6 @@ final class ProfileImageService {
                     completion(.failure(error))
                 }
                 self?.task = nil
-            }
         }
         task?.resume()
     }
