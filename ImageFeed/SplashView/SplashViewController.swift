@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Logging
 
 final class SplashViewController: UIViewController {
     
@@ -20,18 +21,18 @@ final class SplashViewController: UIViewController {
     private let backgroundColor = "YP Black"
     private var splashIconImageView: UIImageView?
     private let splashIconImageIdentifier = "splash_screen_logo"
-
+    
     
     // MARK: - Lifecycle
     deinit {
-        print("SplashViewController уничтожен")
+        Apploger.info("SplashViewController уничтожен")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if storage.token != nil {
             guard let token = storage.token else {
-                print("SplashViewController.viewDidAppear ошибка чтения токена")
+                Apploger.error("ошибка чтения токена")
                 return
             }
             fetchProfile(token)
@@ -41,8 +42,8 @@ final class SplashViewController: UIViewController {
     }
     
     override func awakeFromNib() {
-        print("SplashViewController.awakeFromNib сработал")
         super.awakeFromNib()
+        Apploger.info("awakeFromNib сработал")
         setupBackgroundColor()
         setupSplashIcon()
     }
@@ -73,7 +74,7 @@ final class SplashViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
         guard let viewController = storyboard.instantiateViewController(withIdentifier: authViewControllerID) as? AuthViewController else {
             assertionFailure("SplashViewController.switchToNaviAuthController: ошибка создания AuthViewController")
-            print("SplashViewController.switchToNaviAuthController: ошибка создания AuthViewController")
+            Apploger.error("ошибка создания AuthViewController")
             return
         }
         viewController.delegate = self
@@ -85,7 +86,7 @@ final class SplashViewController: UIViewController {
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {
             assertionFailure("SplashViewController.switchToTabBarController: Invalid window configuration")
-            print("SplashViewController.switchToTabBarController: Invalid window configuration")
+            Apploger.error("Invalid window configuration")
             return
         }
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
@@ -102,7 +103,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController) {
         navigationController?.popViewController(animated: true)
         guard let token = OAuth2TokenStorage.shared.token else {
-            print("SplashViewController.didAuthenticate: bearer token отсутствует!")
+            Apploger.error("bearerToken отсутствует")
             return
         }
         fetchProfile(token)
@@ -114,9 +115,13 @@ extension SplashViewController: AuthViewControllerDelegate {
             UIBlockingProgressHUD.dismiss()
             switch result {
             case .success(let profile):
-                ProfileImageService.shared.fetchProfileImageURL(username: profile.username) {result in
-                    if case .failure(let error) = result {
-                        print("SplashViewController.fetchProfile: ошибка получения URL аватарки: \(error)")
+                Apploger.info("Получены данные профиля")
+                ProfileImageService.shared.fetchProfileImageURL(username: profile.username) {_ in 
+                    switch result {
+                    case .success:
+                        Apploger.info("Получена URL аватарки")
+                    case .failure (let error):
+                        Apploger.error("ошибка получения URL аватарки", error)
                     }
                 }
                 guard let self = self else {
@@ -124,10 +129,10 @@ extension SplashViewController: AuthViewControllerDelegate {
                 }
                 self.switchToTabBarController()
             case .failure:
-                print("SplashViewController.fetchProfile: ошибка получения профиля!")
+                Apploger.error("ошибка получения профиля")
                 break
             }
         }
     }
-
+    
 }

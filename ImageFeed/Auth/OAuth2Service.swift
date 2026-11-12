@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Logging
 
 enum AuthServiceError: Error {
     case invalidRequest
@@ -43,7 +44,7 @@ final class OAuth2Service {
         task?.cancel()
         lastCode = code
         guard let request = makeRequestOAuthToken(code: code) else {
-            print("OAuth2Service.fetchOAuthToken: ошибка создания экземпляра реквеста из метода makeRequestOAuthToken(...)")
+            Apploger.error("ошибка создания экземпляра реквеста")
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
@@ -53,7 +54,7 @@ final class OAuth2Service {
             case .success(let response):
                 completion(.success(response.bearerToken))
             case .failure(let error):
-                print("OAuth2Service.fetchOAuthToken: ошибка получения получения Bearer-токена: \(error)")
+                Apploger.error("ошибка получения bearerToken", error)
                 completion(.failure(error))
             }
             self?.task = nil
@@ -70,8 +71,7 @@ final class OAuth2Service {
         guard
             var urlComponents = URLComponents(string: ConstantsValue.postRequestOAuthTokenURLString)
                 else {
-            print("OAuth2Service.makeRequestOAuthToken: ошибка создания URLComponents из строки:  \(ConstantsValue.postRequestOAuthTokenURLString)")
-            assertionFailure("OAuth2Service.makeRequestOAuthToken: ошибка создания URLComponents из строки:  \(ConstantsValue.postRequestOAuthTokenURLString)")
+            Apploger.error("ошибка создания URLComponents из строки:  \(ConstantsValue.postRequestOAuthTokenURLString)")
             return nil
         }
         urlComponents.queryItems = [
@@ -84,7 +84,7 @@ final class OAuth2Service {
         guard
             let urlOAuthToken = urlComponents.url
                 else {
-            print("OAuth2Service.makeRequestOAuthToken: ошибка создания URL из URLComponents")
+            Apploger.error("ошибка создания URL из URLComponents")
             return nil
         }
         var request = URLRequest(url: urlOAuthToken)

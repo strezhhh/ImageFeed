@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Logging
 
 final class TabBarViewController: UITabBarController {
     
@@ -27,7 +28,7 @@ final class TabBarViewController: UITabBarController {
     
     override func awakeFromNib() {
         
-        print("TabBarViewController.awakeFromNib сработал")
+        Apploger.info("awakeFromNib сработал")
 
         super.awakeFromNib()
         let storyboard = UIStoryboard(name: "Main", bundle: .main)

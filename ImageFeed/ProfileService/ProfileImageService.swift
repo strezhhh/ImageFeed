@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Logging
 
 struct UserResult: Codable {
     let profileImage: ProfileImage
@@ -60,14 +61,14 @@ final class ProfileImageService {
         self.task?.cancel()
         
         guard let token = OAuth2TokenStorage.shared.token else {
-            print("ProfileImageService.fetchProfileImageURL: ошибка, отсутствует bearer token")
+            Apploger.error("ошибка, отсутствует bearerToken")
             completion(.failure(NetworkError.tokenMissing))
             return
         }
         
         guard let request = makeRequestProfileImage(username, bearer: token)
                 else {
-            print("ProfileImageService.fetchProfileImageURL: ошибка создания экземпляра реквеста из метода makeRequestProfileImage()")
+            Apploger.error("ошибка создания экземпляра реквеста из метода makeRequestProfileImage()")
             completion(.failure(NetworkError.invalidRequest))
             return
         }
@@ -78,7 +79,7 @@ final class ProfileImageService {
                 case .success(let result):
                     ProfileImageService.shared.avatarURL = result.profileImage.small
                     guard let profileImageURL = ProfileImageService.shared.avatarURL else {
-                        print("ProfileImageService.fetchProfileImageURL: ошибка создания URL аватарки")
+                        Apploger.error("ошибка создания URL аватарки")
                         completion(.failure(NetworkError.invalidRequest))
                         return
                     }
@@ -89,7 +90,7 @@ final class ProfileImageService {
                             object: self,
                             userInfo: ["URL": profileImageURL])
                 case .failure(let error):
-                    print("ProfileService.fetchProfile: ошибка получения URL аватара профиля: \(error)")
+                    Apploger.error("ошибка получения URL аватара профиля", error)
                     completion(.failure(error))
                 }
                 self?.task = nil
@@ -105,7 +106,7 @@ final class ProfileImageService {
         guard
             let url = URL(string: "\(ConstantsValue.getRequestProfileImage)\(username)")
                 else {
-            print("ProfileService.makeRequestProfileImage: ошибка создания url из строки:  \(ConstantsValue.getRequestProfileImage)")
+            Apploger.error("ошибка создания url из строки:  \(ConstantsValue.getRequestProfileImage)")
             assertionFailure("ProfileService.makeRequestProfileImage: ошибка создания url из строки:  \(ConstantsValue.getRequestProfileImage)")
             return nil
         }

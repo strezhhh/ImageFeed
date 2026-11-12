@@ -8,6 +8,7 @@
 import UIKit
 import WebKit
 import ProgressHUD
+import Logging
 
 final class AuthViewController: UIViewController {
     
@@ -65,13 +66,13 @@ extension AuthViewController: WebViewViewControllerDelegate {
             switch result {
             case .success(let token):
                 OAuth2TokenStorage.shared.store(bearerToken: token)
-                print("AuthViewController.webViewViewController: bearer token авторизации успешно создан и сохранен")
+                Apploger.info("bearerToken успешно создан и сохранен")
                 guard let self else {
                     return
                 }
                 self.delegate?.didAuthenticate(self)
             case .failure(let error):
-                print("AuthViewController.webViewViewController: ошибка создания bearer token: \(error.localizedDescription)")
+                Apploger.error("ошибка получения bearerToken", error)
                 guard let self else { return }
                 alertPresenter.showAlertWithMessage(viewController: self, title: "Что-то пошло не так", message: "Не удалось войти в систему", buttonText: "Ok") {
                     self.navigationController?.popViewController(animated: true)

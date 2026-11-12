@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Logging
 
 struct ProfileResult: Codable {
     let username: String
@@ -58,7 +59,7 @@ final class ProfileService {
         
         guard let request = makeRequestProfile(bearer: token)
                 else {
-            print("ProfileService.fetchProfile: ошибка создания экземпляра реквеста из метода makeRequestProfile(bearer...)")
+            Apploger.error("ошибка создания экземпляра реквеста из метода makeRequestProfile(bearer...)")
             completion(.failure(NetworkError.invalidRequest))
             return
         }
@@ -76,7 +77,7 @@ final class ProfileService {
                     ProfileService.shared.profile = profile
                     completion(.success(profile))
                 case .failure(let error):
-                    print("ProfileService.fetchProfile: ошибка получения данных профиля: \(error)")
+                    Apploger.error("ошибка получения данных профиля", error)
                     completion(.failure(error))
                 }
                 self?.task = nil
@@ -91,7 +92,7 @@ final class ProfileService {
         guard
             let url = URL(string: ConstantsValue.getRequestProfileDetails)
                 else {
-            print("ProfileService.makeRequestProfile: ошибка создания url из строки:  \(ConstantsValue.getRequestProfileDetails)")
+            Apploger.error("ошибка создания url из строки:  \(ConstantsValue.getRequestProfileDetails)")
             assertionFailure("ProfileService.makeRequestProfile: ошибка создания url из строки:  \(ConstantsValue.getRequestProfileDetails)")
             return nil
         }
