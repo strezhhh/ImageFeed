@@ -79,6 +79,7 @@ final class ProfileImageService {
                     ProfileImageService.shared.avatarURL = result.profileImage.small
                     guard let profileImageURL = ProfileImageService.shared.avatarURL else {
                         print("ProfileImageService.fetchProfileImageURL: ошибка создания URL аватарки")
+                        completion(.failure(NetworkError.invalidRequest))
                         return
                     }
                     completion(.success(profileImageURL))

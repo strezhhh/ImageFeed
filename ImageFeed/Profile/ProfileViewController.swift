@@ -31,6 +31,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupObserver()
+        setupAvatar()
         setupBackgroundColor()
         setupExitButton()
         setupProfileDetails()
@@ -47,19 +48,18 @@ final class ProfileViewController: UIViewController {
     // Присваиваем обсервер, возвращаемый функцией addObserver
     private func setupObserver () {
         profileImageServiceObserver = NotificationCenter.default
-                    .addObserver(
-                        forName: ProfileImageService.didChangeNotification,
-                        object: nil,
-                        queue: .main
-                    ) { [weak self] _ in
-                        guard let self = self else { return }
-                        self.updateAvatar()
-                    }
-                updateAvatar()
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
             }
+    }
     
-    // Метод обновляет аватарку
-    private func updateAvatar() {
+    // Метод создает аватарку
+    private func setupAvatar() {
         avatarImageView = UIImageView(image: UIImage(systemName: avatarDefaultImageIdentifier))
         guard let avatarImageView else {
             return }
@@ -71,17 +71,26 @@ final class ProfileViewController: UIViewController {
         avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
         avatarImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         avatarImageView.layer.cornerRadius = 35
+        updateAvatar()
+    }
+    
+    // Метод обновляет аватарку
+    private func updateAvatar() {
         guard
+            let avatarImageView,
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let avatarUrl = URL(string: profileImageURL)
-        else { return }
+                else {
+            print("ProfileViewController.updateAvatar: ошибка обновления аватарки")
+            return
+        }
         let processor = RoundCornerImageProcessor(cornerRadius: avatarImageView.layer.cornerRadius)
         avatarImageView.kf.indicatorType = .activity
         avatarImageView.kf.setImage(with: avatarUrl,
                                     placeholder: UIImage(systemName: avatarDefaultImageIdentifier),
                                     options: [
                                         .processor(processor)
-                                                    ])
+                                    ])
     }
     
     private func setupProfileDetails() {
