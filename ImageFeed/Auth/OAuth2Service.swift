@@ -49,17 +49,15 @@ final class OAuth2Service {
         }
         
         task = session.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let response):
-                    completion(.success(response.bearerToken))
-                case .failure(let error):
-                    print("OAuth2Service.fetchOAuthToken: ошибка получения получения Bearer-токена: \(error)")
-                    completion(.failure(error))
-                }
-                self?.task = nil
-                self?.lastCode = nil
+            switch result {
+            case .success(let response):
+                completion(.success(response.bearerToken))
+            case .failure(let error):
+                print("OAuth2Service.fetchOAuthToken: ошибка получения получения Bearer-токена: \(error)")
+                completion(.failure(error))
             }
+            self?.task = nil
+            self?.lastCode = nil
         }
         task?.resume()
         
