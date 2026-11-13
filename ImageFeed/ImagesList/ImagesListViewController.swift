@@ -51,7 +51,8 @@ final class ImagesListViewController: UIViewController {
                 let viewController = segue.destination as? SingleImageViewController,
                 let indexPath = sender as? IndexPath
                     else {
-                assertionFailure("str.ImagesListViewController.prepare: Ошибка перехода по segue: showSingleImageSegueIdentifier")
+                Apploger.error("Ошибка перехода по segue: showSingleImageSegueIdentifier")
+                assertionFailure("ImagesListViewController.prepare: Ошибка перехода по segue: showSingleImageSegueIdentifier")
                 return
             }
             let image = UIImage(named: photosName[indexPath.row])

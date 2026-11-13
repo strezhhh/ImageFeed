@@ -29,7 +29,7 @@ enum Fonts {
         kern: 0
     )
     
-    static let statusFontSF13RegularYPWhite = LabelFontStyle (
+    static let bioFontSF13RegularYPWhite = LabelFontStyle (
         font: .systemFont(ofSize: 13),
         color: .ypWhite,
         kern: 0

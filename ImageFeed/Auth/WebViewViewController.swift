@@ -7,6 +7,7 @@
 
 import UIKit
 import WebKit
+import Logging
 
 final class WebViewViewController: UIViewController {
     
@@ -25,7 +26,10 @@ final class WebViewViewController: UIViewController {
     private let authViewControllerIdentifier = "AuthViewController"
     private var oauth2Service: OAuth2Service?
     private let nameNavBackButton = "nav_back_button"
-    private let colorNavBackButton = "ypBlack"
+    private let colorNavBackButton = "YP Black"
+    
+    private var estimatedProgressObservation: NSKeyValueObservation?
+    
     
     // MARK: - Initialization
     
@@ -40,16 +44,7 @@ final class WebViewViewController: UIViewController {
         loadAuthView()
         setupNavigationDelegate()
         configureBackButton()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         addObserver()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        removeObserver()
     }
     
     // MARK: - Private Methods
@@ -57,7 +52,7 @@ final class WebViewViewController: UIViewController {
     // Direct the user to https://unsplash.com/oauth/authorize
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: ConstantsValue.unsplashAuthorizeURLString) else {
-            print("WebViewViewController.loadAuthView: ошибка создания URLComponents из строки: \(ConstantsValue.unsplashAuthorizeURLString)")
+            Apploger.error("ошибка создания URLComponents из строки: \(ConstantsValue.unsplashAuthorizeURLString)")
             return
         }
         
@@ -69,7 +64,7 @@ final class WebViewViewController: UIViewController {
         ]
         
         guard let url = urlComponents.url else {
-            print("WebViewViewController.loadAuthView: ошибка создания url из urlComponents")
+            Apploger.error("ошибка создания url из urlComponents")
             return
         }
         let request = URLRequest(url: url)
@@ -82,35 +77,18 @@ final class WebViewViewController: UIViewController {
     
     // Метод подпишет webView на estimatedProgress
     private func addObserver() {
-        webView.addObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            options: .new,
-            context: nil)
-    }
-    
-    // Обработчик обновлений
-    override func observeValue(
-        forKeyPath keyPath: String?,
-        of object: Any?,
-        change: [NSKeyValueChangeKey : Any]?,
-        context: UnsafeMutableRawPointer?
-    ) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgress()
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
+        estimatedProgressObservation = webView.observe(
+            \.estimatedProgress,
+             options: [],
+             changeHandler: { [weak self] _, _ in
+                 guard let self else { return }
+                 self.updateProgress()
+             })
     }
     
     private func updateProgress() {
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
-    }
-    
-    // Метод удалит подписку webView на estimatedProgress
-    private func removeObserver() {
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
     }
     
     // Метод кастомизации кнопки UIBarButtonItem

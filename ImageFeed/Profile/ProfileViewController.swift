@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Kingfisher
+import Logging
 
 final class ProfileViewController: UIViewController {
     
@@ -13,38 +15,55 @@ final class ProfileViewController: UIViewController {
     
     private let avatarImageIdentifier = "UserPhoto"
     private let avatarDefaultImageIdentifier = "person.crop.circle.fill"
-    private var nameIdentifier = "Екатерина Новикова"
-    private var usernameIdentifier = "@ekaterina_nov"
-    private var statusIdentifier: String?
     private let exitIconIdentifier = "iconExit"
-    
+    private let backgroungColor = "YP Black"
     
     private var avatarImageView: UIImageView?
-    private var avatarImage: UIImage?
     private var nameLabel: UILabel?
     private var exitButton: UIButton?
     private var usernameLabel: UILabel?
-    private var statusLabel: UILabel?
+    private var bioLabel: UILabel?
+    
+    // обсервер "нового" API на блоках
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupProfileAvatar()
-        setupNameLabel()
+        setupObserver()
+        setupAvatar()
+        setupBackgroundColor()
         setupExitButton()
-        setupUsernameLabel()
-        setupStatusLabel()
+        setupProfileDetails()
     }
     
     // MARK: - Private Methods
     
-    // Метод установит аватарку
-    private func setupProfileAvatar() {
-        avatarImage = UIImage(named: avatarImageIdentifier)
-        // Если у пользователя не загружена аватарка, то ставим стандартную иконку
-        avatarImageView = avatarImage != nil ? UIImageView(image: avatarImage) : UIImageView(image: UIImage(systemName: avatarDefaultImageIdentifier))
-        guard let avatarImageView else { return }
+    // Метод присвоит нужный цвет экрану профиля
+    private func setupBackgroundColor() {
+        view.backgroundColor = UIColor(named: backgroungColor)
+    }
+    
+    
+    // Присваиваем обсервер, возвращаемый функцией addObserver
+    private func setupObserver () {
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+    }
+    
+    // Метод создает аватарку
+    private func setupAvatar() {
+        avatarImageView = UIImageView(image: UIImage(systemName: avatarDefaultImageIdentifier))
+        guard let avatarImageView else {
+            return }
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(avatarImageView)
         avatarImageView.tintColor = .white
@@ -52,17 +71,48 @@ final class ProfileViewController: UIViewController {
         avatarImageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
         avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
         avatarImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+        avatarImageView.layer.cornerRadius = 35
+        updateAvatar()
+    }
+    
+    // Метод обновляет аватарку
+    private func updateAvatar() {
+        guard
+            let avatarImageView,
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let avatarUrl = URL(string: profileImageURL)
+                else {
+            Apploger.error("ошибка обновления аватарки")
+            return
+        }
+        let processor = RoundCornerImageProcessor(cornerRadius: avatarImageView.layer.cornerRadius)
+        avatarImageView.kf.indicatorType = .activity
+        avatarImageView.kf.setImage(with: avatarUrl,
+                                    placeholder: UIImage(systemName: avatarDefaultImageIdentifier),
+                                    options: [
+                                        .processor(processor)
+                                    ])
+    }
+    
+    private func setupProfileDetails() {
+        guard let profile = ProfileService.shared.profile else {
+            Apploger.error("переменная ProfileService.shared.profile пустая")
+            return
+        }
+        setupNameLabel(profile.name)
+        setupUsernameLabel(profile.loginName)
+        setupBioLabel(profile.bio ?? "")
     }
     
     // Метод установит Имя пользователя
-    private func setupNameLabel() {
+    private func setupNameLabel(_ name: String) {
         nameLabel = UILabel()
         guard let nameLabel else { return }
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
         let style = Fonts.nameFontSF23Regular
         nameLabel.attributedText = NSAttributedString(
-            string: nameIdentifier,
+            string: name,
             attributes: [
                 .font: style.font,
                 .foregroundColor: style.color,
@@ -95,14 +145,14 @@ final class ProfileViewController: UIViewController {
     }
     
     // Метод установит лейбл юзернейм
-    private func setupUsernameLabel() {
+    private func setupUsernameLabel(_ username: String) {
         usernameLabel = UILabel()
         guard let usernameLabel else { return }
         usernameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(usernameLabel)
         let style = Fonts.usernameFontSF13RegularYPWhite50
         usernameLabel.attributedText = NSAttributedString(
-            string: usernameIdentifier,
+            string: username,
             attributes: [
                 .font: style.font,
                 .foregroundColor: style.color,
@@ -117,17 +167,14 @@ final class ProfileViewController: UIViewController {
     }
     
     // Метод установит лейбл статуса
-    private func setupStatusLabel() {
-        // пока принудительно установим статус, но его может и не быть
-        statusIdentifier = "Hello, world!"
-        guard let statusIdentifier else { return }
-        statusLabel = UILabel()
-        guard let statusLabel else { return }
-        statusLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(statusLabel)
-        let style = Fonts.statusFontSF13RegularYPWhite
-        statusLabel.attributedText = NSAttributedString(
-            string: statusIdentifier,
+    private func setupBioLabel(_ bio: String) {
+        bioLabel = UILabel()
+        guard let bioLabel else { return }
+        bioLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bioLabel)
+        let style = Fonts.bioFontSF13RegularYPWhite
+        bioLabel.attributedText = NSAttributedString(
+            string: bio,
             attributes: [
                 .font: style.font,
                 .foregroundColor: style.color,
@@ -136,8 +183,8 @@ final class ProfileViewController: UIViewController {
         )
         guard let usernameLabel else { return }
         NSLayoutConstraint.activate([
-            statusLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
-            statusLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 8)
+            bioLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+            bioLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 8)
         ])
     }
     

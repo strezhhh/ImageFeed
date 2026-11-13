@@ -6,6 +6,11 @@
 //
 
 import Foundation
+import Logging
+
+enum AuthServiceError: Error {
+    case invalidRequest
+}
 
 final class OAuth2Service {
     
@@ -16,7 +21,9 @@ final class OAuth2Service {
     // MARK: - Private Properties
     
     private let decoder = JSONDecoder()
-    private var session: URLSession
+    private var session = URLSession.shared
+    private var task: URLSessionTask?
+    private var lastCode: String?
     
     // MARK: - Initialization
     private init() {
@@ -28,47 +35,43 @@ final class OAuth2Service {
     // MARK: - Methods
     
     // Make a POST URLrequest to https://unsplash.com/oauth/token
-    func fetchOAuthToken(code: String, competition: @escaping (Result<String, Error>) -> Void) {
+    func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        guard lastCode != code else {
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        task?.cancel()
+        lastCode = code
         guard let request = makeRequestOAuthToken(code: code) else {
-            print("OAuth2Service.fetchOAuthToken: ошибка создания экземпляра реквеста из метода makeRequestOAuthToken(...)")
+            Apploger.error("ошибка создания экземпляра реквеста")
+            completion(.failure(AuthServiceError.invalidRequest))
             return
         }
         
-        let task = session.data(for: request) { result in
+        task = session.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             switch result {
-            case .success(let data):
-                do {
-                    let response = try self.decoder.decode(OAuthTokenResponseBody.self, from: data)
-                    competition(.success(response.bearerToken))
-                } catch {
-                    print("OAuth2Service: ошибка декодирования JSON c bearer token: \(error.localizedDescription)")
-                    competition(.failure(NetworkError.decodingError(error)))
-                }
+            case .success(let response):
+                completion(.success(response.bearerToken))
             case .failure(let error):
-                switch error {
-                case NetworkError.httpStatusCode(let statusCode):
-                    print("OAuth2Service: HTTP ошибка: \(statusCode)")
-                case NetworkError.urlRequestError(let requestError):
-                    print("OAuth2Service: HTTP ошибка: \(requestError)")
-                case NetworkError.urlSessionError:
-                    print("OAuth2Service: запрос не удалось выполнить")
-                default:
-                    print("OAuth2Service: HTTP ошибка")
-                }
-                
-                competition(.failure(error))
+                Apploger.error("ошибка получения bearerToken", error)
+                completion(.failure(error))
             }
+            self?.task = nil
+            self?.lastCode = nil
         }
+        task?.resume()
         
-        task.resume()
     }
     
     // MARK: - Private Methods
     
     // prepare a POST URLrequest to https://unsplash.com/oauth/token
     private func makeRequestOAuthToken(code: String) -> URLRequest? {
-        guard var urlComponents = URLComponents(string: ConstantsValue.postRequestOAuthTokenURLString) else {
-            print("OAuth2Service.makeRequestOAuthToken: ошибка создания URLComponents из строки:  \(ConstantsValue.postRequestOAuthTokenURLString)")
+        guard
+            var urlComponents = URLComponents(string: ConstantsValue.postRequestOAuthTokenURLString)
+                else {
+            Apploger.error("ошибка создания URLComponents из строки:  \(ConstantsValue.postRequestOAuthTokenURLString)")
             return nil
         }
         urlComponents.queryItems = [
@@ -78,12 +81,14 @@ final class OAuth2Service {
             URLQueryItem(name: ConstantsName.codeString, value: code),
             URLQueryItem(name: ConstantsName.grantType, value: ConstantsValue.grantType)
         ]
-        guard let urlOAuthToken = urlComponents.url else {
-            print("OAuth2Service.makeRequestOAuthToken: ошибка создания URL из URLComponents")
+        guard
+            let urlOAuthToken = urlComponents.url
+                else {
+            Apploger.error("ошибка создания URL из URLComponents")
             return nil
         }
         var request = URLRequest(url: urlOAuthToken)
-        request.httpMethod = ConstantsValue.requestMethod
+        request.httpMethod = ConstantsValue.requestMethodPost
         return request
     }
     

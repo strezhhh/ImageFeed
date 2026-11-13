@@ -7,6 +7,8 @@
 
 import UIKit
 import WebKit
+import ProgressHUD
+import Logging
 
 final class AuthViewController: UIViewController {
     
@@ -20,6 +22,8 @@ final class AuthViewController: UIViewController {
     // переменная хранит название ShowWebView
     private let showWebViewSegueIdentifier = "ShowWebView"
     
+    private let alertPresenter = AlertPresenter.shared
+    
     // MARK: - Override Methods
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -27,7 +31,8 @@ final class AuthViewController: UIViewController {
             segue.identifier == showWebViewSegueIdentifier,
             let destination = segue.destination as? WebViewViewControllerProtocol
                 else {
-            assertionFailure("str.AuthViewController.prepare: Ошибка перехода по seque: showWebViewSegueIdentifier")
+            Apploger.error("Ошибка перехода по seque: showWebViewSegueIdentifier")
+            assertionFailure("AuthViewController.prepare: Ошибка перехода по seque: showWebViewSegueIdentifier")
             return
         }
         setYourselfAsDelegate(to: destination)
@@ -54,20 +59,25 @@ extension AuthViewController: WebViewViewControllerDelegate {
     // метод сообщит, что WebViewViewController получил код, необходимый для получения bearer token
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         navigationController?.popViewController(animated: true)
-        
+        UIBlockingProgressHUD.show()
         // Метод подготовит POST запрос на bearer token и в случае успеха токен будет записан в storage
         // а управление будет передано SplashViewController
         OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
             switch result {
             case .success(let token):
                 OAuth2TokenStorage.shared.store(bearerToken: token)
-                print("AuthViewController.webViewViewController: bearer token авторизации успешно создан и сохранен")
+                Apploger.info("bearerToken успешно создан и сохранен")
                 guard let self else {
                     return
                 }
                 self.delegate?.didAuthenticate(self)
             case .failure(let error):
-                print("AuthViewController.webViewViewController: ошибка создания bearer token: \(error.localizedDescription)")
+                Apploger.error("ошибка получения bearerToken", error)
+                guard let self else { return }
+                alertPresenter.showAlertWithMessage(viewController: self, title: "Что-то пошло не так", message: "Не удалось войти в систему", buttonText: "Ok") {
+                    self.navigationController?.popViewController(animated: true)
+                }
             }
         }
     }
@@ -78,3 +88,4 @@ extension AuthViewController: WebViewViewControllerDelegate {
     }
     
 }
+
