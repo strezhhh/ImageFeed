@@ -22,9 +22,11 @@ enum ConstantsValue {
     static let postRequestOAuthTokenURLString = "https://unsplash.com/oauth/token"
     static let getRequestProfileDetails = "https://api.unsplash.com/me"
     static let getRequestProfileImage = "https://api.unsplash.com/users/"
+    static let getRequestPhotosNextPages = "https://api.unsplash.com/photos"
     static let grantType: String = "authorization_code"
     static let requestMethodPost = "POST"
     static let requestMethodGET = "GET"
+    static let defaultPerPage: Int = 10
 }
 
 
@@ -37,4 +39,6 @@ enum ConstantsName {
     static let clientSecret = "client_secret"
     static let grantType = "grant_type"
     static let codeString = "code"
+    static let page = "page"
+    static let perPage = "per_page"
 }
