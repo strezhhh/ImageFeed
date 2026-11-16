@@ -76,17 +76,15 @@ final class ImagesListService {
     
     // MARK: - Methods
     
-    func fetchPhotosNextPage(_ completion: @escaping (Result<[Photo], Error>) -> Void) {
-
+    func fetchPhotosNextPage() {
+        
         guard task == nil else {
             Apploger.error("Запрос уже выполняется")
-            completion(.failure(NetworkError.invalidRequest))
             return
         }
         
         guard let token = OAuth2TokenStorage.shared.token else {
             Apploger.error("ошибка, отсутствует bearerToken")
-            completion(.failure(NetworkError.tokenMissing))
             return
         }
         
@@ -94,49 +92,39 @@ final class ImagesListService {
         
         guard let nextPage else {
             Apploger.error("Отстуствует nextPage")
-            completion(.failure(NetworkError.otherError))
             return
         }
         
         guard let request = makeRequestNextPages(for: nextPage, bearer: token) else {
             Apploger.error("ошибка создания экземпляра реквеста")
-            completion(.failure(NetworkError.invalidRequest))
             return
         }
         
         task = session.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
             switch result {
             case .success(let photoResult):
-                // мы получили массив PhotoResult с данными на 10 изображений
-                // нам надо обратиться по очереди к каждому и заполнить 10 моделей Photo
-                // и добавить в конец массива переменной photos
                 guard let self else {
                     Apploger.error("Self отсутствует")
-                    completion(.failure(NetworkError.selfMissing))
                     return
                 }
-                for item in photoResult {
-                    let photo = Photo(
-                        id: item.id,
-                        size: item.size,
-                        createdAt: item.createdAt,
-                        welcomeDescription: item.welcomeDescription,
-                        thumbImageURL: item.urls.thumbImageURL,
-                        largeImageURL: item.urls.largeImageURL,
-                        isLiked: item.isLiked
-                    )
-                    DispatchQueue.main.async {
+                    for item in photoResult {
+                        let photo = Photo(
+                            id: item.id,
+                            size: item.size,
+                            createdAt: item.createdAt,
+                            welcomeDescription: item.welcomeDescription,
+                            thumbImageURL: item.urls.thumbImageURL,
+                            largeImageURL: item.urls.largeImageURL,
+                            isLiked: item.isLiked
+                        )
                         self.photos.append(photo)
                     }
-                }
-                completion(.success(self.photos))
-                notifyAboutChanges()
+                    self.notifyAboutChanges()
+                    self.lastLoadedPage = self.nextPage
                 
             case .failure(let error):
                 Apploger.error("ошибка получения bearerToken", error)
-                completion(.failure(error))
             }
-            self?.lastLoadedPage = self?.nextPage
             self?.task = nil
         }
         
@@ -175,6 +163,7 @@ final class ImagesListService {
         
         return request
     }
-
+    
 }
+
 
