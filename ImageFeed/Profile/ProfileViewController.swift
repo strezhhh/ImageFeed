@@ -82,7 +82,7 @@ final class ProfileViewController: UIViewController {
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let avatarUrl = URL(string: profileImageURL)
                 else {
-            Apploger.error("ошибка обновления аватарки")
+            Applogger.error("ошибка обновления аватарки")
             return
         }
         let processor = RoundCornerImageProcessor(cornerRadius: avatarImageView.layer.cornerRadius)
@@ -96,7 +96,7 @@ final class ProfileViewController: UIViewController {
     
     private func setupProfileDetails() {
         guard let profile = ProfileService.shared.profile else {
-            Apploger.error("переменная ProfileService.shared.profile пустая")
+            Applogger.error("переменная ProfileService.shared.profile пустая")
             return
         }
         setupNameLabel(profile.name)

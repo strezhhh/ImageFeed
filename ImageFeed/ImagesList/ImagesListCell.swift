@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ImagesListCell: UITableViewCell {
     
@@ -18,5 +19,15 @@ final class ImagesListCell: UITableViewCell {
     // MARK: - Properties
     
     static let reuseIdentifier: String = "ImagesListCell"
+
+    // MARK: - Lifecycle
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageCell.kf.cancelDownloadTask()
+    }
     
 }
+
+
+

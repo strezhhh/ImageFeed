@@ -25,14 +25,14 @@ final class SplashViewController: UIViewController {
     
     // MARK: - Lifecycle
     deinit {
-        Apploger.info("SplashViewController уничтожен")
+        Applogger.info("SplashViewController уничтожен")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if storage.token != nil {
             guard let token = storage.token else {
-                Apploger.error("ошибка чтения токена")
+                Applogger.error("ошибка чтения токена")
                 return
             }
             fetchProfile(token)
@@ -43,7 +43,7 @@ final class SplashViewController: UIViewController {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        Apploger.info("awakeFromNib сработал")
+        Applogger.info("awakeFromNib сработал")
         setupBackgroundColor()
         setupSplashIcon()
     }
@@ -74,7 +74,7 @@ final class SplashViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
         guard let viewController = storyboard.instantiateViewController(withIdentifier: authViewControllerID) as? AuthViewController else {
             assertionFailure("SplashViewController.switchToNaviAuthController: ошибка создания AuthViewController")
-            Apploger.error("ошибка создания AuthViewController")
+            Applogger.error("ошибка создания AuthViewController")
             return
         }
         viewController.delegate = self
@@ -90,7 +90,7 @@ final class SplashViewController: UIViewController {
             let window = windowScene.windows.first
         else {
             assertionFailure("SplashViewController.switchToTabBarController: Invalid window configuration")
-            Apploger.error("Invalid window configuration")
+            Applogger.error("Invalid window configuration")
             return
         }
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
@@ -107,7 +107,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController) {
         navigationController?.popViewController(animated: true)
         guard let token = OAuth2TokenStorage.shared.token else {
-            Apploger.error("bearerToken отсутствует")
+            Applogger.error("bearerToken отсутствует")
             return
         }
         fetchProfile(token)
@@ -119,13 +119,13 @@ extension SplashViewController: AuthViewControllerDelegate {
             UIBlockingProgressHUD.dismiss()
             switch result {
             case .success(let profile):
-                Apploger.info("Получены данные профиля")
+                Applogger.info("Получены данные профиля")
                 ProfileImageService.shared.fetchProfileImageURL(username: profile.username) {_ in
                     switch result {
                     case .success:
-                        Apploger.info("Получена URL аватарки")
+                        Applogger.info("Получена URL аватарки")
                     case .failure (let error):
-                        Apploger.error("ошибка получения URL аватарки", error)
+                        Applogger.error("ошибка получения URL аватарки", error)
                     }
                 }
                 guard let self = self else {
@@ -133,7 +133,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 }
                 self.switchToTabBarController()
             case .failure:
-                Apploger.error("ошибка получения профиля")
+                Applogger.error("ошибка получения профиля")
                 break
             }
         }

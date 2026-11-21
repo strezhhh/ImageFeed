@@ -79,24 +79,24 @@ final class ImagesListService {
     func fetchPhotosNextPage() {
         
         guard task == nil else {
-            Apploger.error("Запрос уже выполняется")
+            Applogger.error("Запрос уже выполняется")
             return
         }
         
         guard let token = OAuth2TokenStorage.shared.token else {
-            Apploger.error("ошибка, отсутствует bearerToken")
+            Applogger.error("ошибка, отсутствует bearerToken")
             return
         }
         
         nextPage = (self.lastLoadedPage ?? 0) + 1
         
         guard let nextPage else {
-            Apploger.error("Отстуствует nextPage")
+            Applogger.error("Отстуствует nextPage")
             return
         }
         
         guard let request = makeRequestNextPages(for: nextPage, bearer: token) else {
-            Apploger.error("ошибка создания экземпляра реквеста")
+            Applogger.error("ошибка создания экземпляра реквеста")
             return
         }
         
@@ -104,7 +104,7 @@ final class ImagesListService {
             switch result {
             case .success(let photoResult):
                 guard let self else {
-                    Apploger.error("Self отсутствует")
+                    Applogger.error("Self отсутствует")
                     return
                 }
                     for item in photoResult {
@@ -123,7 +123,7 @@ final class ImagesListService {
                     self.lastLoadedPage = self.nextPage
                 
             case .failure(let error):
-                Apploger.error("ошибка получения bearerToken", error)
+                Applogger.error("ошибка получения bearerToken", error)
             }
             self?.task = nil
         }
@@ -145,7 +145,7 @@ final class ImagesListService {
         guard
             var urlComponents = URLComponents(string: ConstantsValue.getRequestPhotosNextPages)
                 else {
-            Apploger.error("ошибка создания URLComponents из строки:  \(ConstantsValue.getRequestPhotosNextPages)")
+            Applogger.error("ошибка создания URLComponents из строки:  \(ConstantsValue.getRequestPhotosNextPages)")
             assertionFailure("ImagesListService.makeRequestPhotosNextPages: ошибка создания URLComponents из строки:  \(ConstantsValue.getRequestPhotosNextPages)")
             return nil
         }
@@ -154,7 +154,7 @@ final class ImagesListService {
             URLQueryItem(name: ConstantsName.perPage, value: "\(ConstantsValue.defaultPerPage)")
         ]
         guard let URLNextPages = urlComponents.url else {
-            Apploger.error("ошибка создания URL из urlComponents")
+            Applogger.error("ошибка создания URL из urlComponents")
             return nil
         }
         var request = URLRequest(url: URLNextPages)

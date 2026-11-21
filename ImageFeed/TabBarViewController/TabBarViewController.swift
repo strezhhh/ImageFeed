@@ -28,7 +28,7 @@ final class TabBarViewController: UITabBarController {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        Apploger.info("awakeFromNib сработал")
+        Applogger.info("awakeFromNib сработал")
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
         let navigationViewController = storyboard.instantiateViewController(
             withIdentifier: navigationViewController

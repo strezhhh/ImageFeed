@@ -59,7 +59,7 @@ final class ProfileService {
         
         guard let request = makeRequestProfile(bearer: token)
                 else {
-            Apploger.error("ошибка создания экземпляра реквеста из метода makeRequestProfile(bearer...)")
+            Applogger.error("ошибка создания экземпляра реквеста из метода makeRequestProfile(bearer...)")
             completion(.failure(NetworkError.invalidRequest))
             return
         }
@@ -77,7 +77,7 @@ final class ProfileService {
                     ProfileService.shared.profile = profile
                     completion(.success(profile))
                 case .failure(let error):
-                    Apploger.error("ошибка получения данных профиля", error)
+                    Applogger.error("ошибка получения данных профиля", error)
                     completion(.failure(error))
                 }
                 self?.task = nil
@@ -92,7 +92,7 @@ final class ProfileService {
         guard
             let url = URL(string: ConstantsValue.getRequestProfileDetails)
                 else {
-            Apploger.error("ошибка создания url из строки:  \(ConstantsValue.getRequestProfileDetails)")
+            Applogger.error("ошибка создания url из строки:  \(ConstantsValue.getRequestProfileDetails)")
             assertionFailure("ProfileService.makeRequestProfile: ошибка создания url из строки:  \(ConstantsValue.getRequestProfileDetails)")
             return nil
         }
