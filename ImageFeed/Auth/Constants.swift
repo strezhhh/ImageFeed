@@ -26,7 +26,12 @@ enum ConstantsValue {
     static let grantType: String = "authorization_code"
     static let requestMethodPost = "POST"
     static let requestMethodGET = "GET"
+    static let requestMethodDelete = "DELETE"
     static let defaultPerPage: Int = 10
+    
+    static func getRequestIsLike(photoID: String) -> String {
+        "https://api.unsplash.com/photos/\(photoID)/like"
+    }
 }
 
 
