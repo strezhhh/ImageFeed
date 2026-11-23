@@ -113,7 +113,6 @@ final class ImagesListService {
                                     largeImageURL: photo.largeImageURL,
                                     isLiked: !photo.isLiked
                                 )
-                    //self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)
                     self.photos[index] = newPhoto
                     
                     completion(.success(()))
@@ -178,7 +177,6 @@ final class ImagesListService {
             }
             self?.task = nil
         }
-        
         task?.resume()
     }
     

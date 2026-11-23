@@ -37,6 +37,9 @@ final class ImagesListViewController: UIViewController {
     var photos: [Photo] = []
     private let placeholderIcon = "placeholderIcon"
     
+    private let alertPresenter = AlertPresenter.shared
+
+    
     
     
     // MARK: - Lifecycle
@@ -50,6 +53,14 @@ final class ImagesListViewController: UIViewController {
     
     
     // MARK: - Private Methods
+    
+    /*private*/ func setIsLiked(_ like: Bool, cell: ImagesListCell){
+        if like {
+            cell.likeButton.setImage(UIImage(resource: .active), for: .normal)
+        } else {
+            cell.likeButton.setImage(UIImage(resource: .noActive), for: .normal)
+        }
+    }
     
     // Присваиваем обсервер, возвращаемый функцией addObserver
     private func setupObserver() {
@@ -76,11 +87,6 @@ final class ImagesListViewController: UIViewController {
                 tableView.insertRows(at: indexPaths, with: .automatic)
             } completion: { _ in }
         }
-        
-    }
-    
-    // Метод обновляет ячейку по индексу
-    private func updateCell(for index: Int) {
         
     }
     
@@ -142,12 +148,7 @@ extension ImagesListViewController {
         if let createdAt = photo.createdAt {
             cell.dateLabel.text = dateFormatter.string(from: createdAt)
         }
-        
-        if photo.isLiked {
-            cell.likeButton.setImage(UIImage(resource: .active), for: .normal)
-        } else {
-            cell.likeButton.setImage(UIImage(resource: .noActive), for: .normal)
-        }
+        setIsLiked(photo.isLiked, cell: cell)
     }
     
 }
@@ -166,6 +167,7 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         configCell(for: imageListCell, with: photos[indexPath.row])
+        imageListCell.delegate = self
         return imageListCell
     }
     
@@ -181,7 +183,7 @@ extension ImagesListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-
+        
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
         
@@ -205,5 +207,36 @@ extension ImagesListViewController: UITableViewDelegate {
         }
     }
     
+}
+
+extension ImagesListViewController: ImagesListCellDelegate {
+    
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        // TODO
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            Applogger.error("ошибка обращения к индексу ячейки")
+            return
+        }
+        UIBlockingProgressHUD.show()
+
+        let photo = photos[indexPath.row]
+        imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self] result in
+            guard let self else {
+                UIBlockingProgressHUD.dismiss()
+                return
+            }
+            switch result {
+            case .success:
+                self.photos = self.imagesListService.photos
+                self.setIsLiked(self.photos[indexPath.row].isLiked, cell: cell)
+                UIBlockingProgressHUD.dismiss()
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+                Applogger.error("Не получилось поменять статус лайка")
+                self.alertPresenter.showAlertWithMessage(viewController: self, title: "Что-то пошло не так", message: "Не удалось поставить или снять лайк", buttonText: "Ok") {
+                }
+            }
+        }
+    }
 }
 

@@ -19,6 +19,7 @@ final class ImagesListCell: UITableViewCell {
     // MARK: - Properties
     
     static let reuseIdentifier: String = "ImagesListCell"
+    weak var delegate: ImagesListCellDelegate?
 
     // MARK: - Lifecycle
 
@@ -27,6 +28,12 @@ final class ImagesListCell: UITableViewCell {
         imageCell.kf.cancelDownloadTask()
     }
     
+    // MARK: - IBActions
+
+    @IBAction func likeButtonClicked(_ sender: Any) {
+        delegate?.imageListCellDidTapLike(self)
+
+    }
 }
 
 
