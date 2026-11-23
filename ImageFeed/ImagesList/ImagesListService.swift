@@ -76,6 +76,10 @@ final class ImagesListService {
     
     // MARK: - Methods
     
+    func cleanPhotos() {
+        photos.removeAll()
+    }
+    
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
         
         guard let token = OAuth2TokenStorage.shared.token else {
@@ -122,7 +126,6 @@ final class ImagesListService {
             }
         }
         task?.resume()
-        
         
     }
     

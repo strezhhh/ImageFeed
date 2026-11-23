@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ProgressHUD
 
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -13,7 +14,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     private let mainName = "Main"
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        ProgressHUD.animationType = .circleBarSpinFade
+        ProgressHUD.colorHUD = .white
+        ProgressHUD.colorAnimation = .black
         return true
     }
 

@@ -40,6 +40,7 @@ final class ProfileService {
     private var task: URLSessionTask?
     private let decoder = JSONDecoder()
     private(set) var profile: Profile?
+    
 
     
     // MARK: - Initialization
@@ -52,6 +53,11 @@ final class ProfileService {
     
     
     // MARK: - Methods
+    
+    // метод обнулит данные профиля
+    func cleanProfile() {
+        profile = nil
+    }
     
     // Метод создаст GET-запрос личной информации профиля пользователя по адресу "https://api.unsplash.com/me"
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {

@@ -27,6 +27,8 @@ final class ProfileViewController: UIViewController {
     // обсервер "нового" API на блоках
     private var profileImageServiceObserver: NSObjectProtocol?
     
+    private var profileLogoutService = ProfileLogoutService.shared
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -191,6 +193,7 @@ final class ProfileViewController: UIViewController {
     // Метод выхода из профиля пользователя
     @objc
     private func didTapButton() {
+        profileLogoutService.logout()
         tabBarController?.selectedIndex = 0
     }
 }

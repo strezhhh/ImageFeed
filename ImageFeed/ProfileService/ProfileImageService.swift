@@ -51,6 +51,10 @@ final class ProfileImageService {
     
     // MARK: - Methods
     
+    func cleanAvatarURL() {
+        avatarURL = nil
+    }
+    
     // Метод создаст GET-запрос личной информации профиля пользователя по адресу "https://api.unsplash.com/users/:username"
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         self.task?.cancel()
