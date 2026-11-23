@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Logging
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
     
@@ -25,6 +27,11 @@ final class SingleImageViewController: UIViewController {
             rescaleAndCenterImageInScrollView(image: image)
         }
     }
+    var largeImageURL: String?
+    
+    // MARK: - private Properties
+    private let alertPresenter = AlertPresenter.shared
+    
     
     // MARK: - Lifecycle
     
@@ -37,10 +44,46 @@ final class SingleImageViewController: UIViewController {
     // MARK: - Private Methods
     
     private func setupSingleImageView() {
-        guard let image else { return }
-        singleImageView.image = image
-        singleImageView.frame.size = image.size
-        rescaleAndCenterImageInScrollView(image: image)
+        UIBlockingProgressHUD.show()
+        guard let largeImageURL else {
+            Applogger.error("largeImageURL пока пуст")
+            return
+        }
+        guard let imageUrl = URL(string: largeImageURL) else {
+            Applogger.error("Ошибка создания URL")
+            return
+        }
+        singleImageView.kf.setImage(with: imageUrl) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            guard let self = self else {
+                Applogger.error("экран отсутствует")
+                return
+            }
+            switch result {
+            case .success(let imageResult):
+                //self.singleImageView.image = image
+                self.singleImageView.frame.size = imageResult.image.size
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure:
+                self.showError()
+            }
+        }
+    }
+    
+    private func showError() {
+        alertPresenter.showAlertWithMessage(
+            viewController: self,
+            title: "Что-то пошло не так",
+            message: "Попробовать ещё раз?",
+            buttonText: "Не надо",
+            completion: {
+                
+            },
+            secondButtonText: "Повторить",
+            secondCompletion: { [weak self] in
+                guard let self else { return }
+                self.setupSingleImageView()
+            })
     }
     
     // Метод установит минимальное и максимально значение для зума

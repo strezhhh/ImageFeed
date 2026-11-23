@@ -44,8 +44,8 @@ struct UrlsResult: Decodable {
     let largeImageURL: String
     
     private enum CodingKeys: String, CodingKey {
-        case thumbImageURL = "thumb"
-        case largeImageURL = "raw"
+        case thumbImageURL = "small"
+        case largeImageURL = "full"
     }
 }
 
@@ -93,33 +93,33 @@ final class ImagesListService {
             return
         }
         task = session.data(for: request) { [weak self] (result: Result<Data, Error>) in
-                switch result {
-                case .success:
-                    guard
-                        let self,
-                        let index = self.photos.firstIndex(where: { $0.id == photoId })
-                    else {
-                        Applogger.error("ошибка выполнения условий")
-                        completion(.failure(NetworkError.invalidRequest))
-                        return
-                    }
-                    let photo = self.photos[index]
-                    let newPhoto = Photo(
-                                    id: photo.id,
-                                    size: photo.size,
-                                    createdAt: photo.createdAt,
-                                    welcomeDescription: photo.welcomeDescription,
-                                    thumbImageURL: photo.thumbImageURL,
-                                    largeImageURL: photo.largeImageURL,
-                                    isLiked: !photo.isLiked
-                                )
-                    self.photos[index] = newPhoto
-                    
-                    completion(.success(()))
-                case .failure(let error):
-                    Applogger.error("ошибка лайка/дизлайка", error)
-                    completion(.failure(error))
+            switch result {
+            case .success:
+                guard
+                    let self,
+                    let index = self.photos.firstIndex(where: { $0.id == photoId })
+                        else {
+                    Applogger.error("ошибка выполнения условий")
+                    completion(.failure(NetworkError.invalidRequest))
+                    return
                 }
+                let photo = self.photos[index]
+                let newPhoto = Photo(
+                    id: photo.id,
+                    size: photo.size,
+                    createdAt: photo.createdAt,
+                    welcomeDescription: photo.welcomeDescription,
+                    thumbImageURL: photo.thumbImageURL,
+                    largeImageURL: photo.largeImageURL,
+                    isLiked: !photo.isLiked
+                )
+                self.photos[index] = newPhoto
+                
+                completion(.success(()))
+            case .failure(let error):
+                Applogger.error("ошибка лайка/дизлайка", error)
+                completion(.failure(error))
+            }
         }
         task?.resume()
         
@@ -157,20 +157,20 @@ final class ImagesListService {
                     Applogger.error("Self отсутствует")
                     return
                 }
-                    for item in photoResult {
-                        let photo = Photo(
-                            id: item.id,
-                            size: item.size,
-                            createdAt: item.createdAt,
-                            welcomeDescription: item.welcomeDescription,
-                            thumbImageURL: item.urls.thumbImageURL,
-                            largeImageURL: item.urls.largeImageURL,
-                            isLiked: item.isLiked
-                        )
-                        self.photos.append(photo)
-                    }
-                    self.notifyAboutChanges()
-                    self.lastLoadedPage = self.nextPage
+                for item in photoResult {
+                    let photo = Photo(
+                        id: item.id,
+                        size: item.size,
+                        createdAt: item.createdAt,
+                        welcomeDescription: item.welcomeDescription,
+                        thumbImageURL: item.urls.thumbImageURL,
+                        largeImageURL: item.urls.largeImageURL,
+                        isLiked: item.isLiked
+                    )
+                    self.photos.append(photo)
+                }
+                self.notifyAboutChanges()
+                self.lastLoadedPage = self.nextPage
                 
             case .failure(let error):
                 Applogger.error("ошибка получения bearerToken", error)

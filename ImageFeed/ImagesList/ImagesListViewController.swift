@@ -38,7 +38,7 @@ final class ImagesListViewController: UIViewController {
     private let placeholderIcon = "placeholderIcon"
     
     private let alertPresenter = AlertPresenter.shared
-
+    
     
     
     
@@ -108,8 +108,10 @@ final class ImagesListViewController: UIViewController {
                 assertionFailure("ImagesListViewController.prepare: Ошибка перехода по segue: showSingleImageSegueIdentifier")
                 return
             }
-            let image = UIImage(named: photosName[indexPath.row])
-            viewController.image = image
+            let photo = photos[indexPath.row]
+            viewController.largeImageURL = photo.largeImageURL
+            //            let image = UIImage(named: photosName[indexPath.row])
+            //            viewController.image = image
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -218,7 +220,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
             return
         }
         UIBlockingProgressHUD.show()
-
+        
         let photo = photos[indexPath.row]
         imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self] result in
             guard let self else {
