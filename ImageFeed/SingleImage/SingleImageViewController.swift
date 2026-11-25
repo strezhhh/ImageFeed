@@ -31,7 +31,8 @@ final class SingleImageViewController: UIViewController {
     
     // MARK: - private Properties
     private let alertPresenter = AlertPresenter.shared
-    
+    private let placeholderIcon = "placeholderIcon"
+
     
     // MARK: - Lifecycle
     
@@ -44,7 +45,6 @@ final class SingleImageViewController: UIViewController {
     // MARK: - Private Methods
     
     private func setupSingleImageView() {
-        UIBlockingProgressHUD.show()
         guard let largeImageURL else {
             Applogger.error("largeImageURL пока пуст")
             return
@@ -53,18 +53,24 @@ final class SingleImageViewController: UIViewController {
             Applogger.error("Ошибка создания URL")
             return
         }
-        singleImageView.kf.setImage(with: imageUrl) { [weak self] result in
-            UIBlockingProgressHUD.dismiss()
+        singleImageView.contentMode = .center
+        singleImageView.kf.indicatorType = .activity
+        singleImageView.kf.setImage(
+            with: imageUrl,
+            placeholder: UIImage(named: placeholderIcon)
+        ) { [weak self] result in
             guard let self = self else {
                 Applogger.error("экран отсутствует")
                 return
             }
             switch result {
             case .success(let imageResult):
-                //self.singleImageView.image = image
                 self.singleImageView.frame.size = imageResult.image.size
                 self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+                self.singleImageView?.kf.cancelDownloadTask()
+
             case .failure:
+                self.singleImageView?.kf.cancelDownloadTask()
                 self.showError()
             }
         }
