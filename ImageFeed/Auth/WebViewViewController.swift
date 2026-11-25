@@ -20,16 +20,13 @@ final class WebViewViewController: UIViewController {
     
     var delegate: WebViewViewControllerDelegate?
     
-    
     // MARK: - Private Properties
     
     private let authViewControllerIdentifier = "AuthViewController"
     private var oauth2Service: OAuth2Service?
     private let nameNavBackButton = "nav_back_button"
     private let colorNavBackButton = "YP Black"
-    
     private var estimatedProgressObservation: NSKeyValueObservation?
-    
     
     // MARK: - Initialization
     
@@ -70,8 +67,6 @@ final class WebViewViewController: UIViewController {
         let request = URLRequest(url: url)
         webView.load(request)
     }
-    
-    
     
     // MARK: - KVO
     

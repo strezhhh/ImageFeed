@@ -153,7 +153,6 @@ final class SingleImageViewController: UIViewController {
         didTapShareButton()
     }
     
-    
 }
 
 // MARK: - Extension SingleImageViewController: UIScrollViewDelegate

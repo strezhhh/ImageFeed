@@ -47,7 +47,6 @@ final class ProfileViewController: UIViewController {
         view.backgroundColor = UIColor(named: backgroungColor)
     }
     
-    
     // Присваиваем обсервер, возвращаемый функцией addObserver
     private func setupObserver () {
         profileImageServiceObserver = NotificationCenter.default

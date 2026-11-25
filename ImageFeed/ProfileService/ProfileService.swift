@@ -41,8 +41,6 @@ final class ProfileService {
     private let decoder = JSONDecoder()
     private(set) var profile: Profile?
     
-    
-    
     // MARK: - Initialization
     
     private init () {
@@ -50,7 +48,6 @@ final class ProfileService {
         conf.timeoutIntervalForRequest = 10
         self.session = URLSession(configuration: conf)
     }
-    
     
     // MARK: - Methods
     
@@ -62,14 +59,12 @@ final class ProfileService {
     // Метод создаст GET-запрос личной информации профиля пользователя по адресу "https://api.unsplash.com/me"
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         self.task?.cancel()
-        
         guard let request = makeRequestProfile(bearer: token)
                 else {
             Applogger.error("ошибка создания экземпляра реквеста из метода makeRequestProfile(bearer...)")
             completion(.failure(NetworkError.invalidRequest))
             return
         }
-        
         task = session.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
             DispatchQueue.main.async {
                 switch result {
@@ -102,7 +97,6 @@ final class ProfileService {
             assertionFailure("ProfileService.makeRequestProfile: ошибка создания url из строки:  \(ConstantsValue.getRequestProfileDetails)")
             return nil
         }
-        
         var request = URLRequest(url: url)
         request.httpMethod = ConstantsValue.requestMethodGET
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

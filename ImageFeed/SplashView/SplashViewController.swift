@@ -24,6 +24,7 @@ final class SplashViewController: UIViewController {
     
     
     // MARK: - Lifecycle
+    
     deinit {
         Applogger.info("SplashViewController уничтожен")
     }

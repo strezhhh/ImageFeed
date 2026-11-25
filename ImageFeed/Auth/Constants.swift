@@ -34,7 +34,6 @@ enum ConstantsValue {
     }
 }
 
-
 // Имена для работы с API Unsplash
 enum ConstantsName {
     static let clientID = "client_id"

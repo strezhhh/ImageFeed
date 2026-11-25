@@ -72,8 +72,6 @@ final class ImagesListService {
         self.session = URLSession(configuration: conf)
     }
     
-    
-    
     // MARK: - Methods
     
     func cleanPhotos() {
@@ -81,7 +79,6 @@ final class ImagesListService {
     }
     
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
-        
         guard let token = OAuth2TokenStorage.shared.token else {
             Applogger.error("ошибка, отсутствует bearerToken")
             completion(.failure(NetworkError.tokenMissing))
@@ -130,29 +127,23 @@ final class ImagesListService {
     }
     
     func fetchPhotosNextPage() {
-        
         guard task == nil else {
             Applogger.error("Запрос уже выполняется")
             return
         }
-        
         guard let token = OAuth2TokenStorage.shared.token else {
             Applogger.error("ошибка, отсутствует bearerToken")
             return
         }
-        
         nextPage = (self.lastLoadedPage ?? 0) + 1
-        
         guard let nextPage else {
             Applogger.error("Отстуствует nextPage")
             return
         }
-        
         guard let request = makeRequestNextPages(for: nextPage, bearer: token) else {
             Applogger.error("ошибка создания экземпляра реквеста")
             return
         }
-        
         task = session.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
             switch result {
             case .success(let photoResult):
@@ -193,7 +184,6 @@ final class ImagesListService {
     }
     
     private func makeRequestNextPages(for nextPage: Int, bearer token: String) -> URLRequest? {
-        
         guard
             var urlComponents = URLComponents(string: ConstantsValue.getRequestPhotosNextPages)
                 else {
@@ -218,7 +208,6 @@ final class ImagesListService {
     
     
     private func makeRequestLike(id: String, bearer token: String, like: Bool) -> URLRequest? {
-        
         guard
             let url = URL(string: ConstantsValue.getRequestIsLike(photoID: id))
                 else {
@@ -226,7 +215,6 @@ final class ImagesListService {
             return nil
         }
         var request = URLRequest(url: url)
-        
         if like {
             request.httpMethod = ConstantsValue.requestMethodPost
         }

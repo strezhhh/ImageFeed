@@ -16,7 +16,6 @@ final class AlertPresenter {
     // MARK: - Initialization
     
     private init() {
-        
     }
     
     // Метод отображения Алерты с заголовком, сообщением и кнопкой
@@ -55,6 +54,5 @@ final class AlertPresenter {
         DispatchQueue.main.async {
             viewController.present(alert, animated: true, completion: nil)
         }
-        
     }
 }

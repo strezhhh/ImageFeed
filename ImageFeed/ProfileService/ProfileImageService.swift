@@ -10,18 +10,15 @@ import Logging
 
 struct UserResult: Codable {
     let profileImage: ProfileImage
-    
     private enum CodingKeys: String, CodingKey {
         case profileImage = "profile_image"
     }
-    
 }
 
 struct ProfileImage: Codable {
     let small: String
     let medium: String
     let large: String
-    
 }
 
 
@@ -96,7 +93,6 @@ final class ProfileImageService {
         task?.resume()
     }
     
-    
     // MARK: - Private Methods
     
     private func makeRequestProfileImage(_ username: String, bearer token: String) -> URLRequest? {
@@ -107,7 +103,6 @@ final class ProfileImageService {
             assertionFailure("ProfileService.makeRequestProfileImage: ошибка создания url из строки:  \(ConstantsValue.getRequestProfileImage)")
             return nil
         }
-        
         var request = URLRequest(url: url)
         request.httpMethod = ConstantsValue.requestMethodGET
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

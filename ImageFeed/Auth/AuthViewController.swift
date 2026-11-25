@@ -16,12 +16,10 @@ final class AuthViewController: UIViewController {
     
     weak var delegate: AuthViewControllerDelegate?
     
-    
     // MARK: - Private Properties
     
     // переменная хранит название ShowWebView
     private let showWebViewSegueIdentifier = "ShowWebView"
-    
     private let alertPresenter = AlertPresenter.shared
     
     // MARK: - Override Methods
@@ -54,7 +52,6 @@ final class AuthViewController: UIViewController {
 // MARK: - Extension AuthViewController: WebViewViewControllerDelegate
 
 extension AuthViewController: WebViewViewControllerDelegate {
-    
     
     // метод сообщит, что WebViewViewController получил код, необходимый для получения bearer token
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
