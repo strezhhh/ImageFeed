@@ -17,11 +17,11 @@ final class ProfileLogoutService {
     static let shared = ProfileLogoutService()
     
     // MARK: - Initialization
-
+    
     private init() { }
     
     // MARK: - Methods
-
+    
     func logout() {
         cleanCookies()
         cleanToken()
@@ -31,7 +31,7 @@ final class ProfileLogoutService {
     }
     
     // MARK: - Private Methods
-
+    
     private func cleanCookies() {
         OAuth2TokenStorage.shared.token = nil
         HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)

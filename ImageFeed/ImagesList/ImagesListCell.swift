@@ -20,19 +20,19 @@ final class ImagesListCell: UITableViewCell {
     
     static let reuseIdentifier: String = "ImagesListCell"
     weak var delegate: ImagesListCellDelegate?
-
+    
     // MARK: - Lifecycle
-
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         imageCell.kf.cancelDownloadTask()
     }
     
     // MARK: - IBActions
-
+    
     @IBAction func likeButtonClicked(_ sender: Any) {
         delegate?.imageListCellDidTapLike(self)
-
+        
     }
 }
 

@@ -73,25 +73,25 @@ final class ProfileImageService {
         }
         
         task = session.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in
-                switch result {
-                case .success(let result):
-                    ProfileImageService.shared.avatarURL = result.profileImage.small
-                    guard let profileImageURL = ProfileImageService.shared.avatarURL else {
-                        Applogger.error("ошибка создания URL аватарки")
-                        completion(.failure(NetworkError.invalidRequest))
-                        return
-                    }
-                    completion(.success(profileImageURL))
-                    NotificationCenter.default
-                        .post(
-                            name: ProfileImageService.didChangeNotification,
-                            object: self,
-                            userInfo: ["URL": profileImageURL])
-                case .failure(let error):
-                    Applogger.error("ошибка получения URL аватара профиля", error)
-                    completion(.failure(error))
+            switch result {
+            case .success(let result):
+                ProfileImageService.shared.avatarURL = result.profileImage.small
+                guard let profileImageURL = ProfileImageService.shared.avatarURL else {
+                    Applogger.error("ошибка создания URL аватарки")
+                    completion(.failure(NetworkError.invalidRequest))
+                    return
                 }
-                self?.task = nil
+                completion(.success(profileImageURL))
+                NotificationCenter.default
+                    .post(
+                        name: ProfileImageService.didChangeNotification,
+                        object: self,
+                        userInfo: ["URL": profileImageURL])
+            case .failure(let error):
+                Applogger.error("ошибка получения URL аватара профиля", error)
+                completion(.failure(error))
+            }
+            self?.task = nil
         }
         task?.resume()
     }

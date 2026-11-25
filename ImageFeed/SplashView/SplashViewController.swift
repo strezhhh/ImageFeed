@@ -88,7 +88,7 @@ final class SplashViewController: UIViewController {
             let windowScene = UIApplication.shared.connectedScenes
                 .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
             let window = windowScene.windows.first
-        else {
+                else {
             assertionFailure("SplashViewController.switchToTabBarController: Invalid window configuration")
             Applogger.error("Invalid window configuration")
             return

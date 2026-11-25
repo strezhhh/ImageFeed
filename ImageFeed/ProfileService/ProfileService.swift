@@ -41,7 +41,7 @@ final class ProfileService {
     private let decoder = JSONDecoder()
     private(set) var profile: Profile?
     
-
+    
     
     // MARK: - Initialization
     
