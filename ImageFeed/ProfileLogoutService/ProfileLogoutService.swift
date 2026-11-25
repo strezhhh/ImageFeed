@@ -20,7 +20,7 @@ final class ProfileLogoutService {
     
     private init() { }
     
-    // MARK: - Methods
+    //MARK: - Methods
     
     func logout() {
         cleanCookies()

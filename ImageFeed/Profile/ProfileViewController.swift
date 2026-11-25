@@ -28,6 +28,7 @@ final class ProfileViewController: UIViewController {
     private var profileImageServiceObserver: NSObjectProtocol?
     
     private var profileLogoutService = ProfileLogoutService.shared
+    private let alertPresenter = AlertPresenter.shared
     
     // MARK: - Lifecycle
     
@@ -41,6 +42,22 @@ final class ProfileViewController: UIViewController {
     }
     
     // MARK: - Private Methods
+    
+    private func showAlert() {
+        alertPresenter.showAlertWithMessage(
+            viewController: self,
+            title: "Пока, пока!",
+            message: "Уверены, что хотите выйти?",
+            buttonText: "Да",
+            completion: { [weak self] in
+                guard let self else { return }
+                profileLogoutService.logout()
+                tabBarController?.selectedIndex = 0
+            },
+            secondButtonText: "Нет",
+            secondCompletion: {
+            })
+    }
     
     // Метод присвоит нужный цвет экрану профиля
     private func setupBackgroundColor() {
@@ -192,7 +209,7 @@ final class ProfileViewController: UIViewController {
     // Метод выхода из профиля пользователя
     @objc
     private func didTapButton() {
-        profileLogoutService.logout()
-        tabBarController?.selectedIndex = 0
+        showAlert()
     }
+    
 }
