@@ -20,7 +20,6 @@ final class OAuth2Service {
     
     // MARK: - Private Properties
     
-    private let decoder = JSONDecoder()
     private var session = URLSession.shared
     private var task: URLSessionTask?
     private var lastCode: String?

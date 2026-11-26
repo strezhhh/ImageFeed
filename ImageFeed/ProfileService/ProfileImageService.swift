@@ -36,7 +36,6 @@ final class ProfileImageService {
     
     private var session: URLSession
     private var task: URLSessionTask?
-    private let decoder = JSONDecoder()
     
     // MARK: - Initialization
     

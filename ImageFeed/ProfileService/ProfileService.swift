@@ -38,7 +38,6 @@ final class ProfileService {
     
     private var session = URLSession.shared
     private var task: URLSessionTask?
-    private let decoder = JSONDecoder()
     private(set) var profile: Profile?
     
     // MARK: - Initialization
