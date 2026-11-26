@@ -51,6 +51,9 @@ final class ImagesListViewController: UIViewController {
         imagesListService.fetchPhotosNextPage()
     }
     
+    deinit {
+        print("\(self) уничтожен")
+    }
     
     // MARK: - Private Methods
     
@@ -110,8 +113,6 @@ final class ImagesListViewController: UIViewController {
             }
             let photo = photos[indexPath.row]
             viewController.largeImageURL = photo.largeImageURL
-            //            let image = UIImage(named: photosName[indexPath.row])
-            //            viewController.image = image
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -133,15 +134,10 @@ extension ImagesListViewController {
         cell.imageCell.kf.setImage(with: imageUrl,
                                    placeholder: UIImage(named: placeholderIcon),
                                    options: [
-                                   ]) { result in
+                                   ]) {result in
                                        switch result {
                                        case .success(_):
                                            cell.imageCell.contentMode = .scaleAspectFill
-                                           if let index = self.tableView.indexPath(for: cell) {
-                                               if self.photos[index.row].id == photo.id {
-                                                   self.tableView.reloadRows(at: [index], with: .automatic)
-                                               }
-                                           }
                                        case .failure(let error):
                                            Applogger.error("ошибка создания экземпляра реквеста: \(error.localizedDescription)")
                                        }

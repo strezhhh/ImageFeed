@@ -36,6 +36,9 @@ final class AuthViewController: UIViewController {
         setYourselfAsDelegate(to: destination)
     }
     
+    deinit {
+        print("\(self) уничтожен")
+    }
     
     // MARK: - Private Methods
     

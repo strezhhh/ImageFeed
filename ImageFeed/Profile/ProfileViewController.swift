@@ -41,6 +41,10 @@ final class ProfileViewController: UIViewController {
         setupProfileDetails()
     }
     
+    deinit {
+        print("\(self) уничтожен")
+    }
+    
     // MARK: - Private Methods
     
     private func showAlert() {
@@ -72,7 +76,7 @@ final class ProfileViewController: UIViewController {
                 object: nil,
                 queue: .main
             ) { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.updateAvatar()
             }
     }

@@ -8,6 +8,8 @@
 import UIKit
 import WebKit
 import Logging
+import Kingfisher
+
 
 
 final class ProfileLogoutService {
@@ -27,13 +29,13 @@ final class ProfileLogoutService {
         cleanToken()
         cleanProfile()
         cleanAvatarURL()
+        cleanKingfisherCash()
         switchToNaviAuthController()
     }
     
     // MARK: - Private Methods
     
     private func cleanCookies() {
-        OAuth2TokenStorage.shared.token = nil
         HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
         WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
             records.forEach { record in
@@ -41,6 +43,14 @@ final class ProfileLogoutService {
             }
         }
     }
+    
+    // удалить кеш KingFisher
+    private func cleanKingfisherCash() {
+        let cache = ImageCache.default
+        cache.clearMemoryCache()
+        cache.clearDiskCache()
+    }
+    
     
     // удалить токен
     private func cleanToken() {

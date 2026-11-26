@@ -42,6 +42,10 @@ final class SingleImageViewController: UIViewController {
         setupScrollView()
     }
     
+    deinit {
+        print("\(self) уничтожен")
+    }
+    
     // MARK: - Private Methods
     
     private func setupSingleImageView() {

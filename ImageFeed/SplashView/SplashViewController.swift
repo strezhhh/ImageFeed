@@ -26,7 +26,7 @@ final class SplashViewController: UIViewController {
     // MARK: - Lifecycle
     
     deinit {
-        Applogger.info("SplashViewController уничтожен")
+        print("\(self) уничтожен")
     }
     
     override func viewDidAppear(_ animated: Bool) {
