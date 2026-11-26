@@ -126,7 +126,7 @@ extension ImagesListViewController {
            let date = isoFormatter.date(from: createdAt) {
                 cell.dateLabel.text = dateFormatter.string(from: date)
             }
-        cell.setIsLiked(photo.isLiked, cell: cell)
+        cell.setIsLiked(photo.isLiked)
         guard let imageUrl = URL(string: photo.thumbImageURL) else {
             Applogger.error("Ошибка создания URL")
             return
@@ -207,7 +207,6 @@ extension ImagesListViewController: UITableViewDelegate {
 extension ImagesListViewController: ImagesListCellDelegate {
     
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
-        // TODO
         guard let indexPath = tableView.indexPath(for: cell) else {
             Applogger.error("ошибка обращения к индексу ячейки")
             return
@@ -223,7 +222,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
             switch result {
             case .success:
                 self.photos = self.imagesListService.photos
-                cell.setIsLiked(self.photos[indexPath.row].isLiked, cell: cell)
+                cell.setIsLiked(self.photos[indexPath.row].isLiked)
                 UIBlockingProgressHUD.dismiss()
             case .failure:
                 UIBlockingProgressHUD.dismiss()

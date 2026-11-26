@@ -29,11 +29,11 @@ final class ImagesListCell: UITableViewCell {
     }
     
     //MARK: - Methods
-    func setIsLiked(_ like: Bool, cell: ImagesListCell){
+    func setIsLiked(_ like: Bool){
         if like {
-            cell.likeButton.setImage(UIImage(resource: .active), for: .normal)
+            likeButton.setImage(UIImage(resource: .active), for: .normal)
         } else {
-            cell.likeButton.setImage(UIImage(resource: .noActive), for: .normal)
+            likeButton.setImage(UIImage(resource: .noActive), for: .normal)
         }
     }
     
