@@ -19,7 +19,6 @@ final class ImagesListService {
     private(set) var photos: [Photo] = []
     private var lastLoadedPage: Int?
     private var nextPage: Int?
-    private let decoder = JSONDecoder()
     private var session: URLSession
     private var taskForNextPage: URLSessionTask?
     private var taskForLike: URLSessionTask?
