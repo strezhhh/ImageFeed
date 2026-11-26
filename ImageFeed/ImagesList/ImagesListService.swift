@@ -109,17 +109,8 @@ final class ImagesListService {
                     Applogger.error("Self отсутствует")
                     return
                 }
-                for item in photoResult {
-                    let photo = Photo(
-                        id: item.id,
-                        size: item.size,
-                        createdAt: item.createdAt,
-                        welcomeDescription: item.welcomeDescription,
-                        thumbImageURL: item.urls.thumbImageURL,
-                        largeImageURL: item.urls.largeImageURL,
-                        isLiked: item.isLiked
-                    )
-                    self.photos.append(photo)
+                let newPhoto = photoResult.map { Photo(result: $0) }
+                self.photos.append(newPhoto)
                 }
                 self.notifyAboutChanges()
                 self.lastLoadedPage = self.nextPage

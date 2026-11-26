@@ -16,3 +16,18 @@ struct Photo {
     let largeImageURL: String
     let isLiked: Bool
 }
+
+extension Photo {
+    init(result: PhotoResult) {
+        self.init(
+            id: item.id,
+            size: item.size,
+            createdAt: item.createdAt,
+            welcomeDescription: item.welcomeDescription,
+            thumbImageURL: item.urls.thumbImageURL,
+            largeImageURL: item.urls.largeImageURL,
+            isLiked: item.isLiked
+        )
+    }
+}
+
