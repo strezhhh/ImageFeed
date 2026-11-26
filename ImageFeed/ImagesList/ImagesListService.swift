@@ -18,7 +18,6 @@ final class ImagesListService {
     
     private(set) var photos: [Photo] = []
     private var lastLoadedPage: Int?
-    private var nextPage: Int?
     private var session: URLSession
     private var taskForNextPage: URLSessionTask?
     private var taskForLike: URLSessionTask?
@@ -27,7 +26,7 @@ final class ImagesListService {
     init () {
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = 10
-        self.session = URLSession(configuration: conf)
+        self.session = URLSession(configuration: configuration)
     }
     
     // MARK: - Methods
@@ -93,11 +92,8 @@ final class ImagesListService {
             Applogger.error("ошибка, отсутствует bearerToken")
             return
         }
-        nextPage = (self.lastLoadedPage ?? 0) + 1
-        guard let nextPage else {
-            Applogger.error("Отстуствует nextPage")
-            return
-        }
+        let nextPage = (self.lastLoadedPage ?? 0) + 1
+        
         guard let request = makeRequestNextPages(for: nextPage, bearer: token) else {
             Applogger.error("ошибка создания экземпляра реквеста")
             return
@@ -110,10 +106,9 @@ final class ImagesListService {
                     return
                 }
                 let newPhoto = photoResult.map { Photo(result: $0) }
-                self.photos.append(newPhoto)
-                }
+                self.photos.append(contentsOf: newPhoto)
                 self.notifyAboutChanges()
-                self.lastLoadedPage = self.nextPage
+                self.lastLoadedPage = nextPage
                 
             case .failure(let error):
                 Applogger.error("ошибка получения bearerToken", error)
