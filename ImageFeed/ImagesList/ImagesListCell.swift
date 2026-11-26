@@ -28,6 +28,15 @@ final class ImagesListCell: UITableViewCell {
         imageCell.kf.cancelDownloadTask()
     }
     
+    //MARK: - Methods
+    func setIsLiked(_ like: Bool, cell: ImagesListCell){
+        if like {
+            cell.likeButton.setImage(UIImage(resource: .active), for: .normal)
+        } else {
+            cell.likeButton.setImage(UIImage(resource: .noActive), for: .normal)
+        }
+    }
+    
     // MARK: - IBActions
     
     @IBAction func likeButtonClicked(_ sender: Any) {

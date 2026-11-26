@@ -58,14 +58,6 @@ final class ImagesListViewController: UIViewController {
     
     // MARK: - Private Methods
     
-    /*private*/ func setIsLiked(_ like: Bool, cell: ImagesListCell){
-        if like {
-            cell.likeButton.setImage(UIImage(resource: .active), for: .normal)
-        } else {
-            cell.likeButton.setImage(UIImage(resource: .noActive), for: .normal)
-        }
-    }
-    
     // Присваиваем обсервер, возвращаемый функцией addObserver
     private func setupObserver() {
         imagesListServiceObserver = NotificationCenter.default
@@ -148,7 +140,7 @@ extension ImagesListViewController {
            let date = isoFormatter.date(from: createdAt) {
                 cell.dateLabel.text = dateFormatter.string(from: date)
             }
-        setIsLiked(photo.isLiked, cell: cell)
+        cell.setIsLiked(photo.isLiked, cell: cell)
     }
     
 }
@@ -228,7 +220,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
             switch result {
             case .success:
                 self.photos = self.imagesListService.photos
-                self.setIsLiked(self.photos[indexPath.row].isLiked, cell: cell)
+                cell.setIsLiked(self.photos[indexPath.row].isLiked, cell: cell)
                 UIBlockingProgressHUD.dismiss()
             case .failure:
                 UIBlockingProgressHUD.dismiss()
