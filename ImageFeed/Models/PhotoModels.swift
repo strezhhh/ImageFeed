@@ -20,13 +20,13 @@ struct Photo {
 extension Photo {
     init(result: PhotoResult) {
         self.init(
-            id: item.id,
-            size: item.size,
-            createdAt: item.createdAt,
-            welcomeDescription: item.welcomeDescription,
-            thumbImageURL: item.urls.thumbImageURL,
-            largeImageURL: item.urls.largeImageURL,
-            isLiked: item.isLiked
+            id: result.id,
+            size: result.size,
+            createdAt: result.createdAt,
+            welcomeDescription: result.welcomeDescription,
+            thumbImageURL: result.urls.thumbImageURL,
+            largeImageURL: result.urls.largeImageURL,
+            isLiked: result.isLiked
         )
     }
 }
