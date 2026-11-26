@@ -53,6 +53,10 @@ final class ImagesListViewController: UIViewController {
     }
     
     deinit {
+        if let observer = imagesListServiceObserver {
+            NotificationCenter.default.removeObserver(observer)
+            imagesListServiceObserver = nil
+        }
         print("\(self) уничтожен")
     }
     
@@ -63,7 +67,7 @@ final class ImagesListViewController: UIViewController {
         imagesListServiceObserver = NotificationCenter.default
             .addObserver(
                 forName: ImagesListService.didChangeNotification,
-                object: nil,
+                object: imagesListService,
                 queue: .main
             ) { [weak self] _ in
                 guard let self = self else { return }
@@ -224,8 +228,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
             case .failure:
                 UIBlockingProgressHUD.dismiss()
                 Applogger.error("Не получилось поменять статус лайка")
-                self.alertPresenter.showAlertWithMessage(viewController: self, title: "Что-то пошло не так", message: "Не удалось поставить или снять лайк", buttonText: "Ok") {
-                }
+                self.alertPresenter.showAlertWithMessage(viewController: self, title: "Что-то пошло не так", message: "Не удалось поставить или снять лайк", buttonText: "Ok") { }
             }
         }
     }
