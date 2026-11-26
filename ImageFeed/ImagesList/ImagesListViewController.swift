@@ -117,7 +117,12 @@ final class ImagesListViewController: UIViewController {
 extension ImagesListViewController {
     
     func configCell(for cell: ImagesListCell, with photo: Photo) {
-        
+        cell.dateLabel.text = ""
+        if let createdAt = photo.createdAt,
+           let date = isoFormatter.date(from: createdAt) {
+                cell.dateLabel.text = dateFormatter.string(from: date)
+            }
+        cell.setIsLiked(photo.isLiked, cell: cell)
         guard let imageUrl = URL(string: photo.thumbImageURL) else {
             Applogger.error("Ошибка создания URL")
             return
@@ -135,12 +140,6 @@ extension ImagesListViewController {
                                            Applogger.error("ошибка создания экземпляра реквеста: \(error.localizedDescription)")
                                        }
                                    }
-        cell.dateLabel.text = ""
-        if let createdAt = photo.createdAt,
-           let date = isoFormatter.date(from: createdAt) {
-                cell.dateLabel.text = dateFormatter.string(from: date)
-            }
-        cell.setIsLiked(photo.isLiked, cell: cell)
     }
     
 }
