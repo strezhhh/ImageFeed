@@ -8,47 +8,6 @@
 import UIKit
 import Logging
 
-struct Photo {
-    let id: String
-    let size: CGSize
-    let createdAt: String?
-    let welcomeDescription: String?
-    let thumbImageURL: String
-    let largeImageURL: String
-    let isLiked: Bool
-}
-
-struct PhotoResult: Decodable {
-    let id: String
-    let createdAt: String?
-    let width: Int
-    let height: Int
-    let welcomeDescription: String?
-    let urls: UrlsResult
-    let isLiked: Bool
-    
-    var size: CGSize {
-        CGSize(width: width, height: height)
-    }
-    
-    private enum CodingKeys: String, CodingKey {
-        case id, width, height, urls
-        case createdAt = "created_at"
-        case welcomeDescription = "description"
-        case isLiked = "liked_by_user"
-    }
-}
-
-struct UrlsResult: Decodable {
-    let thumbImageURL: String
-    let largeImageURL: String
-    
-    private enum CodingKeys: String, CodingKey {
-        case thumbImageURL = "small"
-        case largeImageURL = "full"
-    }
-}
-
 final class ImagesListService {
     
     // MARK: - Static Properties
@@ -61,14 +20,14 @@ final class ImagesListService {
     private var lastLoadedPage: Int?
     private var nextPage: Int?
     private let decoder = JSONDecoder()
-    private var session = URLSession.shared
+    private var session: URLSession
     private var taskForNextPage: URLSessionTask?
     private var taskForLike: URLSessionTask?
     
     // MARK: - Lifecycle
     init () {
-        let conf = URLSessionConfiguration.default
-        conf.timeoutIntervalForRequest = 10
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 10
         self.session = URLSession(configuration: conf)
     }
     
