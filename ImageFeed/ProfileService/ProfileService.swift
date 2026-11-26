@@ -11,7 +11,7 @@ import Logging
 struct ProfileResult: Codable {
     let username: String
     let firstName: String
-    let lastName: String
+    let lastName: String?
     let bio: String?
     
     private enum CodingKeys: String, CodingKey {
@@ -71,7 +71,10 @@ final class ProfileService {
                 case .success(let result):
                     let profile = Profile (
                         username: result.username,
-                        name: "\(result.firstName) \(result.lastName)",
+                        name: [result.firstName, result.lastName]
+                            .compactMap { $0 }
+                            .joined(separator: " ")
+                        ,
                         loginName: "@\(result.username)",
                         bio: result.bio
                     )
