@@ -49,6 +49,7 @@ final class SingleImageViewController: UIViewController {
     // MARK: - Private Methods
     
     private func setupSingleImageView() {
+        UIBlockingProgressHUD.show()
         guard let largeImageURL else {
             Applogger.error("largeImageURL пока пуст")
             return
@@ -58,7 +59,7 @@ final class SingleImageViewController: UIViewController {
             return
         }
         singleImageView.contentMode = .center
-        singleImageView.kf.indicatorType = .activity
+        singleImageView.kf.indicatorType = .none
         singleImageView.kf.setImage(
             with: imageUrl,
             placeholder: UIImage(named: placeholderIcon)
@@ -77,6 +78,7 @@ final class SingleImageViewController: UIViewController {
                 self.singleImageView?.kf.cancelDownloadTask()
                 self.showError()
             }
+            UIBlockingProgressHUD.dismiss()
         }
     }
     
