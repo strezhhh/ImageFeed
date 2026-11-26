@@ -25,21 +25,29 @@ final class ProfileLogoutService {
     //MARK: - Methods
     
     func logout() {
-        cleanCookies()
+        cleanCookies {
+            self.switchToNaviAuthController()
+        }
         cleanToken()
         cleanProfile()
         cleanAvatarURL()
         cleanKingfisherCash()
-        switchToNaviAuthController()
     }
     
     // MARK: - Private Methods
     
-    private func cleanCookies() {
+    private func cleanCookies(completion: @escaping () -> Void) {
         HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        let group = DispatchGroup()
         WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
             records.forEach { record in
-                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+                group.enter()
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {
+                    group.leave()
+                })
+            }
+            group.notify(queue: .main) {
+                completion()
             }
         }
     }
