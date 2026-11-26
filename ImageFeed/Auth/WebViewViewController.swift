@@ -18,7 +18,7 @@ final class WebViewViewController: UIViewController {
     
     // MARK: - Properties
     
-    var delegate: WebViewViewControllerDelegate?
+    weak var delegate: WebViewViewControllerDelegate?
     
     // MARK: - Private Properties
     
