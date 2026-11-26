@@ -24,8 +24,11 @@ final class ImagesListViewController: UIViewController {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .none
+        formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
+
+    private let isoFormatter = ISO8601DateFormatter()
     
     // переменная хранит название мокового ресурса
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
@@ -38,9 +41,7 @@ final class ImagesListViewController: UIViewController {
     private let placeholderIcon = "placeholderIcon"
     
     private let alertPresenter = AlertPresenter.shared
-    
-    
-    
+
     
     // MARK: - Lifecycle
     
@@ -143,9 +144,10 @@ extension ImagesListViewController {
                                        }
                                    }
         cell.dateLabel.text = ""
-        if let createdAt = photo.createdAt {
-            cell.dateLabel.text = dateFormatter.string(from: createdAt)
-        }
+        if let createdAt = photo.createdAt,
+           let date = isoFormatter.date(from: createdAt) {
+                cell.dateLabel.text = dateFormatter.string(from: date)
+            }
         setIsLiked(photo.isLiked, cell: cell)
     }
     
