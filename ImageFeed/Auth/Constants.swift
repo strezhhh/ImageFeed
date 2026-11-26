@@ -12,8 +12,13 @@ import Foundation
 
 // Значения для работы с API Unsplash
 enum ConstantsValue {
-    static let accessKey: String = "SDon0102NwDOuEgfm6gzP9O035HcVNWH7kxaU_JSk0w"
-    static let secretKey: String = "7dXqur6ukoLA9u_dY9_x9jve00tKXIEd5Xh8XlWnbNs"
+    // первый комплект ключей
+//    static let accessKey: String = "SDon0102NwDOuEgfm6gzP9O035HcVNWH7kxaU_JSk0w"
+//    static let secretKey: String = "7dXqur6ukoLA9u_dY9_x9jve00tKXIEd5Xh8XlWnbNs"
+    // второй комплект ключей
+    static let accessKey: String = "tzPGvK_pDkpzEqO4Uet_XoNyYKV2YVB-yFshBuCxAXA"
+    static let secretKey: String = "49o8owfzyrZeBA7dcNh1CvAaufqg6cBAd4U61xlMxvo"
+    
     static let redirectURI: String = "urn:ietf:wg:oauth:2.0:oob"
     static let accessScope: String = "public+read_user+write_likes"
     static let defaultBaseURLString: String = "https://api.unsplash.com"

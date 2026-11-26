@@ -62,8 +62,8 @@ final class ImagesListService {
     private var nextPage: Int?
     private let decoder = JSONDecoder()
     private var session = URLSession.shared
-    private var task: URLSessionTask?
-    
+    private var taskForNextPage: URLSessionTask?
+    private var taskForLike: URLSessionTask?
     
     // MARK: - Lifecycle
     init () {
@@ -93,7 +93,7 @@ final class ImagesListService {
             completion(.failure(NetworkError.invalidRequest))
             return
         }
-        task = session.data(for: request) { [weak self] (result: Result<Data, Error>) in
+        taskForLike = session.data(for: request) { [weak self] (result: Result<Data, Error>) in
             switch result {
             case .success:
                 guard
@@ -122,12 +122,12 @@ final class ImagesListService {
                 completion(.failure(error))
             }
         }
-        task?.resume()
+        taskForLike?.resume()
         
     }
     
     func fetchPhotosNextPage() {
-        guard task == nil else {
+        guard taskForNextPage == nil else {
             Applogger.error("Запрос уже выполняется")
             return
         }
@@ -144,7 +144,7 @@ final class ImagesListService {
             Applogger.error("ошибка создания экземпляра реквеста")
             return
         }
-        task = session.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
+        taskForNextPage = session.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
             switch result {
             case .success(let photoResult):
                 guard let self else {
@@ -169,9 +169,9 @@ final class ImagesListService {
             case .failure(let error):
                 Applogger.error("ошибка получения bearerToken", error)
             }
-            self?.task = nil
+            self?.taskForNextPage = nil
         }
-        task?.resume()
+        taskForNextPage?.resume()
     }
     
     // MARK: - Private Methods
