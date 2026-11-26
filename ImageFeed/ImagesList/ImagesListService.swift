@@ -111,7 +111,7 @@ final class ImagesListService {
                 self.lastLoadedPage = nextPage
                 
             case .failure(let error):
-                Applogger.error("ошибка получения bearerToken", error)
+                Applogger.error("Не удалось загрузить страницу ленты №\(nextPage)", error)
             }
             self?.taskForNextPage = nil
         }
