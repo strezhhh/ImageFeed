@@ -8,7 +8,7 @@
 import Foundation
 import Logging
 
-enum Apploger {
+enum Applogger {
     static let logger = Logger(label: "ru.strezhhh.imageFeed")
     
     static func error(

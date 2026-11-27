@@ -12,8 +12,13 @@ import Foundation
 
 // Значения для работы с API Unsplash
 enum ConstantsValue {
+    // первый комплект ключей
     static let accessKey: String = "SDon0102NwDOuEgfm6gzP9O035HcVNWH7kxaU_JSk0w"
     static let secretKey: String = "7dXqur6ukoLA9u_dY9_x9jve00tKXIEd5Xh8XlWnbNs"
+    // второй комплект ключей
+//    static let accessKey: String = "tzPGvK_pDkpzEqO4Uet_XoNyYKV2YVB-yFshBuCxAXA"
+//    static let secretKey: String = "49o8owfzyrZeBA7dcNh1CvAaufqg6cBAd4U61xlMxvo"
+    
     static let redirectURI: String = "urn:ietf:wg:oauth:2.0:oob"
     static let accessScope: String = "public+read_user+write_likes"
     static let defaultBaseURLString: String = "https://api.unsplash.com"
@@ -22,11 +27,17 @@ enum ConstantsValue {
     static let postRequestOAuthTokenURLString = "https://unsplash.com/oauth/token"
     static let getRequestProfileDetails = "https://api.unsplash.com/me"
     static let getRequestProfileImage = "https://api.unsplash.com/users/"
+    static let getRequestPhotosNextPages = "https://api.unsplash.com/photos"
     static let grantType: String = "authorization_code"
     static let requestMethodPost = "POST"
     static let requestMethodGET = "GET"
+    static let requestMethodDelete = "DELETE"
+    static let defaultPerPage: Int = 10
+    
+    static func getRequestIsLike(photoID: String) -> String {
+        "https://api.unsplash.com/photos/\(photoID)/like"
+    }
 }
-
 
 // Имена для работы с API Unsplash
 enum ConstantsName {
@@ -37,4 +48,6 @@ enum ConstantsName {
     static let clientSecret = "client_secret"
     static let grantType = "grant_type"
     static let codeString = "code"
+    static let page = "page"
+    static let perPage = "per_page"
 }

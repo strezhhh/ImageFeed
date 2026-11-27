@@ -16,12 +16,10 @@ final class AuthViewController: UIViewController {
     
     weak var delegate: AuthViewControllerDelegate?
     
-    
     // MARK: - Private Properties
     
     // переменная хранит название ShowWebView
     private let showWebViewSegueIdentifier = "ShowWebView"
-    
     private let alertPresenter = AlertPresenter.shared
     
     // MARK: - Override Methods
@@ -31,13 +29,16 @@ final class AuthViewController: UIViewController {
             segue.identifier == showWebViewSegueIdentifier,
             let destination = segue.destination as? WebViewViewControllerProtocol
                 else {
-            Apploger.error("Ошибка перехода по seque: showWebViewSegueIdentifier")
+            Applogger.error("Ошибка перехода по seque: showWebViewSegueIdentifier")
             assertionFailure("AuthViewController.prepare: Ошибка перехода по seque: showWebViewSegueIdentifier")
             return
         }
         setYourselfAsDelegate(to: destination)
     }
     
+    deinit {
+        print("\(self) уничтожен")
+    }
     
     // MARK: - Private Methods
     
@@ -55,7 +56,6 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     
-    
     // метод сообщит, что WebViewViewController получил код, необходимый для получения bearer token
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         navigationController?.popViewController(animated: true)
@@ -67,13 +67,13 @@ extension AuthViewController: WebViewViewControllerDelegate {
             switch result {
             case .success(let token):
                 OAuth2TokenStorage.shared.store(bearerToken: token)
-                Apploger.info("bearerToken успешно создан и сохранен")
+                Applogger.info("bearerToken успешно создан и сохранен")
                 guard let self else {
                     return
                 }
                 self.delegate?.didAuthenticate(self)
             case .failure(let error):
-                Apploger.error("ошибка получения bearerToken", error)
+                Applogger.error("ошибка получения bearerToken", error)
                 guard let self else { return }
                 alertPresenter.showAlertWithMessage(viewController: self, title: "Что-то пошло не так", message: "Не удалось войти в систему", buttonText: "Ok") {
                     self.navigationController?.popViewController(animated: true)

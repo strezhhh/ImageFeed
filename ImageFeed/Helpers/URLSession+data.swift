@@ -16,6 +16,8 @@ enum NetworkError: Error {
     case decodingError(Error)
     case codeError
     case tokenMissing
+    case selfMissing
+    case otherError
 }
 
 extension URLSession {
@@ -34,14 +36,14 @@ extension URLSession {
                 if 200 ..< 300 ~= statusCode {
                     fulfillCompletionOnTheMainThread(.success(data))
                 } else {
-                    Apploger.error("URLSession.data: HTTP ошибка: \(statusCode)")
+                    Applogger.error("URLSession.data: HTTP ошибка: \(statusCode)")
                     fulfillCompletionOnTheMainThread(.failure(NetworkError.httpStatusCode(statusCode)))
                 }
             } else if let error = error {
-                Apploger.error("URLSession.data: HTTP ошибка", error)
+                Applogger.error("URLSession.data: HTTP ошибка", error)
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlRequestError(error)))
             } else {
-                Apploger.error("запрос не удалось выполнить")
+                Applogger.error("запрос не удалось выполнить")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError))
             }
         })
@@ -63,19 +65,19 @@ extension URLSession {
                     let response = try decoder.decode(T.self, from: data)
                     completion(.success(response))
                 } catch {
-                    Apploger.error("Ошибка декодирования. Данные: \(String(data: data, encoding: .utf8) ?? "")", error)
+                    Applogger.error("Ошибка декодирования. Данные: \(String(data: data, encoding: .utf8) ?? "")", error)
                     completion(.failure(NetworkError.decodingError(error)))
                 }
             case .failure(let error):
                 switch error {
                 case NetworkError.httpStatusCode(let statusCode):
-                    Apploger.error("HTTP ошибка: \(statusCode)")
+                    Applogger.error("HTTP ошибка: \(statusCode)")
                 case NetworkError.urlRequestError(let requestError):
-                    Apploger.error("HTTP ошибка: \(requestError)")
+                    Applogger.error("HTTP ошибка: \(requestError)")
                 case NetworkError.urlSessionError:
-                    Apploger.error("запрос не удалось выполнить")
+                    Applogger.error("запрос не удалось выполнить")
                 default:
-                    Apploger.error("HTTP ошибка")
+                    Applogger.error("HTTP ошибка")
                 }
                 completion(.failure(error))
             }

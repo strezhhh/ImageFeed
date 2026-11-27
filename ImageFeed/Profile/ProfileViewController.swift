@@ -27,6 +27,9 @@ final class ProfileViewController: UIViewController {
     // обсервер "нового" API на блоках
     private var profileImageServiceObserver: NSObjectProtocol?
     
+    private var profileLogoutService = ProfileLogoutService.shared
+    private let alertPresenter = AlertPresenter.shared
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -38,13 +41,32 @@ final class ProfileViewController: UIViewController {
         setupProfileDetails()
     }
     
+    deinit {
+        print("\(self) уничтожен")
+    }
+    
     // MARK: - Private Methods
+    
+    private func showAlert() {
+        alertPresenter.showAlertWithMessage(
+            viewController: self,
+            title: "Пока, пока!",
+            message: "Уверены, что хотите выйти?",
+            buttonText: "Да",
+            completion: { [weak self] in
+                guard let self else { return }
+                profileLogoutService.logout()
+                tabBarController?.selectedIndex = 0
+            },
+            secondButtonText: "Нет",
+            secondCompletion: {
+            })
+    }
     
     // Метод присвоит нужный цвет экрану профиля
     private func setupBackgroundColor() {
         view.backgroundColor = UIColor(named: backgroungColor)
     }
-    
     
     // Присваиваем обсервер, возвращаемый функцией addObserver
     private func setupObserver () {
@@ -54,7 +76,7 @@ final class ProfileViewController: UIViewController {
                 object: nil,
                 queue: .main
             ) { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.updateAvatar()
             }
     }
@@ -82,7 +104,7 @@ final class ProfileViewController: UIViewController {
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let avatarUrl = URL(string: profileImageURL)
                 else {
-            Apploger.error("ошибка обновления аватарки")
+            Applogger.error("ошибка обновления аватарки")
             return
         }
         let processor = RoundCornerImageProcessor(cornerRadius: avatarImageView.layer.cornerRadius)
@@ -96,7 +118,7 @@ final class ProfileViewController: UIViewController {
     
     private func setupProfileDetails() {
         guard let profile = ProfileService.shared.profile else {
-            Apploger.error("переменная ProfileService.shared.profile пустая")
+            Applogger.error("переменная ProfileService.shared.profile пустая")
             return
         }
         setupNameLabel(profile.name)
@@ -191,6 +213,7 @@ final class ProfileViewController: UIViewController {
     // Метод выхода из профиля пользователя
     @objc
     private func didTapButton() {
-        tabBarController?.selectedIndex = 0
+        showAlert()
     }
+    
 }

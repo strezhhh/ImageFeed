@@ -20,7 +20,6 @@ final class OAuth2Service {
     
     // MARK: - Private Properties
     
-    private let decoder = JSONDecoder()
     private var session = URLSession.shared
     private var task: URLSessionTask?
     private var lastCode: String?
@@ -44,7 +43,7 @@ final class OAuth2Service {
         task?.cancel()
         lastCode = code
         guard let request = makeRequestOAuthToken(code: code) else {
-            Apploger.error("ошибка создания экземпляра реквеста")
+            Applogger.error("ошибка создания экземпляра реквеста")
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
@@ -54,7 +53,7 @@ final class OAuth2Service {
             case .success(let response):
                 completion(.success(response.bearerToken))
             case .failure(let error):
-                Apploger.error("ошибка получения bearerToken", error)
+                Applogger.error("ошибка получения bearerToken", error)
                 completion(.failure(error))
             }
             self?.task = nil
@@ -71,7 +70,7 @@ final class OAuth2Service {
         guard
             var urlComponents = URLComponents(string: ConstantsValue.postRequestOAuthTokenURLString)
                 else {
-            Apploger.error("ошибка создания URLComponents из строки:  \(ConstantsValue.postRequestOAuthTokenURLString)")
+            Applogger.error("ошибка создания URLComponents из строки:  \(ConstantsValue.postRequestOAuthTokenURLString)")
             return nil
         }
         urlComponents.queryItems = [
@@ -84,7 +83,7 @@ final class OAuth2Service {
         guard
             let urlOAuthToken = urlComponents.url
                 else {
-            Apploger.error("ошибка создания URL из URLComponents")
+            Applogger.error("ошибка создания URL из URLComponents")
             return nil
         }
         var request = URLRequest(url: urlOAuthToken)

@@ -18,8 +18,7 @@ final class WebViewViewController: UIViewController {
     
     // MARK: - Properties
     
-    var delegate: WebViewViewControllerDelegate?
-    
+    weak var delegate: WebViewViewControllerDelegate?
     
     // MARK: - Private Properties
     
@@ -27,9 +26,7 @@ final class WebViewViewController: UIViewController {
     private var oauth2Service: OAuth2Service?
     private let nameNavBackButton = "nav_back_button"
     private let colorNavBackButton = "YP Black"
-    
     private var estimatedProgressObservation: NSKeyValueObservation?
-    
     
     // MARK: - Initialization
     
@@ -52,7 +49,7 @@ final class WebViewViewController: UIViewController {
     // Direct the user to https://unsplash.com/oauth/authorize
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: ConstantsValue.unsplashAuthorizeURLString) else {
-            Apploger.error("ошибка создания URLComponents из строки: \(ConstantsValue.unsplashAuthorizeURLString)")
+            Applogger.error("ошибка создания URLComponents из строки: \(ConstantsValue.unsplashAuthorizeURLString)")
             return
         }
         
@@ -64,14 +61,12 @@ final class WebViewViewController: UIViewController {
         ]
         
         guard let url = urlComponents.url else {
-            Apploger.error("ошибка создания url из urlComponents")
+            Applogger.error("ошибка создания url из urlComponents")
             return
         }
         let request = URLRequest(url: url)
         webView.load(request)
     }
-    
-    
     
     // MARK: - KVO
     
